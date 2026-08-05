@@ -7,7 +7,7 @@ function LandingNavbar() {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
 
-  const handleNavigate = (path) => {
+  const handleNavigate = (path: string) => {
     setExpanded(false);
     navigate(path);
   };

@@ -1,25 +1,29 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
 import LandingPage from "./components/landing_page/LandingPage";
-import { useSelector } from "react-redux";
-import type { RootState } from "./redux/store";
+
+import ProtectedRouteLogged from "./components/protected_routes/ProtectedRouteLogged";
+import ProtectedRouteAdmin from "./components/protected_routes/ProtectedRouteAdmin";
 
 function App() {
-  const isAuthenticated = useSelector(
-    (state: RootState) => state.auth.isAuthenticated,
-  );
-
   return (
     <div className="d-flex flex-column min-vh-100">
       <div className="flex-grow-1 bg-dark">
         <BrowserRouter>
-          {isAuthenticated ? (
-            <Routes></Routes>
-          ) : (
-            <Routes>
-              <Route path="*" element={<LandingPage />} />
-            </Routes>
-          )}
+          <Routes>
+            <Route element={<ProtectedRouteLogged />}>
+              <Route path="/home"></Route>
+              <Route path="/pantry"></Route>
+              <Route path="/my-list"></Route>
+              <Route path="/recipes"></Route>
+              <Route path="/me"></Route>
+              <Route element={<ProtectedRouteAdmin />}>
+                <Route path="/create-recipe"></Route>
+                <Route path="/create-ingredient-definition"></Route>
+              </Route>
+            </Route>
+            <Route path="*" element={<LandingPage />} />
+          </Routes>
         </BrowserRouter>
       </div>
     </div>

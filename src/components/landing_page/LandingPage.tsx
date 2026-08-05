@@ -6,6 +6,7 @@ import LandingVision from "./LandingVision/LandingVision";
 import LandingFooter from "./LandingFooter/LandingFooter";
 import { Route, Routes } from "react-router";
 import LoginPage from "../login_page/LoginPage";
+import RegisterPage from "../register_page/RegisterPage";
 
 function LandingPage() {
   return (
@@ -24,6 +25,7 @@ function LandingPage() {
           }
         ></Route>
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Routes>
     </Container>
   );
