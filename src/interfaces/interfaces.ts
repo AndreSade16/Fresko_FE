@@ -126,3 +126,10 @@ export interface SuggestedRecipe {
   difficulty: string;
   cost: string;
 }
+
+export interface PantryItemUpdateDTO {
+  quantity: number | null;
+  purchaseDate: Date | null;
+  expirationDate: Date | null;
+  storageLocation: StorageLocation | null;
+}
