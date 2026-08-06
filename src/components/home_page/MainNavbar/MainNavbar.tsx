@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/UserSlice";
+import { logout } from "../../../redux/reducers/AuthSlice";
 
 function MainNavbar() {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
-  //   const role = useSelector((state: RootState) => state.auth.role);
   const dispatch = useDispatch<AppDispatch>();
 
   const { username, firstName, avatar } = useSelector(
@@ -19,6 +19,10 @@ function MainNavbar() {
   const handleNavigate = (path: string) => {
     setExpanded(false);
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   useEffect(() => {
@@ -31,6 +35,10 @@ function MainNavbar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
+
+  const avatarSrc =
+    avatar ||
+    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
   return (
     <Navbar
@@ -49,7 +57,24 @@ function MainNavbar() {
         >
           FresKo
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0" />
+
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm"
+          style={{ width: "42px", height: "42px" }}
+        >
+          <img
+            src={avatarSrc}
+            alt="User Avatar Menu"
+            className="w-100 h-100 object-fit-cover"
+          />
+          <style>{`
+            .blur-navbar-dark .navbar-toggler-icon {
+              display: none !important;
+            }
+          `}</style>
+        </Navbar.Toggle>
+
         <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
           <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
             <Nav.Link
@@ -76,6 +101,12 @@ function MainNavbar() {
             >
               Shopping List
             </Nav.Link>
+            <Nav.Link
+              className="text-light text-nowrap fw-semibold"
+              onClick={() => handleLogout()}
+            >
+              Logout
+            </Nav.Link>
 
             {isDesktop ? (
               <div
@@ -91,10 +122,7 @@ function MainNavbar() {
                 }}
               >
                 <img
-                  src={
-                    avatar ||
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                  }
+                  src={avatarSrc}
                   alt="User Avatar"
                   className="w-100 h-100 object-fit-cover"
                 />
@@ -107,7 +135,7 @@ function MainNavbar() {
                 className="text-light mb-0 fw-semibold text-nowrap"
                 style={{ cursor: "pointer" }}
               >
-                {firstName || username || "Guest"}
+                {firstName || username || "Guest"}'s profile
               </p>
             )}
           </Nav>

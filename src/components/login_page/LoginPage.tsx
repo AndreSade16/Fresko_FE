@@ -1,7 +1,17 @@
 import { Col, Container, Row } from "react-bootstrap";
 import LoginCard from "./LoginCard/LoginCard";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/store";
+import { Navigate } from "react-router";
 
 function LoginPage() {
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated,
+  );
+
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
+  }
   return (
     <Container>
       <Row className="d-flex justify-content-center mt-5">

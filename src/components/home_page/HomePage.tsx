@@ -1,15 +1,21 @@
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import PantrySection from "./PantrySection/PantrySection";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../redux/store";
 import { useEffect } from "react";
 import { fetchDashboard } from "../../redux/reducers/DashboardSlice";
 import ListSection from "./ListSection/ListSection";
+import SuggestedRecipesSection from "./SuggestedRecipesSection/SuggestedRecipesSection";
 
 function HomePage() {
-  const { expiringItems, activeShoppingList, suggestedRecipes } = useSelector(
-    (state: RootState) => state.dashboard,
-  );
+  const {
+    expiringItems,
+    activeShoppingList,
+    suggestedRecipes,
+    isLoading,
+    error,
+  } = useSelector((state: RootState) => state.dashboard);
+  const { firstName } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -18,8 +24,27 @@ function HomePage() {
 
   return (
     <Container fluid className="p-3 p-md-5">
-      <PantrySection expiringItems={expiringItems} />
-      <ListSection activeShoppingList={activeShoppingList} />
+      {error && (
+        <Alert variant="danger" className="mx-lg-4 mb-4 rounded-3 shadow-sm">
+          <Alert.Heading className="fs-6 fw-bold mb-1">
+            An error occurred:
+          </Alert.Heading>
+          {typeof error === "object" ? error.message : error}
+        </Alert>
+      )}
+      <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}! 👋</h3>
+      <h3 className="fw-semibold ps-3">
+        Here's what's <span className="text-secondary">fresko</span> today
+      </h3>
+      <PantrySection expiringItems={expiringItems} isLoading={isLoading} />
+      <ListSection
+        activeShoppingList={activeShoppingList}
+        isLoading={isLoading}
+      />
+      <SuggestedRecipesSection
+        suggestedRecipes={suggestedRecipes}
+        isLoading={isLoading}
+      />
     </Container>
   );
 }
