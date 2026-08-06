@@ -17,6 +17,8 @@ function PantryFilters({ applyFilters }: PantryFiltersProps) {
     minExpirationDate: searchParams.get("minExpirationDate") || "",
     maxExpirationDate: searchParams.get("maxExpirationDate") || "",
     storageLocation: searchParams.get("storageLocation") || "",
+    sortBy: searchParams.get("sortBy") || "",
+    direction: searchParams.get("direction") || "ASC",
   };
 
   const handleFilterChange = (
@@ -48,7 +50,7 @@ function PantryFilters({ applyFilters }: PantryFiltersProps) {
   };
 
   return (
-    <Accordion className="mb-4">
+    <Accordion className="mb-4 w-75 mx-auto">
       <Accordion.Item
         eventKey="0"
         className="bg-dark text-light border-0 rounded-3 overflow-hidden"
@@ -184,6 +186,42 @@ function PantryFilters({ applyFilters }: PantryFiltersProps) {
                     onChange={handleFilterChange}
                     size="sm"
                   />
+                </Form.Group>
+              </Col>
+
+              <Col xs={12} md={6}>
+                <Form.Group controlId="filterSortBy">
+                  <Form.Label className="small text-muted mb-1">
+                    Sort By
+                  </Form.Label>
+                  <Form.Select
+                    name="sortBy"
+                    value={filters.sortBy}
+                    onChange={handleFilterChange}
+                    size="sm"
+                  >
+                    <option value="expirationDate">Expiration Date</option>
+                    <option value="purchaseDate">Purchase Date</option>
+                    <option value="quantity">Quantity</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col xs={12} md={6}>
+                <Form.Group controlId="filterSortDirection">
+                  <Form.Label className="small text-muted mb-1">
+                    Direction
+                  </Form.Label>
+                  <Form.Select
+                    name="direction"
+                    value={filters.direction}
+                    onChange={handleFilterChange}
+                    size="sm"
+                    disabled={!filters.sortBy}
+                  >
+                    <option value="ASC">Ascending (ASC)</option>
+                    <option value="DESC">Descending (DESC)</option>
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>

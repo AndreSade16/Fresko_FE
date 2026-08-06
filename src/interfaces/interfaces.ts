@@ -20,7 +20,7 @@ export interface StandardError {
 }
 
 export interface PantryPage {
-  content: Content[];
+  content: PantryPageContent[];
   empty: boolean;
   first: boolean;
   last: boolean;
@@ -33,7 +33,7 @@ export interface PantryPage {
   totalPages: number;
 }
 
-export interface Content {
+export interface PantryPageContent {
   ingredientDefinition: IngredientDefinition;
   quantity: number;
   purchaseDate: Date;
@@ -127,9 +127,9 @@ export interface SuggestedRecipe {
   cost: string;
 }
 
-export interface PantryItemUpdateDTO {
-  quantity: number | null;
-  purchaseDate: Date | null;
-  expirationDate: Date | null;
-  storageLocation: StorageLocation | null;
-}
+// export interface PantryItemUpdateDTO {
+//   quantity: number | null;
+//   purchaseDate: Date | null;
+//   expirationDate: Date | null;
+//   storageLocation: StorageLocation | null;
+// }
