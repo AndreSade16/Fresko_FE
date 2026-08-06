@@ -4,6 +4,7 @@ import LandingPage from "./components/landing_page/LandingPage";
 
 import ProtectedRouteLogged from "./components/protected_routes/ProtectedRouteLogged";
 import ProtectedRouteAdmin from "./components/protected_routes/ProtectedRouteAdmin";
+import HomePage from "./components/home_page/HomePage";
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<ProtectedRouteLogged />}>
-              <Route path="/home"></Route>
+              <Route path="/home" element={<HomePage />}></Route>
               <Route path="/pantry"></Route>
               <Route path="/my-list"></Route>
               <Route path="/recipes"></Route>
@@ -20,6 +21,7 @@ function App() {
               <Route element={<ProtectedRouteAdmin />}>
                 <Route path="/create-recipe"></Route>
                 <Route path="/create-ingredient-definition"></Route>
+                <Route path="/users"></Route>
               </Route>
             </Route>
             <Route path="*" element={<LandingPage />} />

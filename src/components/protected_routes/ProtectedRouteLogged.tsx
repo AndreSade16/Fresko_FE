@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 import { Navigate, Outlet } from "react-router";
+import MainNavbar from "../home_page/MainNavbar/MainNavbar";
 
 function ProtectedRouteLogged() {
   const isAuthenticated = useSelector(
@@ -11,7 +12,12 @@ function ProtectedRouteLogged() {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <MainNavbar />
+      <Outlet />
+    </>
+  );
 }
 
 export default ProtectedRouteLogged;

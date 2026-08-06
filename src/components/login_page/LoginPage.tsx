@@ -5,8 +5,9 @@ function LoginPage() {
   return (
     <Container>
       <Row className="d-flex justify-content-center mt-5">
-        <LoginCard />
-        <Col md={8} lg={6} xl={4} className="mt-5"></Col>
+        <Col md={8} lg={6} xl={4} className="mt-5">
+          <LoginCard />
+        </Col>
       </Row>
     </Container>
   );
