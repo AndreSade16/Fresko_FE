@@ -1,10 +1,10 @@
 import { Button, Modal } from "react-bootstrap";
-import type { PantryItem } from "../../../interfaces/interfaces";
+import type { PantryPageContent } from "../../../interfaces/interfaces";
 
 interface DeleteModalProps {
   showDeleteModal: boolean;
   setShowDeleteModal: (show: boolean) => void;
-  selectedItem: PantryItem | null;
+  selectedItem: PantryPageContent | null;
   onConfirmDelete: () => void;
 }
 
@@ -27,7 +27,8 @@ function DeleteModal({
       </Modal.Header>
       <Modal.Body>
         Are you sure you want to remove{" "}
-        <strong>{selectedItem?.ingredientName}</strong> from your pantry?
+        <strong>{selectedItem?.ingredientDefinition.name}</strong> from your
+        pantry?
       </Modal.Body>
       <Modal.Footer>
         <Button

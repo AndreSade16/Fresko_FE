@@ -3,9 +3,14 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { PantryPage, StandardError } from "../../interfaces/interfaces";
+import type {
+  PantryItemCreatedDTO,
+  PantryPage,
+  StandardError,
+} from "../../interfaces/interfaces";
 import { logout } from "./AuthSlice";
 import { apiFetch } from "../../tools/fetchHelper";
+import type { PantryItemDTO } from "../../components/pantry_page/PantryItemCreationFormProps/PantryItemCreationFormProps";
 
 export interface PantryState {
   data: PantryPage | null;
@@ -52,7 +57,7 @@ export const deletePantryItem = createAsyncThunk<
 >("pantry/deletePantryItem", async (pantryItemId, { rejectWithValue }) => {
   // Here we name the function with [sliceName]/[functionName], then the first argument after "async" is what we should pass to the function (in this case is Record<string, string> | URLSearchParams | void, because filters may be provided. To access the second argument, which is an object given to us from redux toolkit. This object (named thunkAPI) contains useful methods like rejectWithValue, which we need to personalize our error message. Otherwise, redux would have sent a default error message structure.)
   try {
-    await apiFetch<void>(`me/pantry-items/${pantryItemId}`, {
+    await apiFetch<void>(`/pantry-items/me/${pantryItemId}`, {
       method: "DELETE",
     }); // Here we use our fetchHelper. We need to declare what type of response it will give through it's generic so that now the thunk knows that the "successful" return will be exactly the one we declared before.
     return pantryItemId;
@@ -66,6 +71,31 @@ export const deletePantryItem = createAsyncThunk<
     }
 
     // Fallback to always have a return value
+    return rejectWithValue("An unexpected error occurred.");
+  }
+});
+
+export const createPantryItem = createAsyncThunk<
+  PantryItemCreatedDTO,
+  PantryItemDTO,
+  { rejectValue: StandardError | string }
+>("pantry/createPantryItem", async (pantryItemDto, { rejectWithValue }) => {
+  try {
+    const data = await apiFetch<PantryItemCreatedDTO>(`/pantry-items/me`, {
+      method: "POST",
+      body: pantryItemDto as unknown as BodyInit,
+    });
+
+    return data;
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && "message" in error) {
+      return rejectWithValue(error as StandardError);
+    }
+
+    if (error instanceof Error) {
+      return rejectWithValue(error.message);
+    }
+
     return rejectWithValue("An unexpected error occurred.");
   }
 });
@@ -118,6 +148,18 @@ const pantrySlice = createSlice({
         }
       })
       .addCase(deletePantryItem.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? "Unknown error";
+      })
+      .addCase(createPantryItem.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createPantryItem.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(createPantryItem.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? "Unknown error";
       })

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { PantryItem } from "../../interfaces/interfaces";
+import type { PantryPageContent } from "../../interfaces/interfaces";
 import DeleteModal from "./DeleteModal/DeleteModal";
 import PantryFilters from "./PantryFilters/PantryFilters";
 import { Container } from "react-bootstrap";
@@ -11,11 +11,14 @@ import {
   fetchPantry,
 } from "../../redux/reducers/PantrySlice";
 import PantryList from "./PantryList/PantryList";
+import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCreationFormProps";
 
 function PantryPage() {
   const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
-  const [selectedItem, setSelectedItem] = useState<PantryItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<PantryPageContent | null>(
+    null,
+  );
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const { data, isLoading, error } = useSelector(
     (state: RootState) => state.pantry,
@@ -51,11 +54,16 @@ function PantryPage() {
   return (
     <Container fluid className="mt-5">
       <PantryFilters />
+      <PantryItemCreationForm />
       <PantryList
         data={data}
         isLoading={isLoading}
         error={error}
         onLoadMore={handleLoadMore}
+        onSelectItem={(item) => {
+          setSelectedItem(item);
+          setShowDeleteModal(true);
+        }}
       />
       <DeleteModal
         selectedItem={selectedItem}

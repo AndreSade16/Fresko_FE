@@ -133,3 +133,7 @@ export interface SuggestedRecipe {
 //   expirationDate: Date | null;
 //   storageLocation: StorageLocation | null;
 // }
+
+export interface PantryItemCreatedDTO {
+  pantryItemId: string;
+}

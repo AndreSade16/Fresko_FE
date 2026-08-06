@@ -81,10 +81,12 @@ function PantryList({
             expirationDate,
             storageLocation,
             pantryItemId,
+            purchaseDate,
           } = item;
           const formattedExpDate = new Date(
             expirationDate,
           ).toLocaleDateString();
+          const formattedPurDate = new Date(purchaseDate).toLocaleDateString();
 
           return (
             <Col key={pantryItemId}>
@@ -112,17 +114,23 @@ function PantryList({
                   </Card.Text>
 
                   <div className="mt-auto border-top pt-2 small">
-                    <div className="d-flex justify-content-between mb-1">
+                    <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Quantity:</span>
                       <span>
                         {quantity} {ingredientDefinition.unit}
                       </span>
                     </div>
-                    <div className="d-flex justify-content-between mb-1">
+                    <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Location:</span>
                       <Badge bg="secondary" text="dark">
                         {storageLocation}
                       </Badge>
+                    </div>
+                    <div className="d-flex justify-content-between mb-3">
+                      <span className="fw-semibold">Purchased:</span>
+                      <span className="text-secondary fw-semibold">
+                        {formattedPurDate}
+                      </span>
                     </div>
                     <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Expires:</span>
@@ -135,7 +143,7 @@ function PantryList({
                       <Button
                         variant="outline-light"
                         size="sm"
-                        className="w-50"
+                        className="w-50 fw-semibold"
                         onClick={() => onEditItem?.(item)}
                       >
                         Edit
@@ -143,7 +151,7 @@ function PantryList({
                       <Button
                         variant="warning"
                         size="sm"
-                        className="w-50"
+                        className="w-50 fw-semibold"
                         onClick={() => onSelectItem?.(item)}
                       >
                         Delete

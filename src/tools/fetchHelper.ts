@@ -10,13 +10,21 @@ export async function apiFetch<T>(
     ...(options.headers as Record<string, string>),
   };
 
-  if (!(options.body instanceof FormData) && !headers["Content-Type"]) {
-    headers["Content-Type"] = "application/json";
+  let body = options.body;
+
+  if (!(body instanceof FormData)) {
+    if (!headers["Content-Type"]) {
+      headers["Content-Type"] = "application/json";
+    }
+    if (body && typeof body === "object") {
+      body = JSON.stringify(body);
+    }
   }
 
   const response = await fetch(`${apiUrl}${endpoint}`, {
     ...options,
     headers,
+    body,
   });
 
   if (!response.ok) {
