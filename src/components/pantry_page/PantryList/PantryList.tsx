@@ -83,6 +83,13 @@ function PantryList({
             pantryItemId,
             purchaseDate,
           } = item;
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+
+          const expDateObj = new Date(expirationDate);
+          expDateObj.setHours(0, 0, 0, 0);
+
+          const isExpired = expDateObj < today;
           const formattedExpDate = new Date(
             expirationDate,
           ).toLocaleDateString();
@@ -132,11 +139,20 @@ function PantryList({
                         {formattedPurDate}
                       </span>
                     </div>
-                    <div className="d-flex justify-content-between mb-3">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
                       <span className="fw-semibold">Expires:</span>
-                      <span className="text-warning fw-semibold">
-                        {formattedExpDate}
-                      </span>
+                      {isExpired ? (
+                        <Badge
+                          bg="danger"
+                          className="text-white fw-bold px-2 py-1"
+                        >
+                          Expired {formattedExpDate}
+                        </Badge>
+                      ) : (
+                        <span className="text-warning fw-semibold">
+                          {formattedExpDate}
+                        </span>
+                      )}
                     </div>
 
                     <div className="d-flex gap-2">

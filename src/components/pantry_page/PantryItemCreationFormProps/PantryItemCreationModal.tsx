@@ -18,7 +18,7 @@ import {
 } from "../../../redux/reducers/PantrySlice";
 import { searchIngredientDefinitions } from "../../../redux/reducers/IngredientDefinitionSlice";
 import type { IngredientDefinitionPageContent } from "../../../interfaces/interfaces";
-import { SkewLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 
 export interface PantryItemDTO {
   ingredientDefinitionId: string;
@@ -59,6 +59,10 @@ function PantryItemCreationModal({
 
   const { data: searchResults, isLoading: isSearching } = useSelector(
     (state: RootState) => state.ingredientDefinitions,
+  );
+
+  const { isLoading: isCreating } = useSelector(
+    (state: RootState) => state.pantry,
   );
 
   useEffect(() => {
@@ -214,7 +218,7 @@ function PantryItemCreationModal({
                     >
                       {isSearching ? (
                         <ListGroup.Item className="bg-dark text-light border-secondary text-center py-2">
-                          <SkewLoader size={10} color="#36d7b7" /> Searching...
+                          <PulseLoader size={10} color="#36d7b7" /> Searching...
                         </ListGroup.Item>
                       ) : searchResults && searchResults.content.length > 0 ? (
                         searchResults.content.map(
@@ -365,8 +369,9 @@ function PantryItemCreationModal({
                   variant="secondary"
                   size="sm"
                   className="fw-semibold px-4"
+                  disabled={isCreating}
                 >
-                  Add Item
+                  {isCreating ? <PulseLoader /> : "Add Item"}
                 </Button>
               </div>
             </Form>

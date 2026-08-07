@@ -12,6 +12,7 @@ import {
 } from "../../redux/reducers/PantrySlice";
 import PantryList from "./PantryList/PantryList";
 import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCreationModal";
+import { GridLoader } from "react-spinners";
 
 function PantryPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -62,19 +63,25 @@ function PantryPage() {
       >
         Create Pantry Item
       </Button>
-      <PantryList
-        data={data}
-        isLoading={isLoading}
-        error={error}
-        onLoadMore={handleLoadMore}
-        onSelectItem={(item) => {
-          setSelectedItem(item);
-          setShowDeleteModal(true);
-        }}
-      />
+      {isLoading ? (
+        <GridLoader color="white" className="mt-5 pt-2" />
+      ) : (
+        <PantryList
+          data={data}
+          isLoading={isLoading}
+          error={error}
+          onLoadMore={handleLoadMore}
+          onSelectItem={(item) => {
+            setSelectedItem(item);
+            setShowDeleteModal(true);
+          }}
+        />
+      )}
+
       <PantryItemCreationForm
         showCreateModal={showCreateModal}
         setShowCreateModal={setShowCreateModal}
+        onSuccess={() => setShowCreateModal(false)}
       />
       <DeleteModal
         selectedItem={selectedItem}
