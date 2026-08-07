@@ -5,14 +5,14 @@ import type {
   PantryPageContent,
   StandardError,
 } from "../../../interfaces/interfaces";
-import { SkewLoader } from "react-spinners";
+import { PulseLoader } from "react-spinners";
 
 interface PantryListProps {
   data: PantryPage | null;
   isLoading: boolean;
   error: StandardError | string | null;
   onLoadMore: (nextPage: number) => void;
-  onSelectItem?: (item: PantryPageContent) => void;
+  onDeleteItem?: (item: PantryPageContent) => void;
   onEditItem?: (item: PantryPageContent) => void;
 }
 
@@ -21,7 +21,7 @@ function PantryList({
   isLoading,
   error,
   onLoadMore,
-  onSelectItem,
+  onDeleteItem,
   onEditItem,
 }: PantryListProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -130,7 +130,9 @@ function PantryList({
                     <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Location:</span>
                       <Badge bg="secondary" text="dark">
-                        {storageLocation}
+                        {storageLocation === "REFRIGERATOR"
+                          ? "FRIDGE"
+                          : storageLocation}
                       </Badge>
                     </div>
                     <div className="d-flex justify-content-between mb-3">
@@ -168,7 +170,7 @@ function PantryList({
                         variant="warning"
                         size="sm"
                         className="w-50 fw-semibold"
-                        onClick={() => onSelectItem?.(item)}
+                        onClick={() => onDeleteItem?.(item)}
                       >
                         Delete
                       </Button>
@@ -185,7 +187,7 @@ function PantryList({
 
       {isLoading && (
         <div className="text-center my-4">
-          <SkewLoader />
+          <PulseLoader color="white" />
         </div>
       )}
     </div>

@@ -127,12 +127,12 @@ export interface SuggestedRecipe {
   cost: string;
 }
 
-// export interface PantryItemUpdateDTO {
-//   quantity: number | null;
-//   purchaseDate: Date | null;
-//   expirationDate: Date | null;
-//   storageLocation: StorageLocation | null;
-// }
+export interface PantryItemUpdateDTO {
+  quantity: number | null;
+  purchaseDate: Date | null;
+  expirationDate: Date | null;
+  storageLocation: StorageLocation | null | string;
+}
 
 export interface PantryItemCreatedDTO {
   pantryItemId: string;
@@ -158,14 +158,14 @@ export interface IngredientDefinitionPageContent {
   imageUrl: string;
   category: string;
   unit: Unit;
-  defaultStorageLocation: DefaultStorageLocation;
+  defaultStorageLocation: StorageLocation;
   shelfLifeDays: number;
   alternativeUsages: string;
   seasonality: Seasonality[];
   ingredientDefinitionId: string;
 }
 
-export type DefaultStorageLocation = "PANTRY" | "REFRIGERATOR";
+export type StorageLocation = "PANTRY" | "REFRIGERATOR";
 
 export type Seasonality = "SUMMER" | "AUTUMN" | "WINTER" | "SPRING";
 
