@@ -137,3 +137,66 @@ export interface SuggestedRecipe {
 export interface PantryItemCreatedDTO {
   pantryItemId: string;
 }
+
+export interface IngredientDefinitionPage {
+  content: IngredientDefinitionPageContent[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface IngredientDefinitionPageContent {
+  name: string;
+  description: string;
+  imageUrl: string;
+  category: string;
+  unit: Unit;
+  defaultStorageLocation: DefaultStorageLocation;
+  shelfLifeDays: number;
+  alternativeUsages: string;
+  seasonality: Seasonality[];
+  ingredientDefinitionId: string;
+}
+
+export type DefaultStorageLocation = "PANTRY" | "REFRIGERATOR";
+
+export type Seasonality = "SUMMER" | "AUTUMN" | "WINTER" | "SPRING";
+
+export type Unit = "GRAMS" | "UNITS" | "MILLILITERS";
+
+export interface Pageable {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  sort: Sort;
+  unpaged: boolean;
+}
+
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
+// Converts JSON strings to/from your types
+export class Convert {
+  public static toIngredientDefinitionPage(
+    json: string,
+  ): IngredientDefinitionPage {
+    return JSON.parse(json);
+  }
+
+  public static ingredientDefinitionPageToJson(
+    value: IngredientDefinitionPage,
+  ): string {
+    return JSON.stringify(value);
+  }
+}

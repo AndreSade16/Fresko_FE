@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { PantryPageContent } from "../../interfaces/interfaces";
 import DeleteModal from "./DeleteModal/DeleteModal";
 import PantryFilters from "./PantryFilters/PantryFilters";
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { useSearchParams } from "react-router";
 import { type AppDispatch, type RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +11,7 @@ import {
   fetchPantry,
 } from "../../redux/reducers/PantrySlice";
 import PantryList from "./PantryList/PantryList";
-import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCreationFormProps";
+import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCreationModal";
 
 function PantryPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +20,7 @@ function PantryPage() {
     null,
   );
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
   const { data, isLoading, error } = useSelector(
     (state: RootState) => state.pantry,
   );
@@ -52,9 +53,15 @@ function PantryPage() {
   }, [searchParams, dispatch]);
 
   return (
-    <Container fluid className="mt-5">
+    <Container fluid className="mt-5 d-flex flex-column align-items-center">
       <PantryFilters />
-      <PantryItemCreationForm />
+      <Button
+        variant="secondary"
+        className="mb-4 fw-semibold"
+        onClick={() => setShowCreateModal(true)}
+      >
+        Create Pantry Item
+      </Button>
       <PantryList
         data={data}
         isLoading={isLoading}
@@ -64,6 +71,10 @@ function PantryPage() {
           setSelectedItem(item);
           setShowDeleteModal(true);
         }}
+      />
+      <PantryItemCreationForm
+        showCreateModal={showCreateModal}
+        setShowCreateModal={setShowCreateModal}
       />
       <DeleteModal
         selectedItem={selectedItem}

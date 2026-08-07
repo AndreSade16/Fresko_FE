@@ -3,6 +3,7 @@ import authReducer from "../reducers/AuthSlice";
 import userReducer from "../reducers/UserSlice";
 import dashboardReducer from "../reducers/DashboardSlice";
 import pantryReducer from "../reducers/PantrySlice";
+import ingredientdefinitionsReducer from "../reducers/IngredientDefinitionSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     user: userReducer,
     dashboard: dashboardReducer,
     pantry: pantryReducer,
+    ingredientDefinitions: ingredientdefinitionsReducer,
   },
 });
 

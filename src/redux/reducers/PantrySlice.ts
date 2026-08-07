@@ -10,7 +10,7 @@ import type {
 } from "../../interfaces/interfaces";
 import { logout } from "./AuthSlice";
 import { apiFetch } from "../../tools/fetchHelper";
-import type { PantryItemDTO } from "../../components/pantry_page/PantryItemCreationFormProps/PantryItemCreationFormProps";
+import type { PantryItemDTO } from "../../components/pantry_page/PantryItemCreationFormProps/PantryItemCreationModal";
 
 export interface PantryState {
   data: PantryPage | null;
