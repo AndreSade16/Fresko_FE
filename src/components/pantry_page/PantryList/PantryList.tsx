@@ -60,7 +60,7 @@ function PantryList({
     toast.error(errorMessage);
   }
 
-  if (!isLoading && items.length === 0) {
+  if (!isLoading && data !== null && items.length === 0) {
     return (
       <Alert variant="info" className="my-3 text-center">
         No item found in the pantry.
@@ -91,6 +91,8 @@ function PantryList({
             expirationDate,
           ).toLocaleDateString();
           const formattedPurDate = new Date(purchaseDate).toLocaleDateString();
+          const diffInTime = expDateObj.getTime() - today.getTime();
+          const diffInDays = Math.ceil(diffInTime / (1000 * 3600 * 24));
 
           return (
             <Col key={pantryItemId}>
@@ -149,7 +151,7 @@ function PantryList({
                         </Badge>
                       ) : (
                         <span className="text-warning fw-semibold">
-                          {formattedExpDate}
+                          {diffInDays <= 3 ? "⚠️" : ""} {formattedExpDate}
                         </span>
                       )}
                     </div>

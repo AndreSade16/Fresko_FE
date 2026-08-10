@@ -137,7 +137,12 @@ function IngredientsList({
                     </div>
                     <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Suggested storaging:</span>
-                      <Badge bg="secondary" text="dark">
+                      <Badge
+                        bg="secondary"
+                        text="dark"
+                        className="d-flex align-items-center"
+                        style={{ maxHeight: "24px" }}
+                      >
                         {defaultStorageLocation === "REFRIGERATOR"
                           ? "FRIDGE"
                           : defaultStorageLocation}
