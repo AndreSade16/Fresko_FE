@@ -6,6 +6,7 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 interface PantryListProps {
   data: PantryPage | null;
@@ -56,11 +57,7 @@ function PantryList({
 
   if (error) {
     const errorMessage = typeof error === "string" ? error : error.message;
-    return (
-      <Alert variant="danger" className="my-3">
-        {errorMessage}
-      </Alert>
-    );
+    toast.error(errorMessage);
   }
 
   if (!isLoading && items.length === 0) {

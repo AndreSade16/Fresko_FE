@@ -85,6 +85,12 @@ function MainNavbar() {
             </Nav.Link>
             <Nav.Link
               className="text-light text-nowrap"
+              onClick={() => handleNavigate("/ingredients")}
+            >
+              Ingredients
+            </Nav.Link>
+            <Nav.Link
+              className="text-light text-nowrap"
               onClick={() => handleNavigate("/recipes")}
             >
               Recipes
