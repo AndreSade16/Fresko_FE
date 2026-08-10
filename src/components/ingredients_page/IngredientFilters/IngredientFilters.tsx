@@ -15,7 +15,7 @@ function IngredientFilters({ applyFilters }: IngredientFiltersProps) {
     minShelfLifeDays: searchParams.get("minShelfLifeDays") || "",
     maxShelfLifeDays: searchParams.get("maxShelfLifeDays") || "",
     sortBy: searchParams.get("sortBy") || "",
-    direction: searchParams.get("direction") || "ASC",
+    direction: searchParams.get("direction") || "",
   };
 
   const handleFilterChange = (
@@ -182,9 +182,9 @@ function IngredientFilters({ applyFilters }: IngredientFiltersProps) {
                     onChange={handleFilterChange}
                     size="sm"
                   >
-                    <option value="">Choose:</option>
+                    <option value="">Sort By</option>
                     <option value="name">Name</option>
-                    <option value="purchaseDate">Shelf Life Days</option>
+                    <option value="shelfLifeDays">Shelf Life Days</option>
                   </Form.Select>
                 </Form.Group>
               </Col>
@@ -200,7 +200,11 @@ function IngredientFilters({ applyFilters }: IngredientFiltersProps) {
                     onChange={handleFilterChange}
                     size="sm"
                     disabled={!filters.sortBy}
+                    className={filters.sortBy ? "" : "bg-primary text-light"}
                   >
+                    <option value="">
+                      {filters.sortBy ? "Direction" : "Choose sorting first"}
+                    </option>
                     <option value="ASC">Ascending (ASC)</option>
                     <option value="DESC">Descending (DESC)</option>
                   </Form.Select>
