@@ -17,13 +17,11 @@ function LandingHero() {
             md={9}
             className="text-start text-white py-4 px-3 px-md-5"
           >
-            <h1 className="display-3 fw-bold mb-3">Payoff payoff payoff</h1>
-
+            <h1 className="display-2 fw-bolder">Payoff payoff payoff</h1>
             <p className="lead mb-4 text-light opacity-90">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
               fugit voluptate tempora voluptatibus, rem.
             </p>
-
             <Button
               variant="secondary"
               size="lg"

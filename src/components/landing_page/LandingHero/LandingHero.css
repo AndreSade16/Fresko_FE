@@ -7,6 +7,10 @@
   min-height: 500px;
 }
 
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 10rem);
+}
+
 @media (min-width: 992px) {
   .landing-hero {
     height: 600px;

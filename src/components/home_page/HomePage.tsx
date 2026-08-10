@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { fetchDashboard } from "../../redux/reducers/DashboardSlice";
 import ListSection from "./ListSection/ListSection";
 import SuggestedRecipesSection from "./SuggestedRecipesSection/SuggestedRecipesSection";
+import BlurText from "../../tools/Blurtext";
 
 function HomePage() {
   const {
@@ -34,7 +35,17 @@ function HomePage() {
       )}
       <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}! 👋</h3>
       <h3 className="fw-semibold ps-3">
-        Here's what's <span className="text-secondary">fresko</span> today
+        Here's what's{" "}
+        <span className="text-secondary">
+          <BlurText
+            text="Fresko"
+            delay={200}
+            animateBy="letters"
+            direction="top"
+            className="text-2xl mb-8 d-inline"
+          />
+        </span>{" "}
+        today
       </h3>
       <PantrySection expiringItems={expiringItems} isLoading={isLoading} />
       <ListSection
