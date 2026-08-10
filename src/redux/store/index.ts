@@ -3,6 +3,7 @@ import authReducer from "../reducers/AuthSlice";
 import userReducer from "../reducers/UserSlice";
 import dashboardReducer from "../reducers/DashboardSlice";
 import pantryReducer from "../reducers/PantrySlice";
+import shoppingListReducer from "../reducers/ShoppingListSlice";
 import ingredientdefinitionsReducer from "../reducers/IngredientDefinitionSlice";
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     pantry: pantryReducer,
     ingredientDefinitions: ingredientdefinitionsReducer,
+    shoppingList: shoppingListReducer,
   },
 });
 

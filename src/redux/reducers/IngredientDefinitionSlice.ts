@@ -52,6 +52,38 @@ export const searchIngredientDefinitions = createAsyncThunk<
   },
 );
 
+export const fetchIngredients = createAsyncThunk<
+  IngredientDefinitionPage,
+  Record<string, string> | URLSearchParams | void,
+  { rejectValue: StandardError | string }
+>(
+  "ingredientdefinitions/fetchIngredients",
+  async (filters, { rejectWithValue }) => {
+    try {
+      const queryString = filters
+        ? `?${new URLSearchParams(filters as Record<string, string>).toString()}`
+        : "";
+      const data = await apiFetch<IngredientDefinitionPage>(
+        `/ingredients${queryString}`,
+        { method: "GET" },
+      );
+
+      return data;
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "message" in error) {
+        return rejectWithValue(error as StandardError);
+      }
+
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+
+      // Fallback to always have a return value
+      return rejectWithValue("An unexpected error occurred.");
+    }
+  },
+);
+
 export const deleteIngredientDefinitionsItem = createAsyncThunk<
   string,
   string,
@@ -147,6 +179,28 @@ const ingredientdefinitionsSlice = createSlice({
         }
       })
       .addCase(searchIngredientDefinitions.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? "Unknown error";
+      })
+      .addCase(fetchIngredients.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchIngredients.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const newPageData = action.payload;
+
+        if (state.data && newPageData.number > 0) {
+          state.data = {
+            ...newPageData,
+            content: [...state.data.content, ...newPageData.content],
+          };
+        } else {
+          state.data = newPageData;
+        }
+      })
+      .addCase(fetchIngredients.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? "Unknown error";
       })

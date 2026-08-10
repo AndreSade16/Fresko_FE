@@ -6,6 +6,7 @@ import ProtectedRouteLogged from "./components/protected_routes/ProtectedRouteLo
 import ProtectedRouteAdmin from "./components/protected_routes/ProtectedRouteAdmin";
 import HomePage from "./components/home_page/HomePage";
 import PantryPage from "./components/pantry_page/PantryPage";
+import IngredientPage from "./components/ingredients_page/IngredientsPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route element={<ProtectedRouteLogged />}>
               <Route path="/home" element={<HomePage />} />
               <Route path="/pantry" element={<PantryPage />} />
+              <Route path="/ingredients" element={<IngredientPage />} />
               <Route path="/my-list" element={<div>My List Page</div>} />
               <Route path="/recipes" element={<div>Recipes Page</div>} />
               <Route path="/me" element={<div>Profile Page</div>} />

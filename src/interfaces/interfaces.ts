@@ -138,6 +138,10 @@ export interface PantryItemCreatedDTO {
   pantryItemId: string;
 }
 
+export interface ShoppingListItemCreatedDTO {
+  shoppingListItemId: string;
+}
+
 export interface IngredientDefinitionPage {
   content: IngredientDefinitionPageContent[];
   empty: boolean;

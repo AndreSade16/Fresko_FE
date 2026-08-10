@@ -86,6 +86,9 @@ function PantryPage() {
 
   return (
     <Container fluid className="mt-5 d-flex flex-column align-items-center">
+      <h1 className="fst-italic mb-4 text-left w-100 ps-2 fw-bolder">
+        Pantry & Fridge
+      </h1>
       <PantryFilters />
       <Button
         variant="secondary"
