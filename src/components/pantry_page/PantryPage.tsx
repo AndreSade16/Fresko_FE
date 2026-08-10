@@ -85,8 +85,8 @@ function PantryPage() {
   const hasInitialData = data && data.content && data.content.length > 0;
 
   return (
-    <Container fluid className="mt-5 d-flex flex-column align-items-center">
-      <h1 className="fst-italic mb-4 text-left w-100 ps-2 fw-bolder">
+    <Container fluid className="d-flex flex-column align-items-center">
+      <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
         Pantry & Fridge
       </h1>
       <PantryFilters />
