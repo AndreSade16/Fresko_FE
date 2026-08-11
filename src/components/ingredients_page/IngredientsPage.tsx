@@ -38,8 +38,10 @@ function IngredientPage() {
   const userRole = useSelector((state: RootState) => state.user.role);
 
   const handleLoadMore = (nextPage: number) => {
-    const currentParams = Object.fromEntries(searchParams.entries());
-    dispatch(fetchIngredients({ ...currentParams, page: nextPage.toString() }));
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", nextPage.toString());
+
+    dispatch(fetchIngredients(newParams));
   };
 
   useEffect(() => {
@@ -48,8 +50,7 @@ function IngredientPage() {
 
   useEffect(() => {
     const fetchIngredientsList = (params: URLSearchParams) => {
-      const filtersObject = Object.fromEntries(params.entries());
-      dispatch(fetchIngredients(filtersObject));
+      dispatch(fetchIngredients(params));
     };
 
     const timer = setTimeout(() => {

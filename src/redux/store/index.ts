@@ -5,6 +5,7 @@ import dashboardReducer from "../reducers/DashboardSlice";
 import pantryReducer from "../reducers/PantrySlice";
 import shoppingListReducer from "../reducers/ShoppingListSlice";
 import ingredientdefinitionsReducer from "../reducers/IngredientDefinitionSlice";
+import recipesReducer from "../reducers/RecipesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     pantry: pantryReducer,
     ingredientDefinitions: ingredientdefinitionsReducer,
     shoppingList: shoppingListReducer,
+    recipes: recipesReducer,
   },
 });
 

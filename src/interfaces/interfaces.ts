@@ -199,6 +199,67 @@ export interface ShoppingListCreatedDTO {
   shoppingListId: string;
 }
 
+// To parse this data:
+//
+//   import { Convert, RecipePage } from "./file";
+//
+//   const recipePage = Convert.toRecipePage(json);
+
+export interface RecipePage {
+  content: RecipePageContent[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface RecipePageContent {
+  name: string;
+  description: string;
+  imageUrl: string;
+  preparationTime: number;
+  cookingTime: number;
+  difficulty: string;
+  cost: string;
+  procedure: string;
+  ingredients: RecipeIngredient[];
+  recipeId: string;
+  visitsCount: number;
+}
+
+export interface RecipeIngredient {
+  ingredientDefinition: IngredientDefinition;
+  quantityPerPerson: number;
+  recipeIngredientId: string;
+}
+
+export interface RecipeIngredientsToSlDTO {
+  shoppingListItems: ShoppingListItemCreatedDTO[];
+}
+
+export type DefaultStorageLocation = "PANTRY" | "REFRIGERATOR";
+
+export interface Pageable {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  sort: Sort;
+  unpaged: boolean;
+}
+
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+
 // Converts JSON strings to/from your types
 export class Convert {
   public static toIngredientDefinitionPage(
