@@ -88,7 +88,11 @@ function ShoppingList({
       <Row
         xs={1}
         sm={2}
-        className="g-2 g-sm-3 mx-0 d-flex justify-content-center"
+        className={
+          items.length <= 0
+            ? "g-2 g-sm-3 mx-0 d-flex justify-content-center"
+            : "g-2 g-sm-3 mx-0 d-flex"
+        }
       >
         {items.length <= 0 ? (
           <div className="d-flex flex-column align-items-center mt-4">

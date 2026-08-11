@@ -81,7 +81,7 @@ function IngredientsList({
   }
 
   return (
-    <div className="ingredient-list-container">
+    <div className="ingredient-list-container mt-3">
       {errorMessage && (
         <Alert
           variant="danger"

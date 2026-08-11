@@ -60,7 +60,7 @@ function SuggestedRecipesSection({
                         className="text-light opacity-75 small text-uppercase fw-bold d-none d-sm-block"
                         style={{ fontSize: "0.75rem", lineHeight: "1.2" }}
                       >
-                        Difficulty: {recipe.difficulty}
+                        Difficulty: {recipe.difficulty.replace("_", " ")}
                       </span>
                       <span
                         className="text-light opacity-75 small text-uppercase fw-bold d-none d-sm-block"

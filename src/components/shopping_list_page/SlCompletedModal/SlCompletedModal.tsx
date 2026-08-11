@@ -26,9 +26,9 @@ function SlCompletedModal({
         <Modal.Title>Confirm Complete</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to complete your list?
+        <p>Are you sure you want to complete your list?</p>
         {itemsOnList?.map((item) => (
-          <p key={item.shoppingListItemId}>
+          <p key={item.shoppingListItemId} className="my-1">
             <strong>{item.ingredientDefinition.name}</strong> -{" "}
             {item.purchasedQuantity} {item.suggestedUnit.toLowerCase()}
           </p>
