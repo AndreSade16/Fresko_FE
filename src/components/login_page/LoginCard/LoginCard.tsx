@@ -43,7 +43,9 @@ function LoginCard() {
         const errorData = await response.json().catch(() => null);
         setIsLoading(false);
         setErrorMessage(
-          errorData?.message || `Error ${response.status}: Login failed`,
+          errorData?.errorsList ||
+            errorData?.message ||
+            `Error ${response.status}: Login failed`,
         );
       }
     } catch (error) {

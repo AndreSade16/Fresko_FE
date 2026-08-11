@@ -1,0 +1,315 @@
+import { Badge, Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
+import type { ActiveShoppingList } from "../../../interfaces/interfaces";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+
+interface ShoppingListProps {
+  activeShoppingList: ActiveShoppingList | null;
+  onCompleteShopping?: (selectedItems: SelectedItemsState) => void;
+}
+
+export interface SelectedItemsState {
+  [shoppingListItemId: string]: {
+    checked: boolean;
+    quantity: number;
+    expirationDate: string; // <-- Aggiunto campo data
+  };
+}
+
+const getDefaultExpirationDate = (shelfLifeDays: number = 0): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + shelfLifeDays);
+  return date.toISOString().split("T")[0];
+};
+
+function ShoppingList({
+  activeShoppingList,
+  onCompleteShopping,
+}: ShoppingListProps) {
+  const navigate = useNavigate();
+  const [selectedItems, setSelectedItems] = useState<SelectedItemsState>({});
+
+  const handleCheckboxChange = (
+    itemId: string,
+    isChecked: boolean,
+    defaultQuantity: number,
+    shelfLifeDays: number,
+  ) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [itemId]: {
+        checked: isChecked,
+        quantity: prev[itemId]?.quantity ?? defaultQuantity,
+        expirationDate:
+          prev[itemId]?.expirationDate ??
+          getDefaultExpirationDate(shelfLifeDays),
+      },
+    }));
+  };
+
+  const handleQuantityChange = (itemId: string, newQuantity: number) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [itemId]: {
+        checked: prev[itemId]?.checked ?? false,
+        expirationDate:
+          prev[itemId]?.expirationDate ?? getDefaultExpirationDate(0),
+        quantity: newQuantity,
+      },
+    }));
+  };
+
+  const handleDateChange = (itemId: string, newDate: string) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [itemId]: {
+        checked: prev[itemId]?.checked ?? false,
+        quantity: prev[itemId]?.quantity ?? 1,
+        expirationDate: newDate,
+      },
+    }));
+  };
+
+  const totalItems = activeShoppingList?.items.length ?? 0;
+  const completedCount = Object.values(selectedItems).filter(
+    (item) => item.checked,
+  ).length;
+
+  const handleComplete = () => {
+    if (onCompleteShopping) {
+      onCompleteShopping(selectedItems);
+    }
+  };
+
+  const items = activeShoppingList?.items ?? [];
+
+  return (
+    <div className="shopping-list-container overflow-hidden w-100 pb-5 mb-5">
+      <Row
+        xs={1}
+        sm={2}
+        className="g-2 g-sm-3 mx-0 d-flex justify-content-center"
+      >
+        {items.length <= 0 ? (
+          <div className="d-flex flex-column align-items-center mt-4">
+            <Alert className="text-center">
+              This shopping list is empty, try adding some ingredients!
+            </Alert>
+            <div className="d-flex justify-content-around gap-3">
+              <Button
+                variant="secondary"
+                className="fw-semibold"
+                onClick={() => navigate("/recipes")}
+              >
+                Browse Recipes
+              </Button>
+              <Button
+                variant="secondary"
+                className="fw-semibold"
+                onClick={() => navigate("/ingredients")}
+              >
+                Browse Ingredients
+              </Button>
+            </div>
+          </div>
+        ) : (
+          activeShoppingList?.items.map((item) => {
+            const {
+              ingredientDefinition,
+              suggestedQuantity,
+              shoppingListItemId,
+            } = item;
+            const { name, imageUrl, category, shelfLifeDays } =
+              ingredientDefinition;
+
+            const isChecked =
+              selectedItems[shoppingListItemId]?.checked ?? false;
+            const currentQuantity =
+              selectedItems[shoppingListItemId]?.quantity ??
+              suggestedQuantity ??
+              1;
+
+            const defaultDate = getDefaultExpirationDate(shelfLifeDays);
+            const currentDate =
+              selectedItems[shoppingListItemId]?.expirationDate ?? defaultDate;
+
+            return (
+              <Col
+                key={shoppingListItemId}
+                className="d-flex align-items-center px-1"
+                style={{ minWidth: 0 }}
+              >
+                <Form.Check
+                  className="me-2 flex-shrink-0"
+                  checked={isChecked}
+                  onChange={(e) =>
+                    handleCheckboxChange(
+                      shoppingListItemId,
+                      e.target.checked,
+                      suggestedQuantity ?? 1,
+                      shelfLifeDays ?? 0,
+                    )
+                  }
+                />
+
+                <Card
+                  className="h-100 w-100 shadow-sm hover-card bg-primary d-flex flex-row align-items-center justify-content-between position-relative overflow-hidden"
+                  style={{ minWidth: 0 }}
+                >
+                  {isChecked && (
+                    <div
+                      className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center text-warning"
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.45)",
+                        fontSize: "3rem",
+                        fontWeight: "bold",
+                        zIndex: 10,
+                        pointerEvents: "none",
+                        lineHeight: 1,
+                        userSelect: "none",
+                      }}
+                    >
+                      ✅
+                    </div>
+                  )}
+
+                  {imageUrl && (
+                    <div
+                      className="d-flex align-items-center justify-content-center p-1 flex-shrink-1"
+                      style={{
+                        width: "25%",
+                        minWidth: "40px",
+                        maxWidth: "120px",
+                      }}
+                    >
+                      <Card.Img
+                        src={imageUrl}
+                        alt={name}
+                        style={{
+                          width: "100%",
+                          aspectRatio: "1",
+                          objectFit: "cover",
+                          borderRadius: "6px",
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <Card.Body
+                    className="d-flex flex-column flex-grow-1 p-2 overflow-hidden"
+                    style={{ minWidth: 0 }}
+                  >
+                    <div
+                      className="d-flex justify-content-between align-items-center mb-1 gap-1"
+                      style={{ minWidth: 0 }}
+                    >
+                      <Card.Title
+                        className="mb-0 fs-6 fw-bold text-truncate"
+                        style={{ minWidth: 0 }}
+                      >
+                        {name}
+                      </Card.Title>
+                      <Badge
+                        bg="secondary"
+                        className="text-dark flex-shrink-0 px-1"
+                        style={{ fontSize: "0.65rem" }}
+                      >
+                        {category}
+                      </Badge>
+                    </div>
+
+                    <Form.Group
+                      controlId={`quantity-${shoppingListItemId}`}
+                      className="mb-1"
+                      style={{ minWidth: 0 }}
+                    >
+                      <Form.Label
+                        className="mb-0"
+                        style={{ fontSize: "0.7rem" }}
+                      >
+                        Quantity
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={currentQuantity}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            shoppingListItemId,
+                            Number(e.target.value),
+                          )
+                        }
+                        disabled={isChecked}
+                        size="sm"
+                        className="px-1 py-0"
+                        style={{
+                          fontSize: "0.8rem",
+                          height: "auto",
+                          minWidth: "0px",
+                          width: "100%",
+                        }}
+                      />
+                    </Form.Group>
+
+                    {/* Campo Data di Scadenza */}
+                    <Form.Group
+                      controlId={`expiration-${shoppingListItemId}`}
+                      style={{ minWidth: 0 }}
+                    >
+                      <Form.Label
+                        className="mb-0"
+                        style={{ fontSize: "0.7rem" }}
+                      >
+                        Expiration Date
+                      </Form.Label>
+                      <Form.Control
+                        type="date"
+                        value={currentDate}
+                        onChange={(e) =>
+                          handleDateChange(shoppingListItemId, e.target.value)
+                        }
+                        disabled={isChecked}
+                        size="sm"
+                        className="px-1 py-0"
+                        style={{
+                          fontSize: "0.75rem",
+                          height: "auto",
+                          minWidth: "0px",
+                          width: "100%",
+                        }}
+                      />
+                    </Form.Group>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })
+        )}
+      </Row>
+
+      <div
+        className="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-2 p-md-3 shadow-lg border-top d-flex justify-content-between align-items-center"
+        style={{ zIndex: 1000 }}
+      >
+        <div className="d-flex flex-column">
+          <span className="fw-bold small">Progress:</span>
+          <span className="text-warning small">
+            {completedCount} of {totalItems} items checked
+          </span>
+        </div>
+
+        <Button
+          variant="warning"
+          size="sm"
+          className="fw-bold px-4"
+          disabled={completedCount === 0}
+          onClick={handleComplete}
+          style={{ cursor: completedCount > 0 ? "pointer" : "not-allowed" }}
+        >
+          {completedCount <= 0 ? "Buy anything first" : "Complete Shopping"}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default ShoppingList;

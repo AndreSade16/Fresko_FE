@@ -70,6 +70,7 @@ const shoppinglistsSlice = createSlice({
       .addCase(fetchActiveShoppingList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? "Unknown error";
+        state.data = null;
       })
       .addCase(logout, () => {
         return initialState;

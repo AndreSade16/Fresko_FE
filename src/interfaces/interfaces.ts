@@ -81,14 +81,14 @@ export interface ActiveShoppingList {
   createdAt: Date;
   updatedAt: Date;
   shoppingListStatus: string;
-  items: Item[];
+  items: ShoppingListItem[];
 }
 
-export interface Item {
+export interface ShoppingListItem {
   ingredientDefinition: IngredientDefinition;
   suggestedQuantity: number;
   suggestedUnit: string;
-  purchasedQuantity: null;
+  purchasedQuantity: number | null;
   shoppingListItemId: string;
 }
 
@@ -188,6 +188,15 @@ export interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
+}
+
+export interface ShoppingListCompletedDTO {
+  shoppingListId: string;
+  shoppingListStatus: string;
+}
+
+export interface ShoppingListCreatedDTO {
+  shoppingListId: string;
 }
 
 // Converts JSON strings to/from your types

@@ -66,7 +66,14 @@ function IngredientAddModal({
         >
           {isAdding ? <PulseLoader /> : "Cancel"}
         </Button>
-        <Button variant="warning" onClick={handleConfirm} disabled={isAdding}>
+        <Button
+          variant="warning"
+          onClick={() => {
+            handleConfirm();
+            setQuantity(1);
+          }}
+          disabled={isAdding}
+        >
           {isAdding ? <PulseLoader /> : "Add"}
         </Button>
       </Modal.Footer>

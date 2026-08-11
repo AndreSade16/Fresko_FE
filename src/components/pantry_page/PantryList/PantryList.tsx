@@ -69,8 +69,8 @@ function PantryList({
   }
 
   return (
-    <div className="pantry-list-container">
-      <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+    <div className="pantry-list-container w-100">
+      <Row xs={1} sm={2} md={3} lg={4} className="g-4 w-100">
         {items.map((item) => {
           const {
             ingredientDefinition,

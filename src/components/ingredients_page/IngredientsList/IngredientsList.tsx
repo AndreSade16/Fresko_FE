@@ -81,14 +81,13 @@ function IngredientsList({
   }
 
   return (
-    <div className="pantry-list-container">
+    <div className="ingredient-list-container">
       {errorMessage && (
         <Alert
           variant="danger"
           className="my-3"
           dismissible
           onClose={() => setErrorMessage(null)}
-          onClick={() => setErrorMessage(null)}
         >
           {errorMessage}
         </Alert>
