@@ -6,6 +6,7 @@ import {
 import type { Authority, StandardError } from "../../interfaces/interfaces";
 import { logout } from "./AuthSlice";
 import { apiFetch } from "../../tools/fetchHelper";
+import type { UserEditPayload } from "../../components/profile_page/EditProfileModal/EditProfileModal";
 
 export interface UserState {
   username: string | null;
@@ -62,6 +63,31 @@ export const fetchUserProfile = createAsyncThunk<
   }
 });
 
+export const updateUserProfile = createAsyncThunk<
+  Partial<UserState>,
+  UserEditPayload,
+  { rejectValue: StandardError | string }
+>("user/updateUserProfile", async (formData, { rejectWithValue }) => {
+  try {
+    const data = await apiFetch<Partial<UserState>>("/users/me", {
+      method: "PATCH",
+      body: JSON.stringify(formData),
+    });
+    return data;
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && "message" in error) {
+      return rejectWithValue(error as StandardError);
+    }
+
+    if (error instanceof Error) {
+      return rejectWithValue(error.message);
+    }
+
+    // Fallback to always have a return value
+    return rejectWithValue("An unexpected error occurred.");
+  }
+});
+
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -83,6 +109,19 @@ const userSlice = createSlice({
         Object.assign(state, action.payload);
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? "Unknown error";
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        Object.assign(state, action.payload);
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? "Unknown error";
       })

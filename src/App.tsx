@@ -9,6 +9,7 @@ import PantryPage from "./components/pantry_page/PantryPage";
 import IngredientPage from "./components/ingredients_page/IngredientsPage";
 import ShoppingListPage from "./components/shopping_list_page/ShoppingListPage";
 import RecipesPage from "./components/recipes_page/RecipesPage";
+import ProfilePage from "./components/profile_page/ProfilePage";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
               <Route path="/ingredients" element={<IngredientPage />} />
               <Route path="/my-list" element={<ShoppingListPage />} />
               <Route path="/recipes" element={<RecipesPage />} />
-              <Route path="/me" element={<div>Profile Page</div>} />
+              <Route path="/me" element={<ProfilePage />} />
 
               <Route element={<ProtectedRouteAdmin />}>
                 <Route
