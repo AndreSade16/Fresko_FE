@@ -120,7 +120,7 @@ function IngredientsList({
                     <Card.Title className="mb-0 fs-6 fw-bold">
                       {name}
                     </Card.Title>
-                    <Badge bg="secondary" className="ms-1 text-dark">
+                    <Badge bg="warning" className="ms-1 text-dark">
                       {category}
                     </Badge>
                   </div>

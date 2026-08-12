@@ -82,7 +82,8 @@ function RecipeToSlAddModal({
           {isAdding ? <PulseLoader /> : "Cancel"}
         </Button>
         <Button
-          variant="warning"
+          variant="secondary"
+          className="fw-semibold"
           onClick={() => {
             handleConfirm();
             setServings(1);

@@ -70,8 +70,14 @@ function PantrySection({ expiringItems, isLoading }: PantrySectionProps) {
                             : "px-2 py-1 text-dark"
                         }
                       >
-                        {item.daysUntilExpiration}{" "}
-                        {item.daysUntilExpiration === 1 ? "day" : "days"}
+                        {item.daysUntilExpiration <= 0
+                          ? `Expired (${-item.daysUntilExpiration}d)`
+                          : item.daysUntilExpiration}{" "}
+                        {item.daysUntilExpiration === 1
+                          ? "day"
+                          : item.daysUntilExpiration <= 0
+                            ? ""
+                            : "days"}
                       </Badge>
                     </div>
                   </Card.Body>

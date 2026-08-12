@@ -147,7 +147,7 @@ function PantryList({
                           bg="danger"
                           className="text-white fw-bold px-2 py-1"
                         >
-                          Expired {formattedExpDate}
+                          Expired {-diffInDays} days ago
                         </Badge>
                       ) : (
                         <span className="text-warning fw-semibold">

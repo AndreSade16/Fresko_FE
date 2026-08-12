@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 interface ShoppingListProps {
   activeShoppingList: ActiveShoppingList | null;
   onCompleteShopping?: (selectedItems: SelectedItemsState) => void;
+  onDeleteItem: (shoppingListItemId: string) => void;
 }
 
 export interface SelectedItemsState {
@@ -25,6 +26,7 @@ const getDefaultExpirationDate = (shelfLifeDays: number = 0): string => {
 function ShoppingList({
   activeShoppingList,
   onCompleteShopping,
+  onDeleteItem,
 }: ShoppingListProps) {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState<SelectedItemsState>({});
@@ -157,7 +159,7 @@ function ShoppingList({
                 />
 
                 <Card
-                  className="h-100 w-100 shadow-sm hover-card bg-primary d-flex flex-row align-items-center justify-content-between position-relative overflow-hidden"
+                  className="h-100 w-100 shadow-sm hover-card bg-primary d-flex flex-row align-items-center justify-content-between position-relative overflow-hidden pe-2"
                   style={{ minWidth: 0 }}
                 >
                   {isChecked && (
@@ -254,7 +256,6 @@ function ShoppingList({
                       />
                     </Form.Group>
 
-                    {/* Campo Data di Scadenza */}
                     <Form.Group
                       controlId={`expiration-${shoppingListItemId}`}
                       style={{ minWidth: 0 }}
@@ -283,6 +284,12 @@ function ShoppingList({
                       />
                     </Form.Group>
                   </Card.Body>
+                  <Button
+                    variant="secondary"
+                    onClick={() => onDeleteItem(shoppingListItemId)}
+                  >
+                    <i className="bi bi-trash3-fill"></i>
+                  </Button>
                 </Card>
               </Col>
             );

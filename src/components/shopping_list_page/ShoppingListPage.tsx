@@ -67,6 +67,27 @@ function ShoppingListPage() {
     }
   };
 
+  const handleDeleteItem = async (shoppingListItemId: string) => {
+    if (!activeShoppingList) return;
+    const shoppingListId = activeShoppingList.shoppingListId;
+
+    try {
+      await apiFetch<Response>(
+        `/shopping-lists/me/${shoppingListId}/items/${shoppingListItemId}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      toast.success("Item deleted succesfully!");
+      dispatch(fetchActiveShoppingList());
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "message" in error) {
+        toast.error((error as StandardError).message);
+      }
+    }
+  };
+
   const handleSubmit = async () => {
     setShowCompleteModal(false);
 
@@ -102,6 +123,7 @@ function ShoppingListPage() {
         <ShoppingList
           activeShoppingList={activeShoppingList}
           onCompleteShopping={handleComplete}
+          onDeleteItem={handleDeleteItem}
         />
       ) : (
         <div className="d-flex flex-column align-items-center mt-4">

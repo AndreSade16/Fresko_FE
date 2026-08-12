@@ -67,7 +67,8 @@ function IngredientAddModal({
           {isAdding ? <PulseLoader /> : "Cancel"}
         </Button>
         <Button
-          variant="warning"
+          variant="secondary"
+          className="fw-semibold"
           onClick={() => {
             handleConfirm();
             setQuantity(1);
