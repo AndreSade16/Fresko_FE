@@ -36,7 +36,7 @@ function HomePage() {
       <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}! 👋</h3>
       <h3 className="fw-semibold ps-3">
         Here's what's{" "}
-        <span className="text-secondary">
+        <span className="text-secondary text-nowrap">
           <BlurText
             text="Fresko"
             delay={200}

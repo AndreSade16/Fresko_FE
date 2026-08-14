@@ -12,7 +12,7 @@ function MainNavbar() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
   const dispatch = useDispatch<AppDispatch>();
 
-  const { username, firstName, avatar } = useSelector(
+  const { username, firstName, avatar, role } = useSelector(
     (state: RootState) => state.user,
   );
 
@@ -77,6 +77,12 @@ function MainNavbar() {
 
         <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
           <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+            <Nav.Link
+              className="text-warning text-nowrap fw-bold"
+              onClick={() => handleNavigate("/admin")}
+            >
+              Admin
+            </Nav.Link>
             <Nav.Link
               className="text-light text-nowrap"
               onClick={() => handleNavigate("/home")}

@@ -10,6 +10,7 @@ import IngredientPage from "./components/ingredients_page/IngredientsPage";
 import ShoppingListPage from "./components/shopping_list_page/ShoppingListPage";
 import RecipesPage from "./components/recipes_page/RecipesPage";
 import ProfilePage from "./components/profile_page/ProfilePage";
+import AdminPage from "./components/admin/admin_page/AdminPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
               <Route path="/me" element={<ProfilePage />} />
 
               <Route element={<ProtectedRouteAdmin />}>
+                <Route path="/admin" element={<AdminPage />} />
                 <Route
                   path="/create-recipe"
                   element={<div>Create Recipe</div>}

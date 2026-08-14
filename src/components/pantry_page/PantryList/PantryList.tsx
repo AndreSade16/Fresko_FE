@@ -62,9 +62,11 @@ function PantryList({
 
   if (!isLoading && data !== null && items.length === 0) {
     return (
-      <Alert variant="info" className="my-3 text-center">
-        No item found in the pantry.
-      </Alert>
+      <div className="d-flex flex-column align-items-center">
+        <Alert variant="secondary" className="my-3 text-center">
+          No item found in the pantry.
+        </Alert>
+      </div>
     );
   }
 

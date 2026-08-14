@@ -19,8 +19,10 @@ import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCrea
 import { GridLoader } from "react-spinners";
 import EditModal from "./EditModal/EditModal";
 import { apiFetch } from "../../tools/fetchHelper";
+import { useNavigate } from "react-router";
 
 function PantryPage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
   const [selectedItem, setSelectedItem] = useState<PantryPageContent | null>(
@@ -90,13 +92,22 @@ function PantryPage() {
         Pantry & Fridge
       </h1>
       <PantryFilters />
-      <Button
-        variant="secondary"
-        className="mb-4 fw-semibold"
-        onClick={() => setShowCreateModal(true)}
-      >
-        Create Pantry Item
-      </Button>
+      <div className="d-flex justify-content-center gap-2 mb-4">
+        <Button
+          variant="secondary"
+          className="fw-semibold"
+          onClick={() => setShowCreateModal(true)}
+        >
+          Create Pantry Item
+        </Button>
+        <Button
+          variant="secondary"
+          className="fw-semibold"
+          onClick={() => navigate("/my-list")}
+        >
+          Go shopping!
+        </Button>
+      </div>
 
       {isLoading && !hasInitialData ? (
         <GridLoader color="white" className="mt-5 pt-2" />

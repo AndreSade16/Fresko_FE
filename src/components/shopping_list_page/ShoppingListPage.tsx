@@ -127,7 +127,9 @@ function ShoppingListPage() {
         />
       ) : (
         <div className="d-flex flex-column align-items-center mt-4">
-          <Alert>No active shopping list found</Alert>
+          <Alert variant="success" className="mb-4">
+            No active shopping list found
+          </Alert>
           <Button
             variant="secondary"
             className="fw-semibold"
