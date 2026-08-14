@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router";
 import { BeatLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 function RegisterCard() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function RegisterCard() {
 
       if (response.ok) {
         setSuccessMessage("Registration successful!");
+        toast.success(successMessage);
         setIsLoading(false);
         setTimeout(() => {
           navigate("/login");
@@ -138,7 +140,7 @@ function RegisterCard() {
             type="submit"
             className="fw-semibold mt-2 w-100 d-flex justify-content-center align-items-center"
           >
-            {isLoading ? <BeatLoader /> : "Register"}
+            {isLoading ? <BeatLoader className="my-1" /> : "Register"}
           </Button>
         </Form>
 

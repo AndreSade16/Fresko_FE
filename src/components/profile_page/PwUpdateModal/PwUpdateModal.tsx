@@ -43,7 +43,6 @@ function PwUpdateModal({
             Update
           </span>
 
-          {/* Lo spinner viene posizionato sopra al centro senza alterare il layout */}
           {isUpdating && (
             <div className="position-absolute start-50 top-50 translate-middle d-flex align-items-center">
               <PulseLoader color="#000000" size={8} />

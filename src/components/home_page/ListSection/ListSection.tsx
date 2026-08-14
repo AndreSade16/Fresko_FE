@@ -95,9 +95,11 @@ function ListSection({ activeShoppingList, isLoading }: ListSectionProps) {
             ))}
           </Row>
         ) : (
-          <p className="text-dark">
-            No active shopping list, let's create one!
-          </p>
+          <div className="d-flex justify-content-center align-items-center">
+            <p className="text-black m-0">
+              No active shopping list. Let's create one!
+            </p>
+          </div>
         )}
 
         <div className="mt-4 text-center">

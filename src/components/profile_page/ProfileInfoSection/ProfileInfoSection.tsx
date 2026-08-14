@@ -8,6 +8,10 @@ import {
   type StandardError,
   type UserDTO,
 } from "../../../interfaces/interfaces";
+import DeleteModal from "./ProfileDeleteModal/ProfileDeleteModal";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../../redux/store";
+import { logout } from "../../../redux/reducers/AuthSlice";
 
 interface ProfileInfoSectionProps {
   user: UserState;
@@ -24,9 +28,12 @@ function ProfileInfoSection({
   user,
   setShowEditModal,
 }: ProfileInfoSectionProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const { userId, username, firstName, lastName, email, role } = user;
   const [showPwUpdateModal, setShowPwUpdateModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [formData, setFormData] = useState<PasswordChangeDTO>({
     oldPassword: "",
     repeatNewPassword: "",
@@ -92,6 +99,26 @@ function ProfileInfoSection({
     }
   };
 
+  const handleDelete = async (email: string, password: string) => {
+    setIsDeleting(true);
+    try {
+      await apiFetch<void>("/users/me", {
+        method: "DELETE",
+        body: JSON.stringify({ email: email, password: password }),
+      });
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+      throw error;
+    } finally {
+      setIsDeleting(false);
+      dispatch(logout());
+    }
+  };
+
   return (
     <Col
       md={9}
@@ -108,10 +135,6 @@ function ProfileInfoSection({
           </Button>
         </Card.Header>
         <Card.Body className="d-flex flex-column gap-2">
-          <div className="d-flex flex-wrap justify-content-between align-items-center border-bottom border-light border-opacity-10 pb-2 text-wrap">
-            <span className="text-light text-opacity-75">User ID:</span>
-            <span className="fw-semibold">#{userId}</span>
-          </div>
           <div className="d-flex flex-wrap justify-content-between align-items-center border-bottom border-light border-opacity-10 pb-2">
             <span className="text-light text-opacity-75">Username:</span>
             <span className="fw-semibold">@{username}</span>
@@ -126,11 +149,15 @@ function ProfileInfoSection({
             <span className="text-light text-opacity-75">Email:</span>
             <span className="fw-semibold text-break">{email}</span>
           </div>
-          <div className="d-flex flex-wrap justify-content-between align-items-center pt-1">
+          <div className="d-flex flex-wrap justify-content-between align-items-center pb-2 border-bottom border-light border-opacity-10">
             <span className="text-light text-opacity-75">Role:</span>
             <Badge bg="warning" text="dark" className="fs-7">
               {role}
             </Badge>
+          </div>
+          <div className="d-flex flex-wrap justify-content-between align-items-center text-wrap">
+            <span className="text-light text-opacity-75">User ID:</span>
+            <span className="fw-semibold">#{userId}</span>
           </div>
         </Card.Body>
       </Card>
@@ -225,7 +252,7 @@ function ProfileInfoSection({
           <Button
             variant="secondary"
             className="fw-semibold align-self-start"
-            onClick={() => console.log("Delete Account Clicked")}
+            onClick={() => setShowDeleteModal(true)}
           >
             <i className="bi bi-trash me-1"></i> Delete Account
           </Button>
@@ -236,6 +263,12 @@ function ProfileInfoSection({
         setShow={(value) => setShowPwUpdateModal(value)}
         onUpdate={handleUpdatePassword}
         isUpdating={isUpdating}
+      />
+      <DeleteModal
+        show={showDeleteModal}
+        setShow={setShowDeleteModal}
+        onDelete={handleDelete}
+        isDeleting={isDeleting}
       />
     </Col>
   );

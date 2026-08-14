@@ -16,11 +16,11 @@ function SuggestedRecipesSection({
 
   return (
     <Card
-      className="border-0 rounded-4 overflow-hidden shadow-lg position-relative my-5 mx-lg-4 bg-dark"
+      className="border-0 rounded-4 overflow-hidden shadow-lg position-relative my-5 mx-lg-4 bg-primary"
       style={{ minWidth: "195px" }}
     >
       <Card.Body
-        className="position-relative p-0 text-light"
+        className="position-relative p-3 p-md-4 text-light"
         style={{ zIndex: 2 }}
       >
         <div className="d-flex justify-content-between align-items-start mb-4">
@@ -84,7 +84,12 @@ function SuggestedRecipesSection({
             ))}
           </Row>
         ) : (
-          <p className="text-muted m-0">No suggested recipes...</p>
+          <div className="d-flex flex-column justify-content-center align-items-center">
+            <p className="text-muted m-0">No suggested recipes...</p>
+            <p className="text-muted mt-1">
+              Try adding something to your pantry!
+            </p>
+          </div>
         )}
 
         <div className="mt-4 text-center">

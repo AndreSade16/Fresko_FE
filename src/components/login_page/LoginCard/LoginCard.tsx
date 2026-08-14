@@ -88,7 +88,7 @@ function LoginCard() {
             type="submit"
             className="fw-semibold mt-2 w-100 d-flex justify-content-center align-items-center"
           >
-            {isLoading ? <BeatLoader /> : "Login"}
+            {isLoading ? <BeatLoader className="my-1" /> : "Login"}
           </Button>
         </Form>
         {errorMessage && (
