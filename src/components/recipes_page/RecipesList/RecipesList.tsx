@@ -1,4 +1,10 @@
-import { useRef, useEffect, type Dispatch, type SetStateAction } from "react";
+import {
+  useRef,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+  useState,
+} from "react";
 import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
 import { PulseLoader } from "react-spinners";
 import type {
@@ -32,6 +38,7 @@ function RecipesList({
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
   const currentPage = data?.number ?? 0;
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
 
   useEffect(() => {
     if (isLoading || isLastPage) return;
@@ -57,6 +64,15 @@ function RecipesList({
     };
   }, [isLoading, isLastPage, currentPage, onLoadMore]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 400);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   if (!isLoading && data !== null && items.length === 0) {
     return (
       <Alert variant="secondary" className="my-3 text-center">
@@ -66,7 +82,10 @@ function RecipesList({
   }
 
   return (
-    <div className="ingredient-list-container mt-3 w-100">
+    <div
+      className="ingredient-list-container mt-3 w-100 d-flex justify-content-center"
+      style={{ minWidth: "200px" }}
+    >
       <Row xs={1} sm={2} md={3} lg={4} className="g-4 w-100">
         {items.map((recipe) => {
           const {
@@ -92,11 +111,11 @@ function RecipesList({
                   />
                 )}
                 <Card.Body className="d-flex flex-column">
-                  <div className="d-flex justify-content-between align-items-start mb-2">
+                  <div className="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
                     <Card.Title className="mb-0 fs-6 fw-bold">
                       {name}
                     </Card.Title>
-                    <Badge bg="warning" className="ms-1 text-dark">
+                    <Badge bg="warning" className=" text-dark">
                       {difficulty?.replace("_", " ")}
                     </Badge>
                   </div>
@@ -112,7 +131,7 @@ function RecipesList({
                         {(cookingTime || 0) + (preparationTime || 0)} mins
                       </span>
                     </div>
-                    <div className="d-flex justify-content-between mb-3">
+                    <div className="d-flex justify-content-between mb-3 flex-wrap gap-2">
                       <span className="fw-semibold">Cost:</span>
                       <Badge
                         bg="secondary"
@@ -128,8 +147,11 @@ function RecipesList({
                       <Button
                         variant="outline-light"
                         size="sm"
-                        className="w-50 fw-semibold"
-                        style={{ whiteSpace: "normal", wordBreak: "normal" }}
+                        className={`${isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        style={{
+                          whiteSpace: "normal",
+                          wordBreak: "keep-all",
+                        }}
                         disabled={isAdding}
                         onClick={() => {
                           setSelectedItem(recipe);

@@ -194,6 +194,7 @@ export function CreateIngredientModal({
       onHide={onHide}
       centered
       size="lg"
+      backdrop="static"
       contentClassName="bg-primary"
     >
       <Modal.Header closeButton closeVariant="white">
