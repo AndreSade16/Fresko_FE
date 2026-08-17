@@ -39,9 +39,9 @@ export async function apiFetch<T>(
     }
 
     if (
-      response.status === 500 ||
-      errorMessage.includes("Error with token") ||
-      errorMessage.includes("try a new login")
+      response.status === 500 &&
+      (errorMessage.includes("Error with token") ||
+        errorMessage.includes("try a new login"))
     ) {
       localStorage.removeItem("accessToken");
       window.dispatchEvent(new Event("unauthorized_logout"));
