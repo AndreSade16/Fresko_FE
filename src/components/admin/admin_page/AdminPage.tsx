@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Card, Button, Stack, Container, Row, Col } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import CreateRecipeModal from "./CreateRecipeModal/CreateRecipeModal";
+import { CreateIngredientModal } from "./CreateIngredientModal/CreateIngredientModal";
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -66,6 +67,10 @@ function AdminPage() {
       <CreateRecipeModal
         show={showRecipeModal}
         onHide={() => setShowRecipeModal(false)}
+      />
+      <CreateIngredientModal
+        show={showIngredientModal}
+        onHide={() => setShowIngredientModal(false)}
       />
     </Container>
   );
