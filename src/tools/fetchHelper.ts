@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export async function apiFetch<T>(
   endpoint: string,
   options: RequestInit = {},
@@ -35,6 +37,17 @@ export async function apiFetch<T>(
     } catch {
       errorMessage = await response.text();
     }
+
+    if (
+      response.status === 500 ||
+      errorMessage.includes("Error with token") ||
+      errorMessage.includes("try a new login")
+    ) {
+      localStorage.removeItem("accessToken");
+      window.dispatchEvent(new Event("unauthorized_logout"));
+      toast.error("Error with credentials. Log in again");
+    }
+
     throw new Error(errorMessage || `HTTP Error: ${response.status}`);
   }
 

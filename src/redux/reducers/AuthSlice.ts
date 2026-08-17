@@ -30,6 +30,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       localStorage.removeItem("accessToken");
       state.role = null;
+      console.log("logout eseguito");
     },
   },
 });

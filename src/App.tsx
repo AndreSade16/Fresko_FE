@@ -11,8 +11,25 @@ import ShoppingListPage from "./components/shopping_list_page/ShoppingListPage";
 import RecipesPage from "./components/recipes_page/RecipesPage";
 import ProfilePage from "./components/profile_page/ProfilePage";
 import AdminPage from "./components/admin/admin_page/AdminPage";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "./redux/store";
+import { logout } from "./redux/reducers/AuthSlice";
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      dispatch(logout());
+    };
+
+    window.addEventListener("unauthorized_logout", handleUnauthorized);
+    return () => {
+      window.removeEventListener("unauthorized_logout", handleUnauthorized);
+    };
+  }, [dispatch]);
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <div className="flex-grow-1 bg-dark">
