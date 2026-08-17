@@ -129,6 +129,7 @@ function RecipesList({
                         variant="outline-light"
                         size="sm"
                         className="w-50 fw-semibold"
+                        style={{ whiteSpace: "normal", wordBreak: "normal" }}
                         disabled={isAdding}
                         onClick={() => {
                           setSelectedItem(recipe);
