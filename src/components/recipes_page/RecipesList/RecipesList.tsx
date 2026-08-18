@@ -20,6 +20,7 @@ interface RecipesListProps {
   isAdding: boolean;
   onLoadMore: (nextPage: number) => void;
   onDeleteItem: (item: RecipePageContent) => void;
+  onEditItem: (item: RecipePageContent) => void;
   onAddItem?: (item: RecipePageContent) => void;
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
   setSelectedItem: (recipe: RecipePageContent) => void;
@@ -31,6 +32,7 @@ function RecipesList({
   isLoading,
   onLoadMore,
   onDeleteItem,
+  onEditItem,
   isAdding,
   setSelectedItem,
   onAddIngredients,
@@ -172,7 +174,10 @@ function RecipesList({
                           variant="outline-warning"
                           size="sm"
                           className="w-100 fw-semibold"
-                          // onClick={() => onEditItem(item)}
+                          onClick={() => {
+                            onEditItem(recipe);
+                            setSelectedItem(recipe);
+                          }}
                         >
                           Edit
                         </Button>

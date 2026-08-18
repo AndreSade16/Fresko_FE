@@ -29,7 +29,11 @@ function RecipeDeleteModal({
         <Modal.Title>Delete Recipe</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Are you sure you want to delete <b>{selectedItem?.name}</b>?<br />
+        Are you sure you want to delete recipe <b>{selectedItem?.name}</b>?
+        <br />
+        <p className="my-1">
+          <small>* This operation is irreversible</small>
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <Button

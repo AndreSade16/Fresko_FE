@@ -16,6 +16,7 @@ import {
 import { toast } from "react-toastify";
 import RecipeToSlAddModal from "./RecipeToSlModal/RecipeToSlModal";
 import RecipeDeleteModal from "./RecipeDeleteModal/RecipeDeleteModal";
+import RecipeEditModal from "./RecipeEditModal/RecipeEditModal";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +25,7 @@ function RecipesPage() {
     null,
   );
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const { data, isLoading, error } = useSelector(
@@ -87,6 +89,8 @@ function RecipesPage() {
     }
   };
 
+  const handleEdit = () => {};
+
   const handleDelete = async (recipe: RecipePageContent | null) => {
     if (!recipe) {
       toast.error("Recipe not found");
@@ -132,6 +136,7 @@ function RecipesPage() {
           setSelectedItem={setSelectedItem}
           userRole={userRole}
           onDeleteItem={() => setShowDeleteModal(true)}
+          onEditItem={() => setShowEditModal(true)}
         />
       )}
 
@@ -143,12 +148,17 @@ function RecipesPage() {
         isAdding={isAdding}
       />
 
-      {/* <RecipeEditModal
-        show={showEditModal}
-        onHide={setShowEditModal}
-        selectedItem={selectedItem}
-        onEditItem={handleEdit}
-      /> */}
+      {selectedItem && (
+        <RecipeEditModal
+          show={showEditModal}
+          onHide={() => {
+            setShowEditModal(false);
+            setSelectedItem(null);
+          }}
+          selectedItem={selectedItem}
+          onEdit={handleEdit}
+        />
+      )}
       <RecipeDeleteModal
         selectedItem={selectedItem}
         show={showDeleteModal}

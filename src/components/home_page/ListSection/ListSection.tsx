@@ -57,43 +57,51 @@ function ListSection({ activeShoppingList, isLoading }: ListSectionProps) {
             <SyncLoader color="#000000" />
           </div>
         ) : activeShoppingList?.shoppingListId ? (
-          <Row className="g-3">
-            {activeShoppingList?.items?.map((item) => (
-              <Col key={item.shoppingListItemId} xs={12} sm={6} md={4}>
-                <Card className="bg-dark bg-opacity-100 text-light border-0 rounded-3 shadow-sm h-100 p-2">
-                  <Card.Body className="d-flex flex-column justify-content-between p-2">
-                    <div className="d-flex align-items-center gap-3">
-                      <img
-                        src={
-                          item.ingredientDefinition.imageUrl ||
-                          "https://via.placeholder.com/50?text=Food"
-                        }
-                        alt={item.ingredientDefinition.name}
-                        className="rounded-3 object-fit-cover flex-shrink-0"
-                        style={{ width: "48px", height: "48px" }}
-                      />
-                      <div className="overflow-hidden">
-                        <span className="text-muted small text-uppercase fw-bold d-block text-truncate">
-                          {item.ingredientDefinition.category}
-                        </span>
-                        <h6 className="fw-semibold m-0 text-truncate">
-                          {item.ingredientDefinition.name}
-                        </h6>
-                        <p className="mt-2 mb-0 small text-light text-opacity-75">
-                          Buy: {item.suggestedQuantity}{" "}
-                          {item.suggestedUnit === "MILLILITERS"
-                            ? "ml"
-                            : item.suggestedUnit === "GRAMS"
-                              ? "g"
-                              : "pcs"}
-                        </p>
+          activeShoppingList.items.length > 0 ? (
+            <Row className="g-3">
+              {activeShoppingList?.items?.map((item) => (
+                <Col key={item.shoppingListItemId} xs={12} sm={6} md={4}>
+                  <Card className="bg-dark bg-opacity-100 text-light border-0 rounded-3 shadow-sm h-100 p-2">
+                    <Card.Body className="d-flex flex-column justify-content-between p-2">
+                      <div className="d-flex align-items-center gap-3">
+                        <img
+                          src={
+                            item.ingredientDefinition.imageUrl ||
+                            "https://via.placeholder.com/50?text=Food"
+                          }
+                          alt={item.ingredientDefinition.name}
+                          className="rounded-3 object-fit-cover flex-shrink-0"
+                          style={{ width: "48px", height: "48px" }}
+                        />
+                        <div className="overflow-hidden">
+                          <span className="text-muted small text-uppercase fw-bold d-block text-truncate">
+                            {item.ingredientDefinition.category}
+                          </span>
+                          <h6 className="fw-semibold m-0 text-truncate">
+                            {item.ingredientDefinition.name}
+                          </h6>
+                          <p className="mt-2 mb-0 small text-light text-opacity-75">
+                            Buy: {item.suggestedQuantity}{" "}
+                            {item.suggestedUnit === "MILLILITERS"
+                              ? "ml"
+                              : item.suggestedUnit === "GRAMS"
+                                ? "g"
+                                : "pcs"}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            <div className="d-flex justify-content-center align-items-center">
+              <p className="text-black m-0">
+                Still nothing inside your shopping list!
+              </p>
+            </div>
+          )
         ) : (
           <div className="d-flex justify-content-center align-items-center">
             <p className="text-black m-0">
@@ -109,7 +117,7 @@ function ListSection({ activeShoppingList, isLoading }: ListSectionProps) {
             style={{ maxWidth: "280px" }}
             onClick={() => navigate("/my-list")}
           >
-            {activeShoppingList?.shoppingListId ? "See all" : "Create new"}
+            {activeShoppingList?.shoppingListId ? "Explore" : "Create new"}
           </Button>
         </div>
       </Card.Body>
