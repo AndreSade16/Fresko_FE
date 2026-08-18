@@ -517,7 +517,6 @@ function CreateRecipeModal({
               </Form.Group>
             </Col>
 
-            {/* Tabella degli ingredienti inseriti */}
             <Col xs={12}>
               {ingredientsList.length > 0 ? (
                 <Table

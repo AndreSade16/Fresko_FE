@@ -5,20 +5,14 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { PulseLoader } from "react-spinners";
-import {
-  useEffect,
-  useRef,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 
 interface IngredientsListProps {
   data: IngredientDefinitionPage | null;
   isLoading: boolean;
   error: StandardError | string | null;
   onLoadMore: (nextPage: number) => void;
-  onDeleteItem?: (item: IngredientDefinitionPageContent) => void;
+  onDeleteItem: (item: IngredientDefinitionPageContent) => void;
   onAddItem?: (item: IngredientDefinitionPageContent) => void;
   userRole: string | null;
   isAdding: boolean;
@@ -28,20 +22,17 @@ interface IngredientsListProps {
 function IngredientsList({
   data,
   isLoading,
-  error,
   onLoadMore,
   onDeleteItem,
   onAddItem,
   userRole,
   isAdding,
-  setIsAdding,
 }: IngredientsListProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
   const currentPage = data?.number ?? 0;
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (isLoading || isLastPage) return;
@@ -67,11 +58,6 @@ function IngredientsList({
     };
   }, [isLoading, isLastPage, currentPage, onLoadMore]);
 
-  if (error) {
-    setErrorMessage(typeof error === "string" ? error : error.message);
-    setIsAdding(false);
-  }
-
   if (!isLoading && data !== null && items.length === 0) {
     return (
       <Alert variant="secondary" className="my-3 text-center">
@@ -81,17 +67,7 @@ function IngredientsList({
   }
 
   return (
-    <div className="ingredient-list-container mt-3">
-      {errorMessage && (
-        <Alert
-          variant="danger"
-          className="my-3"
-          dismissible
-          onClose={() => setErrorMessage(null)}
-        >
-          {errorMessage}
-        </Alert>
-      )}
+    <div className="ingredient-list-container mt-3 w-100">
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
         {items.map((item) => {
           const {
@@ -106,7 +82,7 @@ function IngredientsList({
 
           return (
             <Col key={ingredientDefinitionId}>
-              <Card className="h-100 shadow-sm hover-card bg-primary">
+              <Card className="h-100 shadow-sm hover-card bg-primary text-white">
                 {imageUrl && (
                   <Card.Img
                     variant="top"
@@ -125,17 +101,17 @@ function IngredientsList({
                     </Badge>
                   </div>
 
-                  <Card.Text className="text-muted small flex-grow-1">
+                  <Card.Text className="text-light small flex-grow-1">
                     {description}
                   </Card.Text>
 
                   <div className="mt-auto border-top pt-2 small">
-                    <div className="d-flex justify-content-between mb-3">
+                    <div className="d-flex justify-content-between mb-2">
                       <span className="fw-semibold">Shelf life days:</span>
                       <span>{shelfLifeDays}</span>
                     </div>
                     <div className="d-flex justify-content-between mb-3">
-                      <span className="fw-semibold">Suggested storaging:</span>
+                      <span className="fw-semibold">Suggested storage:</span>
                       <Badge
                         bg="secondary"
                         text="dark"
@@ -149,39 +125,34 @@ function IngredientsList({
                     </div>
 
                     <div className="d-flex gap-2 justify-content-center">
-                      {isAdding ? (
-                        <PulseLoader />
-                      ) : (
+                      <Button
+                        variant="outline-light"
+                        size="sm"
+                        className="w-100 fw-semibold"
+                        onClick={() => onAddItem?.(item)}
+                        disabled={isAdding}
+                      >
+                        Add to List
+                      </Button>
+
+                      {userRole === "ADMIN" && (
                         <Button
-                          variant="outline-light"
+                          variant="outline-warning"
                           size="sm"
-                          className="w-50 fw-semibold"
-                          onClick={() => onAddItem?.(item)}
-                          disabled={isAdding}
+                          className="w-100 fw-semibold"
+                          onClick={() => onDeleteItem(item)}
                         >
-                          {isAdding ? <PulseLoader /> : "Add to List"}
+                          Edit
                         </Button>
                       )}
                       {userRole === "ADMIN" && (
                         <Button
-                          variant="warning"
+                          variant="outline-danger"
                           size="sm"
-                          className="w-50 fw-semibold"
-                          onClick={() => onDeleteItem?.(item)}
-                          disabled={isAdding}
+                          className="w-100 fw-semibold"
+                          onClick={() => onDeleteItem(item)}
                         >
-                          {isAdding ? <PulseLoader /> : "Edit"}
-                        </Button>
-                      )}
-                      {userRole === "ADMIN" && (
-                        <Button
-                          variant="danger"
-                          size="sm"
-                          className="w-50 fw-semibold"
-                          onClick={() => onDeleteItem?.(item)}
-                          disabled={isAdding}
-                        >
-                          {isAdding ? <PulseLoader /> : "Delete"}
+                          Delete
                         </Button>
                       )}
                     </div>

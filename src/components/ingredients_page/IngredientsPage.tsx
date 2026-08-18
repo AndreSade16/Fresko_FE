@@ -16,6 +16,7 @@ import type {
 import { apiFetch } from "../../tools/fetchHelper";
 import { fetchActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
 import { toast } from "react-toastify";
+import IngredientDeleteModal from "./IngredientDeleteModal/IngredientDeleteModal";
 
 function IngredientPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +25,7 @@ function IngredientPage() {
     useState<IngredientDefinitionPageContent | null>(null);
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState<boolean>(false);
 
@@ -106,6 +108,31 @@ function IngredientPage() {
     }
   };
 
+  const handleDelete = async (
+    selectedItem: IngredientDefinitionPageContent | null,
+  ) => {
+    if (!selectedItem) return;
+    setIsAdding(true);
+    try {
+      await apiFetch(`/ingredients/${selectedItem.ingredientDefinitionId}`, {
+        method: "DELETE",
+      });
+      toast.success(`${selectedItem.name} successfully deleted!`);
+      dispatch(fetchIngredients(searchParams));
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+      setErrorMessage(message);
+    } finally {
+      setIsAdding(false);
+      setShowDeleteModal(false);
+      setSelectedItem(null);
+    }
+  };
+
   return (
     <Container fluid className=" d-flex flex-column align-items-center">
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
@@ -125,6 +152,7 @@ function IngredientPage() {
           onLoadMore={handleLoadMore}
           onDeleteItem={(item) => {
             setSelectedItem(item);
+            setShowDeleteModal(true);
           }}
           onAddItem={(item) => {
             setShowAddModal(true);
@@ -140,6 +168,13 @@ function IngredientPage() {
         showAddModal={showAddModal}
         setShowAddModal={setShowAddModal}
         onConfirmAdd={(quantity) => handleAdd(quantity)}
+        isAdding={isAdding}
+      />
+      <IngredientDeleteModal
+        show={showDeleteModal}
+        selectedItem={selectedItem}
+        onHide={() => setShowDeleteModal(false)}
+        onDelete={handleDelete}
         isAdding={isAdding}
       />
     </Container>
