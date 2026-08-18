@@ -15,6 +15,7 @@ import {
 } from "../../interfaces/interfaces";
 import { toast } from "react-toastify";
 import RecipeToSlAddModal from "./RecipeToSlModal/RecipeToSlModal";
+import RecipeDeleteModal from "./RecipeDeleteModal/RecipeDeleteModal";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,10 +24,13 @@ function RecipesPage() {
     null,
   );
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const { data, isLoading, error } = useSelector(
     (state: RootState) => state.recipes,
   );
+  const userRole = useSelector((state: RootState) => state.user.role);
+
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleLoadMore = (nextPage: number) => {
@@ -83,6 +87,31 @@ function RecipesPage() {
     }
   };
 
+  const handleDelete = async (recipe: RecipePageContent | null) => {
+    if (!recipe) {
+      toast.error("Recipe not found");
+      return;
+    }
+
+    setIsAdding(true);
+    try {
+      await apiFetch(`/recipes/${recipe.recipeId}`, { method: "DELETE" });
+      toast.success(`${recipe.name} deleted successfully!`);
+      dispatch(fetchRecipes(searchParams));
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+      setErrorMessage(message);
+    } finally {
+      setSelectedItem(null);
+      setShowDeleteModal(false);
+      setIsAdding(false);
+    }
+  };
+
   return (
     <Container fluid className="d-flex flex-column align-items-center">
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
@@ -101,6 +130,8 @@ function RecipesPage() {
           onAddIngredients={setShowAddModal}
           isAdding={isAdding}
           setSelectedItem={setSelectedItem}
+          userRole={userRole}
+          onDeleteItem={() => setShowDeleteModal(true)}
         />
       )}
 
@@ -111,24 +142,23 @@ function RecipesPage() {
         onConfirmAdd={handleAddIngredients}
         isAdding={isAdding}
       />
-      {/* <PantryItemCreationForm
-        showCreateModal={showCreateModal}
-        setShowCreateModal={setShowCreateModal}
-        onSuccess={() => setShowCreateModal(false)}
-      />
-      <EditModal
-        showEditModal={showEditModal}
-        setShowEditModal={setShowEditModal}
+
+      {/* <RecipeEditModal
+        show={showEditModal}
+        onHide={setShowEditModal}
         selectedItem={selectedItem}
-        onUpdateItem={handleUpdate}
-      />
-      <DeleteModal
+        onEditItem={handleEdit}
+      /> */}
+      <RecipeDeleteModal
         selectedItem={selectedItem}
-        showDeleteModal={showDeleteModal}
-        setShowDeleteModal={setShowDeleteModal}
-        onConfirmDelete={handleDelete}
+        show={showDeleteModal}
+        onHide={() => {
+          setShowDeleteModal(false);
+          setSelectedItem(null);
+        }}
+        onDelete={handleDelete}
+        isAdding={isAdding}
       />
-   */}
     </Container>
   );
 }

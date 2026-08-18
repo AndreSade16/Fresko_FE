@@ -17,6 +17,7 @@ import { apiFetch } from "../../tools/fetchHelper";
 import { fetchActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
 import { toast } from "react-toastify";
 import IngredientDeleteModal from "./IngredientDeleteModal/IngredientDeleteModal";
+import IngredientEditModal from "./IngredientEditModal/IngredientEditModal";
 
 function IngredientPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,6 +26,7 @@ function IngredientPage() {
     useState<IngredientDefinitionPageContent | null>(null);
 
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -150,6 +152,10 @@ function IngredientPage() {
           userRole={userRole}
           error={error || errorMessage}
           onLoadMore={handleLoadMore}
+          onEditItem={(item) => {
+            setSelectedItem(item);
+            setShowEditModal(true);
+          }}
           onDeleteItem={(item) => {
             setSelectedItem(item);
             setShowDeleteModal(true);
@@ -166,14 +172,30 @@ function IngredientPage() {
       <IngredientAddModal
         selectedItem={selectedItem}
         showAddModal={showAddModal}
-        setShowAddModal={setShowAddModal}
+        onHide={() => {
+          setShowAddModal(false);
+          setSelectedItem(null);
+        }}
         onConfirmAdd={(quantity) => handleAdd(quantity)}
         isAdding={isAdding}
       />
+      {selectedItem && (
+        <IngredientEditModal
+          show={showEditModal}
+          onHide={() => {
+            setShowEditModal(false);
+            setSelectedItem(null);
+          }}
+          selectedItem={selectedItem}
+        />
+      )}
       <IngredientDeleteModal
         show={showDeleteModal}
         selectedItem={selectedItem}
-        onHide={() => setShowDeleteModal(false)}
+        onHide={() => {
+          setShowDeleteModal(false);
+          setSelectedItem(null);
+        }}
         onDelete={handleDelete}
         isAdding={isAdding}
       />

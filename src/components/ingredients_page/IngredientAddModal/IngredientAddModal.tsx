@@ -5,7 +5,7 @@ import { PulseLoader } from "react-spinners";
 
 interface IngredientAddModalProps {
   showAddModal: boolean;
-  setShowAddModal: (show: boolean) => void;
+  onHide: () => void;
   selectedItem: IngredientDefinitionPageContent | null;
   onConfirmAdd: (quantity: number) => void;
   isAdding: boolean;
@@ -13,7 +13,7 @@ interface IngredientAddModalProps {
 
 function IngredientAddModal({
   showAddModal,
-  setShowAddModal,
+  onHide,
   selectedItem,
   onConfirmAdd,
   isAdding,
@@ -27,13 +27,13 @@ function IngredientAddModal({
 
   const handleConfirm = () => {
     onConfirmAdd(quantity === "" ? 0 : quantity);
-    setShowAddModal(false);
+    onHide();
   };
 
   return (
     <Modal
       show={showAddModal}
-      onHide={() => setShowAddModal(false)}
+      onHide={onHide}
       centered
       contentClassName="bg-primary text-light"
     >
@@ -59,11 +59,7 @@ function IngredientAddModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button
-          variant="outline-light"
-          onClick={() => setShowAddModal(false)}
-          disabled={isAdding}
-        >
+        <Button variant="outline-light" onClick={onHide} disabled={isAdding}>
           {isAdding ? <PulseLoader /> : "Cancel"}
         </Button>
         <Button

@@ -19,19 +19,22 @@ interface RecipesListProps {
   error: StandardError | string | null;
   isAdding: boolean;
   onLoadMore: (nextPage: number) => void;
-  onDeleteItem?: (item: RecipePageContent) => void;
+  onDeleteItem: (item: RecipePageContent) => void;
   onAddItem?: (item: RecipePageContent) => void;
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
   setSelectedItem: (recipe: RecipePageContent) => void;
+  userRole: string | null;
 }
 
 function RecipesList({
   data,
   isLoading,
   onLoadMore,
+  onDeleteItem,
   isAdding,
   setSelectedItem,
   onAddIngredients,
+  userRole,
 }: RecipesListProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -164,6 +167,29 @@ function RecipesList({
                           "Buy Ingredients"
                         )}
                       </Button>
+                      {userRole === "ADMIN" && (
+                        <Button
+                          variant="outline-warning"
+                          size="sm"
+                          className="w-100 fw-semibold"
+                          // onClick={() => onEditItem(item)}
+                        >
+                          Edit
+                        </Button>
+                      )}
+                      {userRole === "ADMIN" && (
+                        <Button
+                          variant="outline-danger"
+                          size="sm"
+                          className="w-100 fw-semibold"
+                          onClick={() => {
+                            onDeleteItem(recipe);
+                            setSelectedItem(recipe);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </Card.Body>

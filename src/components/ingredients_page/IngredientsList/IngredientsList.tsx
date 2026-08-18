@@ -17,6 +17,7 @@ interface IngredientsListProps {
   userRole: string | null;
   isAdding: boolean;
   setIsAdding: Dispatch<SetStateAction<boolean>>;
+  onEditItem: (item: IngredientDefinitionPageContent) => void;
 }
 
 function IngredientsList({
@@ -24,6 +25,7 @@ function IngredientsList({
   isLoading,
   onLoadMore,
   onDeleteItem,
+  onEditItem,
   onAddItem,
   userRole,
   isAdding,
@@ -140,7 +142,7 @@ function IngredientsList({
                           variant="outline-warning"
                           size="sm"
                           className="w-100 fw-semibold"
-                          onClick={() => onDeleteItem(item)}
+                          onClick={() => onEditItem(item)}
                         >
                           Edit
                         </Button>
