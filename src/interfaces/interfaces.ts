@@ -55,21 +55,6 @@ export interface IngredientDefinition {
   ingredientDefinitionId: string;
 }
 
-export interface Pageable {
-  offset: number;
-  pageNumber: number;
-  pageSize: number;
-  paged: boolean;
-  sort: Sort;
-  unpaged: boolean;
-}
-
-export interface Sort {
-  empty: boolean;
-  sorted: boolean;
-  unsorted: boolean;
-}
-
 export interface DashboardResponse {
   expiringItems: PantryItem[];
   activeShoppingList: ActiveShoppingList;
@@ -199,12 +184,6 @@ export interface ShoppingListCreatedDTO {
   shoppingListId: string;
 }
 
-// To parse this data:
-//
-//   import { Convert, RecipePage } from "./file";
-//
-//   const recipePage = Convert.toRecipePage(json);
-
 export interface RecipePage {
   content: RecipePageContent[];
   empty: boolean;
@@ -258,6 +237,32 @@ export interface Sort {
   empty: boolean;
   sorted: boolean;
   unsorted: boolean;
+}
+
+export interface UserPage {
+  content: User[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface User {
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  authorities: Authority[];
+  pantryItems: PantryItem[];
+  role: string;
+  userId: string;
 }
 
 // Converts JSON strings to/from your types
