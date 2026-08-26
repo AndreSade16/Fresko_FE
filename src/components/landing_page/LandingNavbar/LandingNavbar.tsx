@@ -22,14 +22,28 @@ function LandingNavbar() {
       onToggle={(isExpanded) => setExpanded(isExpanded)}
     >
       <Container fluid className="px-4">
-        <Navbar.Brand
-          href="#home"
-          className="fs-2 fw-bolder fst-italic text-light text-decoration-underline"
-          onClick={() => setExpanded(false)}
-        >
-          FresKo
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="border-0" />
+        <div className="d-flex align-items-center flex-nowrap w-100 w-lg-auto">
+          <Navbar.Brand
+            href="#home"
+            className="d-flex align-items-center flex-shrink-1 overflow-hidden me-auto me-lg-0"
+            onClick={() => setExpanded(false)}
+          >
+            <img
+              src="/Fresko-Title.png"
+              alt="Fresko Logo"
+              style={{
+                height: "40px",
+                width: "auto",
+                maxWidth: "100%",
+                objectFit: "contain",
+              }}
+            />
+          </Navbar.Brand>
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            className="border-0 flex-shrink-0"
+          />
+        </div>
         <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
           <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
             <Nav.Link

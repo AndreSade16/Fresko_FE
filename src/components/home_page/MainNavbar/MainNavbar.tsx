@@ -63,25 +63,31 @@ function MainNavbar() {
         onToggle={(isExpanded) => setExpanded(isExpanded)}
       >
         <Container fluid className="px-4">
-          <Navbar.Brand
-            className="fs-2 fw-bolder fst-italic text-light text-decoration-underline text-stroke"
-            onClick={() => handleNavigate("/")}
-            style={{ cursor: "pointer" }}
-          >
-            FresKo
-          </Navbar.Brand>
+          <div className="d-flex align-items-center justify-content-between flex-nowrap w-100 w-lg-auto">
+            <Navbar.Brand
+              onClick={() => handleNavigate("/")}
+              style={{ cursor: "pointer" }}
+              className="d-flex align-items-center"
+            >
+              <img
+                src="/Fresko-Title.png"
+                alt="Fresko Logo"
+                style={{ height: "40px", width: "auto", objectFit: "contain" }}
+              />
+            </Navbar.Brand>
 
-          <Navbar.Toggle
-            aria-controls="basic-navbar-nav"
-            className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm"
-            style={{ width: "42px", height: "42px" }}
-          >
-            <img
-              src={avatarSrc}
-              alt="User Avatar Menu"
-              className="w-100 h-100 object-fit-cover"
-            />
-          </Navbar.Toggle>
+            <Navbar.Toggle
+              aria-controls="basic-navbar-nav"
+              className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm flex-shrink-0"
+              style={{ width: "42px", height: "42px" }}
+            >
+              <img
+                src={avatarSrc}
+                alt="User Avatar Menu"
+                className="w-100 h-100 object-fit-cover"
+              />
+            </Navbar.Toggle>
+          </div>
 
           <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
             <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">

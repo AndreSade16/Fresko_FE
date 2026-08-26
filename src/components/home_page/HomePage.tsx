@@ -33,20 +33,25 @@ function HomePage() {
           {typeof error === "object" ? error.message : error}
         </Alert>
       )}
-      <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}! 👋</h3>
-      <h3 className="fw-semibold ps-3">
-        Here's what's{" "}
-        <span className="text-secondary text-nowrap">
-          <BlurText
-            text="Fresko"
-            delay={200}
-            animateBy="letters"
-            direction="top"
-            className="text-2xl mb-8 d-inline"
-          />
-        </span>{" "}
-        today
-      </h3>
+      <div className="d-flex align-items-center gap-1">
+        <img src="/favicon.png" style={{ width: "100px" }} />
+        <div className="d-flex flex-column">
+          <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}!</h3>
+          <h3 className="fw-semibold ps-3">
+            Here's what's{" "}
+            <span className="text-secondary text-nowrap">
+              <BlurText
+                text="Fresko"
+                delay={200}
+                animateBy="letters"
+                direction="top"
+                className="text-2xl mb-8 d-inline"
+              />
+            </span>{" "}
+            today
+          </h3>
+        </div>
+      </div>
       <PantrySection expiringItems={expiringItems} isLoading={isLoading} />
       <ListSection
         activeShoppingList={activeShoppingList}

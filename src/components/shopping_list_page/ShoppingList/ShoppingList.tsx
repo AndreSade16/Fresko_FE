@@ -90,6 +90,8 @@ function ShoppingList({
       <Row
         xs={1}
         sm={2}
+        md={3}
+        lg={4}
         className={
           items.length <= 0
             ? "g-2 g-sm-3 mx-0 d-flex justify-content-center"
@@ -181,7 +183,7 @@ function ShoppingList({
 
                   {imageUrl && (
                     <div
-                      className="d-flex align-items-center justify-content-center p-1 flex-shrink-1"
+                      className="d-none d-sm-flex align-items-center justify-content-center p-1 flex-shrink-1"
                       style={{
                         width: "25%",
                         minWidth: "40px",
