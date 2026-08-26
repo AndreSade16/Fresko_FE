@@ -112,7 +112,11 @@ function UsersList({
                       onClick={() => onEditUser(user)}
                       disabled={isFetching}
                     >
-                      {isFetching ? <PulseLoader /> : "Edit"}
+                      {isFetching ? (
+                        <PulseLoader className="my-1" color="white" />
+                      ) : (
+                        "Edit"
+                      )}
                     </Button>
 
                     <Button
@@ -122,7 +126,11 @@ function UsersList({
                       onClick={() => onDeleteUser(user)}
                       disabled={isFetching}
                     >
-                      {isFetching ? <PulseLoader /> : "Delete"}
+                      {isFetching ? (
+                        <PulseLoader className="my-1" color="white" />
+                      ) : (
+                        "Delete"
+                      )}
                     </Button>
                   </div>
                 </Card.Body>

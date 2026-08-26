@@ -152,7 +152,7 @@ function RecipesList({
                       <Button
                         variant="outline-light"
                         size="sm"
-                        className={`${isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
                         style={{
                           whiteSpace: "normal",
                           wordBreak: "keep-all",
@@ -178,8 +178,13 @@ function RecipesList({
                             onEditItem(recipe);
                             setSelectedItem(recipe);
                           }}
+                          disabled={isAdding}
                         >
-                          Edit
+                          {isAdding ? (
+                            <PulseLoader color="#fff" size={6} />
+                          ) : (
+                            "Edit"
+                          )}
                         </Button>
                       )}
                       {userRole === "ADMIN" && (
@@ -191,8 +196,13 @@ function RecipesList({
                             onDeleteItem(recipe);
                             setSelectedItem(recipe);
                           }}
+                          disabled={isAdding}
                         >
-                          Delete
+                          {isAdding ? (
+                            <PulseLoader color="#fff" size={6} />
+                          ) : (
+                            "Delete"
+                          )}
                         </Button>
                       )}
                     </div>

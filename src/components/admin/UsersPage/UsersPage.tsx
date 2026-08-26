@@ -7,11 +7,20 @@ import { useSearchParams } from "react-router";
 import { useEffect, useState } from "react";
 import { fetchAdminUsers } from "../../../redux/reducers/AdminUsersSlice";
 import UsersList from "./UsersList/UsersList";
+import type { StandardError, User } from "../../../interfaces/interfaces";
+import { toast } from "react-toastify";
+import { apiFetch } from "../../../tools/fetchHelper";
+import UserDeleteModal from "./UserDeleteModal/UserDeleteModal";
+import UserEditModal from "./UserEditModal/UserEditModal";
 
 function UsersPage() {
   const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
-  const [isFetching, setIsFetisFetching] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   const { isLoading, error, data } = useSelector(
     (state: RootState) => state.adminUsers,
@@ -38,8 +47,52 @@ function UsersPage() {
     dispatch(fetchAdminUsers(newParams));
   };
 
-  const handleDelete = () => {};
-  const handleEdit = () => {};
+  const handleDelete = async (user: User) => {
+    if (!user) return;
+    const { username, userId, firstName, lastName } = user;
+
+    setIsFetching(true);
+
+    try {
+      await apiFetch(`/users/${userId}`, { method: "DELETE" });
+      toast.success(
+        `User ${username} (${firstName} ${lastName}) deleted successfully!`,
+      );
+      dispatch(fetchAdminUsers(searchParams));
+    } catch (error: unknown) {
+      let message = `An error occurred while deleting user ${username}.`;
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
+      setSelectedUser(null);
+      setIsFetching(false);
+    }
+  };
+  const handleEdit = async (formData: FormData) => {
+    if (!formData) return;
+    if (!selectedUser) return;
+
+    setIsFetching(true);
+    try {
+      const response = await apiFetch<User>(`/users/${selectedUser.userId}`, {
+        method: "PATCH",
+        body: formData,
+      });
+      toast.success(`User ${response.username} correctly edited`);
+      await dispatch(fetchAdminUsers(searchParams));
+    } catch (error: unknown) {
+      let message = `An error occurred while editing user ${formData.get("username")}.`;
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
+      setSelectedUser(null);
+      setIsFetching(false);
+    }
+  };
 
   const hasInitialData = Boolean(
     data && data.content && data.content.length > 0,
@@ -59,9 +112,39 @@ function UsersPage() {
           error={error}
           onLoadMore={handleLoadMore}
           isFetching={isFetching}
-          setIsFetching={setIsFetisFetching}
-          onDeleteUser={handleDelete}
-          onEditUser={handleEdit}
+          setIsFetching={setIsFetching}
+          onDeleteUser={(user) => {
+            setSelectedUser(user);
+            setShowDeleteModal(true);
+          }}
+          onEditUser={(user) => {
+            setSelectedUser(user);
+            setShowEditModal(true);
+          }}
+        />
+      )}
+      {selectedUser && (
+        <UserDeleteModal
+          show={showDeleteModal}
+          selectedUser={selectedUser}
+          onHide={() => {
+            setShowDeleteModal(false);
+            setSelectedUser(null);
+          }}
+          onDelete={handleDelete}
+          isFetching={isFetching}
+        />
+      )}
+      {selectedUser && (
+        <UserEditModal
+          show={showEditModal}
+          selectedUser={selectedUser}
+          onHide={() => {
+            setShowEditModal(false);
+            setSelectedUser(null);
+          }}
+          onEdit={handleEdit}
+          isFetching={isFetching}
         />
       )}
     </Container>
