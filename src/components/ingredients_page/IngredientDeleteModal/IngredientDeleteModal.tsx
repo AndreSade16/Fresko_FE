@@ -26,7 +26,7 @@ function IngredientDeleteModal({
       onHide={onHide}
     >
       <Modal.Header closeButton closeVariant="white">
-        <Modal.Title>Delete Ingredient Definition</Modal.Title>
+        <Modal.Title>Delete Ingredient {selectedItem?.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         Are you sure you want to delete <b>{selectedItem?.name}</b>?<br />

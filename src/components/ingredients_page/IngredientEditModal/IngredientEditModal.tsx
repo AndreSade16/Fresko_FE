@@ -47,25 +47,24 @@ function IngredientEditModal({
 }: EditIngredientModalProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [searchParams] = useSearchParams();
-  const [name, setName] = useState(selectedItem ? selectedItem?.name : "");
+
+  const [name, setName] = useState(selectedItem?.name || "");
   const [description, setDescription] = useState(
-    selectedItem ? selectedItem?.description : "",
+    selectedItem?.description || "",
   );
-  const [category, setCategory] = useState(
-    selectedItem ? selectedItem?.category : "",
-  );
-  const [unit, setUnit] = useState(selectedItem ? selectedItem?.unit : "");
+  const [category, setCategory] = useState(selectedItem?.category || "");
+  const [unit, setUnit] = useState(selectedItem?.unit || "");
   const [defaultStorageLocation, setDefaultStorageLocation] = useState(
-    selectedItem ? selectedItem?.defaultStorageLocation : "",
+    selectedItem?.defaultStorageLocation || "",
   );
   const [shelfLifeDays, setShelfLifeDays] = useState<number | "">(
-    selectedItem ? selectedItem?.shelfLifeDays : "",
+    selectedItem?.shelfLifeDays ?? "",
   );
   const [alternativeUsages, setAlternativeUsages] = useState(
-    selectedItem ? selectedItem?.alternativeUsages : "",
+    selectedItem?.alternativeUsages || "",
   );
   const [seasonality, setSeasonality] = useState<string[]>(
-    selectedItem ? selectedItem?.seasonality : [],
+    selectedItem?.seasonality || [],
   );
   const [ingredientImage, setIngredientImage] = useState<File | null>(null);
 
@@ -78,19 +77,6 @@ function IngredientEditModal({
         ? prev.filter((s) => s !== season)
         : [...prev, season],
     );
-  };
-
-  const resetForm = () => {
-    setName("");
-    setDescription("");
-    setCategory("");
-    setUnit("");
-    setDefaultStorageLocation("");
-    setShelfLifeDays("");
-    setAlternativeUsages("");
-    setSeasonality([]);
-    setIngredientImage(null);
-    setErrors({});
   };
 
   const validate = (): boolean => {
@@ -134,7 +120,7 @@ function IngredientEditModal({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
 
@@ -167,7 +153,6 @@ function IngredientEditModal({
       });
 
       toast.success(`${name} successfully edited!`);
-      resetForm();
       onHide();
       dispatch(fetchIngredients(searchParams));
       if (onSuccess) onSuccess();

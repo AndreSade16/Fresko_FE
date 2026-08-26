@@ -6,6 +6,7 @@ import type {
 } from "../../../interfaces/interfaces";
 import { PulseLoader } from "react-spinners";
 import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+import { useNavigate } from "react-router";
 
 interface IngredientsListProps {
   data: IngredientDefinitionPage | null;
@@ -30,6 +31,7 @@ function IngredientsList({
   userRole,
   isAdding,
 }: IngredientsListProps) {
+  const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const items = data?.content || [];
@@ -84,7 +86,14 @@ function IngredientsList({
 
           return (
             <Col key={ingredientDefinitionId}>
-              <Card className="h-100 shadow-sm hover-card bg-primary text-white">
+              <Card
+                className="h-100 shadow-sm hover-card bg-primary text-white"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  console.log("CIAS");
+                  navigate(`/ingredients/${ingredientDefinitionId}`);
+                }}
+              >
                 {imageUrl && (
                   <Card.Img
                     variant="top"
@@ -131,7 +140,10 @@ function IngredientsList({
                         variant="outline-light"
                         size="sm"
                         className="w-100 fw-semibold"
-                        onClick={() => onAddItem?.(item)}
+                        onClick={(e) => {
+                          onAddItem?.(item);
+                          e.stopPropagation();
+                        }}
                         disabled={isAdding}
                       >
                         Add to List
@@ -142,7 +154,10 @@ function IngredientsList({
                           variant="outline-warning"
                           size="sm"
                           className="w-100 fw-semibold"
-                          onClick={() => onEditItem(item)}
+                          onClick={(e) => {
+                            onEditItem(item);
+                            e.stopPropagation();
+                          }}
                         >
                           Edit
                         </Button>
@@ -152,7 +167,10 @@ function IngredientsList({
                           variant="outline-danger"
                           size="sm"
                           className="w-100 fw-semibold"
-                          onClick={() => onDeleteItem(item)}
+                          onClick={(e) => {
+                            onDeleteItem(item);
+                            e.stopPropagation();
+                          }}
                         >
                           Delete
                         </Button>
