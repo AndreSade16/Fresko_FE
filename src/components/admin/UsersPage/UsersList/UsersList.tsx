@@ -14,7 +14,6 @@ interface UsersListProps {
   error: StandardError | string | null;
   onLoadMore: (nextPage: number) => void;
   onDeleteUser: (user: User) => void;
-  activeUserRole: string | null;
   isFetching: boolean;
   setIsFetching: Dispatch<SetStateAction<boolean>>;
   onEditUser: (user: User) => void;
@@ -24,13 +23,13 @@ function UsersList({
   data,
   isLoading,
   onLoadMore,
-  onEditItem,
-  activeUserRole,
+  onEditUser,
+  onDeleteUser,
   isFetching,
 }: UsersListProps) {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const items = data?.content || [];
+  const users = data?.content || [];
   const isLastPage = data?.last ?? true;
   const currentPage = data?.number ?? 0;
 
@@ -58,104 +57,73 @@ function UsersList({
     };
   }, [isLoading, isLastPage, currentPage, onLoadMore]);
 
-  if (!isLoading && data !== null && items.length === 0) {
+  if (!isLoading && data !== null && users.length === 0) {
     return (
       <Alert variant="secondary" className="my-3 text-center">
-        No ingredient found.
+        No user found.
       </Alert>
     );
   }
 
   return (
-    <div className="ingredient-list-container mt-3 w-100">
+    <div
+      className="ingredient-list-container mt-3 w-100"
+      style={{ minWidth: "200px" }}
+    >
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-        {items.map((item) => {
-          const {
-            name,
-            description,
-            imageUrl,
-            category,
-            defaultStorageLocation,
-            shelfLifeDays,
-            ingredientDefinitionId,
-          } = item;
+        {users.map((user) => {
+          const { username, userId, email, firstName, lastName, avatar, role } =
+            user;
 
           return (
-            <Col key={ingredientDefinitionId}>
+            <Col key={userId}>
               <Card className="h-100 shadow-sm hover-card bg-primary text-white">
-                {imageUrl && (
+                {avatar && (
                   <Card.Img
                     variant="top"
-                    src={imageUrl}
-                    alt={name}
+                    src={avatar}
+                    alt={username}
                     style={{ height: "200px", objectFit: "cover" }}
                   />
                 )}
                 <Card.Body className="d-flex flex-column">
                   <div className="d-flex justify-content-between align-items-start mb-2">
                     <Card.Title className="mb-0 fs-6 fw-bold">
-                      {name}
+                      {firstName} {lastName}
                     </Card.Title>
                     <Badge bg="warning" className="ms-1 text-dark">
-                      {category}
+                      {role}
                     </Badge>
                   </div>
 
                   <Card.Text className="text-light small flex-grow-1">
-                    {description}
+                    {email}
                   </Card.Text>
 
-                  <div className="mt-auto border-top pt-2 small">
-                    <div className="d-flex justify-content-between mb-2">
-                      <span className="fw-semibold">Shelf life days:</span>
-                      <span>{shelfLifeDays}</span>
-                    </div>
-                    <div className="d-flex justify-content-between mb-3">
-                      <span className="fw-semibold">Suggested storage:</span>
-                      <Badge
-                        bg="secondary"
-                        text="dark"
-                        className="d-flex align-items-center"
-                        style={{ maxHeight: "24px" }}
-                      >
-                        {defaultStorageLocation === "REFRIGERATOR"
-                          ? "FRIDGE"
-                          : defaultStorageLocation}
-                      </Badge>
-                    </div>
+                  <Card.Text className="text-light small flex-grow-1">
+                    <b>ID:</b> {userId}
+                  </Card.Text>
 
-                    <div className="d-flex gap-2 justify-content-center">
-                      <Button
-                        variant="outline-light"
-                        size="sm"
-                        className="w-100 fw-semibold"
-                        onClick={() => onAddItem?.(item)}
-                        disabled={isAdding}
-                      >
-                        Add to List
-                      </Button>
+                  <div className="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+                    <Button
+                      variant="outline-warning"
+                      size="sm"
+                      className="w-100 fw-semibold"
+                      onClick={() => onEditUser(user)}
+                      disabled={isFetching}
+                    >
+                      {isFetching ? <PulseLoader /> : "Edit"}
+                    </Button>
 
-                      {userRole === "ADMIN" && (
-                        <Button
-                          variant="outline-warning"
-                          size="sm"
-                          className="w-100 fw-semibold"
-                          onClick={() => onEditItem(item)}
-                        >
-                          Edit
-                        </Button>
-                      )}
-                      {userRole === "ADMIN" && (
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          className="w-100 fw-semibold"
-                          onClick={() => onDeleteItem(item)}
-                        >
-                          Delete
-                        </Button>
-                      )}
-                    </div>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      className="w-100 fw-semibold"
+                      onClick={() => onDeleteUser(user)}
+                      disabled={isFetching}
+                    >
+                      {isFetching ? <PulseLoader /> : "Delete"}
+                    </Button>
                   </div>
                 </Card.Body>
               </Card>

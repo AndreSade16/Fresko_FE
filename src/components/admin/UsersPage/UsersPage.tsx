@@ -17,7 +17,7 @@ function UsersPage() {
     (state: RootState) => state.adminUsers,
   );
 
-  const userRole = useSelector((state: RootState) => state.user.role);
+  // const userRole = useSelector((state: RootState) => state.user.role);
 
   useEffect(() => {
     const fetchUsersList = (params: URLSearchParams) => {
@@ -58,7 +58,6 @@ function UsersPage() {
           isLoading={isLoading}
           error={error}
           onLoadMore={handleLoadMore}
-          activeUserRole={userRole}
           isFetching={isFetching}
           setIsFetching={setIsFetisFetching}
           onDeleteUser={handleDelete}

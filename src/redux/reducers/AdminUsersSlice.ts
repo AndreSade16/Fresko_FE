@@ -57,7 +57,7 @@ export const fetchAdminUsers = createAsyncThunk<
       const queryString = filters
         ? `?${new URLSearchParams(filters as Record<string, string>).toString()}`
         : "";
-      const data = await apiFetch<UserPage>(`/ingredients${queryString}`, {
+      const data = await apiFetch<UserPage>(`/users${queryString}`, {
         method: "GET",
       });
 
