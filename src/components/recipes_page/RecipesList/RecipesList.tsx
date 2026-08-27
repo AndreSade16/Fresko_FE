@@ -121,21 +121,30 @@ function RecipesList({
                     onClick={() => navigate(`/recipes/${recipeId}`)}
                   />
                 )}
-                <Card.Body className="d-flex flex-column">
-                  <div className="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
-                    <Card.Title className="mb-0 fs-6 fw-bold">
-                      {name}
-                    </Card.Title>
-                    <Badge bg="warning" className=" text-dark">
-                      {difficulty?.replace("_", " ")}
-                    </Badge>
+                <Card.Body className="d-flex flex-column justify-content-between">
+                  <div className="d-flex flex-column justify-content-between flex-grow-1 mb-2">
+                    <div className="d-flex flex-column justify-content-between align-items-start mb-3 flex-wrap gap-2">
+                      <Card.Title className="mb-0 fs-6 fw-bold">
+                        {name}
+                      </Card.Title>
+                    </div>
+                    <div>
+                      <div className="d-flex gap-2 mb-1">
+                        <span className="fw-semibold fs-6">Difficulty:</span>
+                        <Badge
+                          bg="warning"
+                          className=" text-dark d-flex align-items-center"
+                        >
+                          {difficulty?.replace("_", " ")}
+                        </Badge>
+                      </div>
+                      <Card.Text className="text-muted small mt-auto">
+                        {description}
+                      </Card.Text>
+                    </div>
                   </div>
 
-                  <Card.Text className="text-muted small flex-grow-1">
-                    {description}
-                  </Card.Text>
-
-                  <div className="mt-auto border-top pt-2 small">
+                  <div className=" border-top pt-2 small">
                     <div className="d-flex justify-content-between mb-3">
                       <span className="fw-semibold">Total Time:</span>
                       <span>

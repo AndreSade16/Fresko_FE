@@ -94,14 +94,14 @@ function PantryPage() {
       <PantryFilters />
       <div className="d-flex justify-content-center gap-2 mb-4">
         <Button
-          variant="secondary"
+          variant="outline-secondary"
           className="fw-semibold"
           onClick={() => setShowCreateModal(true)}
         >
           Create Pantry Item
         </Button>
         <Button
-          variant="secondary"
+          variant="outline-warning"
           className="fw-semibold"
           onClick={() => navigate("/my-list")}
         >

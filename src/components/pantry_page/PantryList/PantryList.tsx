@@ -129,8 +129,12 @@ function PantryList({
                       </span>
                     </div>
                     <div className="d-flex justify-content-between mb-3">
-                      <span className="fw-semibold">Location:</span>
-                      <Badge bg="secondary" text="dark">
+                      <span className="fw-semibold">Storage:</span>
+                      <Badge
+                        bg="warning"
+                        text="dark"
+                        className="d-flex align-items-center"
+                      >
                         {storageLocation === "REFRIGERATOR"
                           ? "FRIDGE"
                           : storageLocation}
@@ -168,7 +172,7 @@ function PantryList({
                         Edit
                       </Button>
                       <Button
-                        variant="warning"
+                        variant="outline-warning"
                         size="sm"
                         className="w-50 fw-semibold"
                         onClick={() => onDeleteItem?.(item)}
