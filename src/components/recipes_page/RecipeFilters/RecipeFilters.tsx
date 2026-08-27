@@ -70,7 +70,7 @@ function RecipeFilters({ applyFilters }: RecipeFiltersProps) {
   };
 
   return (
-    <Accordion className="mb-4 w-75 mx-auto">
+    <Accordion className="mb-4 w-75 mx-auto z-1">
       <Accordion.Item
         eventKey="0"
         className="bg-dark text-light border-0 rounded-3 overflow-hidden"
@@ -78,7 +78,7 @@ function RecipeFilters({ applyFilters }: RecipeFiltersProps) {
         <Accordion.Header className="bg-light">
           <span className="fw-bold text-dark">🔍 Recipe Filters & Search</span>
         </Accordion.Header>
-        <Accordion.Body className="bg-dark text-light">
+        <Accordion.Body className="bg-primary text-light">
           <Form onSubmit={handleSubmit}>
             <Row className="g-3">
               {/* Name */}
@@ -250,7 +250,7 @@ function RecipeFilters({ applyFilters }: RecipeFiltersProps) {
               </Button>
               <Button
                 type="submit"
-                variant="light"
+                variant="outline-light"
                 size="sm"
                 className="fw-semibold"
               >

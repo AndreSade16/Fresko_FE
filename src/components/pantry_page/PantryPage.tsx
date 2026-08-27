@@ -20,6 +20,7 @@ import { GridLoader } from "react-spinners";
 import EditModal from "./EditModal/EditModal";
 import { apiFetch } from "../../tools/fetchHelper";
 import { useNavigate } from "react-router";
+import LemonImage from "../LemonImage/LemonImage";
 
 function PantryPage() {
   const navigate = useNavigate();
@@ -87,22 +88,26 @@ function PantryPage() {
   const hasInitialData = data && data.content && data.content.length > 0;
 
   return (
-    <Container fluid className="d-flex flex-column align-items-center">
+    <Container
+      fluid
+      className="d-flex flex-column align-items-center position-relative"
+    >
+      <LemonImage />
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
         Pantry & Fridge
       </h1>
       <PantryFilters />
       <div className="d-flex justify-content-center gap-2 mb-4">
         <Button
-          variant="outline-secondary"
-          className="fw-semibold"
+          variant="secondary"
+          className="fw-semibold z-1 border-black shadow-lg"
           onClick={() => setShowCreateModal(true)}
         >
           Create Pantry Item
         </Button>
         <Button
-          variant="outline-warning"
-          className="fw-semibold"
+          variant="warning"
+          className="fw-semibold z-1 border-black shadow-lg"
           onClick={() => navigate("/my-list")}
         >
           Go shopping!

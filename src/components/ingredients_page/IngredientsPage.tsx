@@ -18,6 +18,7 @@ import { fetchActiveShoppingList } from "../../redux/reducers/ShoppingListSlice"
 import { toast } from "react-toastify";
 import IngredientDeleteModal from "./IngredientDeleteModal/IngredientDeleteModal";
 import IngredientEditModal from "./IngredientEditModal/IngredientEditModal";
+import LemonImage from "../LemonImage/LemonImage";
 
 function IngredientPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -136,7 +137,11 @@ function IngredientPage() {
   };
 
   return (
-    <Container fluid className=" d-flex flex-column align-items-center">
+    <Container
+      fluid
+      className=" d-flex flex-column align-items-center position-relative"
+    >
+      <LemonImage />
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
         Ingredients
       </h1>

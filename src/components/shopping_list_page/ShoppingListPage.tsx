@@ -15,6 +15,7 @@ import {
 } from "../../interfaces/interfaces";
 import { toast } from "react-toastify";
 import { apiFetch } from "../../tools/fetchHelper";
+import LemonImage from "../LemonImage/LemonImage";
 
 function ShoppingListPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -114,7 +115,11 @@ function ShoppingListPage() {
   };
 
   return (
-    <Container fluid className=" d-flex flex-column align-items-center">
+    <Container
+      fluid
+      className=" d-flex flex-column align-items-center position-relative"
+    >
+      <LemonImage />
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
         Shopping List
       </h1>
@@ -132,7 +137,7 @@ function ShoppingListPage() {
           </Alert>
           <Button
             variant="secondary"
-            className="fw-semibold"
+            className="fw-semibold z-1"
             onClick={handleSlCreation}
           >
             Create a Shopping List!

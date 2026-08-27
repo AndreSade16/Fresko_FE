@@ -7,6 +7,7 @@ import { fetchDashboard } from "../../redux/reducers/DashboardSlice";
 import ListSection from "./ListSection/ListSection";
 import SuggestedRecipesSection from "./SuggestedRecipesSection/SuggestedRecipesSection";
 import BlurText from "../../tools/Blurtext";
+import LemonImage from "../LemonImage/LemonImage";
 
 function HomePage() {
   const {
@@ -24,7 +25,8 @@ function HomePage() {
   }, [dispatch]);
 
   return (
-    <Container fluid className="p-3 p-md-5">
+    <Container fluid className="p-3 p-md-5 position-relative">
+      <LemonImage />
       {error && (
         <Alert variant="danger" className="mx-lg-4 mb-4 rounded-3 shadow-sm">
           <Alert.Heading className="fs-6 fw-bold mb-1">
@@ -35,7 +37,7 @@ function HomePage() {
       )}
       <div className="d-flex align-items-center gap-1">
         <img src="/favicon.png" style={{ width: "100px" }} />
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column z-1">
           <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}!</h3>
           <h3 className="fw-semibold ps-3">
             Here's what's{" "}

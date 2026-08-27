@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import type { StandardError, UserDTO } from "../../interfaces/interfaces";
 import UpdateAvatarModal from "./UpdateAvatarModal/UpdateAvatarModal";
 import { apiFetch } from "../../tools/fetchHelper";
+import LemonImage from "../LemonImage/LemonImage";
 
 function ProfilePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -76,7 +77,8 @@ function ProfilePage() {
   };
 
   return (
-    <Container fluid className="py-4">
+    <Container fluid className="py-4 position-relative">
+      <LemonImage />
       <Row className="g-4 w-100">
         {isLoading ? (
           <Col className="d-flex flex-column align-items-center">
@@ -100,9 +102,10 @@ function ProfilePage() {
                 }}
               />
 
-              <i className="bi bi-pencil-square position-absolute bottom-0 end-0 z-3 me-3 mb-2 fs-2 text-white"></i>
+              <i className="bi bi-pencil-square position-absolute bottom-0 end-0 z-3 me-3 mb-2 fs-2 text-white">
+                <small>Edit</small>
+              </i>
             </div>
-            <p className="fst-italic mt-2">Edit your avatar</p>
           </Col>
         )}
 

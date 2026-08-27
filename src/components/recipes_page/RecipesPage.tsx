@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import RecipeToSlAddModal from "./RecipeToSlModal/RecipeToSlModal";
 import RecipeDeleteModal from "./RecipeDeleteModal/RecipeDeleteModal";
 import RecipeEditModal from "./RecipeEditModal/RecipeEditModal";
+import LemonImage from "../LemonImage/LemonImage";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -117,7 +118,11 @@ function RecipesPage() {
   };
 
   return (
-    <Container fluid className="d-flex flex-column align-items-center">
+    <Container
+      fluid
+      className="d-flex flex-column align-items-center position-relative"
+    >
+      <LemonImage />
       <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
         Recipes
       </h1>

@@ -106,14 +106,14 @@ function ShoppingList({
             <div className="d-flex justify-content-around gap-3">
               <Button
                 variant="secondary"
-                className="fw-semibold"
+                className="fw-semibold z-1 border-black shadow-lg"
                 onClick={() => navigate("/recipes")}
               >
                 Browse Recipes
               </Button>
               <Button
-                variant="secondary"
-                className="fw-semibold"
+                variant="warning"
+                className="fw-semibold z-1 border-black shadow-lg"
                 onClick={() => navigate("/ingredients")}
               >
                 Browse Ingredients
@@ -147,19 +147,6 @@ function ShoppingList({
                 className="d-flex align-items-center px-1"
                 style={{ minWidth: 0 }}
               >
-                <Form.Check
-                  className="me-2 flex-shrink-0"
-                  checked={isChecked}
-                  onChange={(e) =>
-                    handleCheckboxChange(
-                      shoppingListItemId,
-                      e.target.checked,
-                      suggestedQuantity ?? 1,
-                      shelfLifeDays ?? 0,
-                    )
-                  }
-                />
-
                 <Card
                   className="h-100 w-100 shadow-sm hover-card bg-primary d-flex flex-row align-items-center justify-content-between position-relative overflow-hidden pe-2"
                   style={{ minWidth: 0 }}
@@ -285,9 +272,34 @@ function ShoppingList({
                         }}
                       />
                     </Form.Group>
+                    <Form.Group
+                      controlId={`bought-${shoppingListItemId}`}
+                      style={{ minWidth: 0 }}
+                      className="d-flex gap-2 my-1 align-items-center"
+                    >
+                      <Form.Label
+                        className="mb-0 fs-6 text-warning"
+                        style={{ fontSize: "0.7rem" }}
+                      >
+                        In Cart:
+                      </Form.Label>
+                      <Form.Check
+                        className="me-2 flex-shrink-0"
+                        checked={isChecked}
+                        onChange={(e) =>
+                          handleCheckboxChange(
+                            shoppingListItemId,
+                            e.target.checked,
+                            suggestedQuantity ?? 1,
+                            shelfLifeDays ?? 0,
+                          )
+                        }
+                      />
+                    </Form.Group>
                   </Card.Body>
                   <Button
                     variant="secondary"
+                    disabled={isChecked}
                     onClick={() => onDeleteItem(shoppingListItemId)}
                   >
                     <i className="bi bi-trash3-fill"></i>
