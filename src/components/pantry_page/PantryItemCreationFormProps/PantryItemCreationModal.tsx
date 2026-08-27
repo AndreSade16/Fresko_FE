@@ -105,8 +105,22 @@ function PantryItemCreationModal({
     }
   };
 
-  const handleSelectIngredient = (id: string, name: string) => {
+  const addDaysToDate = (dateString: string, days: number): string => {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split("T")[0];
+  };
+
+  const handleSelectIngredient = (
+    id: string,
+    name: string,
+    shelfLifeDays: number,
+  ) => {
     setFormData((prev) => ({ ...prev, ingredientDefinitionId: id }));
+    setFormData((prev) => ({
+      ...prev,
+      expirationDate: addDaysToDate(prev.purchaseDate, shelfLifeDays),
+    }));
     setSearchTerm(name);
     setShowDropdown(false);
   };
@@ -230,6 +244,7 @@ function PantryItemCreationModal({
                                 handleSelectIngredient(
                                   item.ingredientDefinitionId,
                                   item.name,
+                                  item.shelfLifeDays,
                                 )
                               }
                               className="bg-dark text-light border-secondary hover-overlay"
