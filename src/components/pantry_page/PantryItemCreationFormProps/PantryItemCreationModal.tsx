@@ -125,7 +125,7 @@ function PantryItemCreationModal({
     setShowDropdown(false);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
 

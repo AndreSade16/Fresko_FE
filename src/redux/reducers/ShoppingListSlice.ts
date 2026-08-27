@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import type {
   ActiveShoppingList,
+  ShoppingListCreatedDTO,
   StandardError,
 } from "../../interfaces/interfaces";
 import { logout } from "./AuthSlice";
@@ -47,6 +48,31 @@ export const fetchActiveShoppingList = createAsyncThunk<
   }
 });
 
+export const createActiveShoppingList = createAsyncThunk<
+  ShoppingListCreatedDTO,
+  void,
+  { rejectValue: StandardError | string }
+>("shoppinglists/fetchActiveShoppingList", async (_, { rejectWithValue }) => {
+  try {
+    const data = await apiFetch<ShoppingListCreatedDTO>(`/shopping-lists`, {
+      method: "POST",
+    });
+
+    return data;
+  } catch (error: unknown) {
+    if (typeof error === "object" && error !== null && "message" in error) {
+      return rejectWithValue(error as StandardError);
+    }
+
+    if (error instanceof Error) {
+      return rejectWithValue(error.message);
+    }
+
+    // Fallback to always have a return value
+    return rejectWithValue("An unexpected error occurred.");
+  }
+});
+
 const shoppinglistsSlice = createSlice({
   name: "shoppinglists",
   initialState,
@@ -68,6 +94,19 @@ const shoppinglistsSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchActiveShoppingList.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload ?? "Unknown error";
+        state.data = null;
+      })
+      .addCase(createActiveShoppingList.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(createActiveShoppingList.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = null;
+      })
+      .addCase(createActiveShoppingList.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload ?? "Unknown error";
         state.data = null;
