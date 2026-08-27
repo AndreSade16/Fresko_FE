@@ -14,21 +14,20 @@ import { GridLoader, PulseLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../redux/store";
 import type {
+  RecipeIngredientsToSlDTO,
   RecipePageContent,
-  ShoppingListItemCreatedDTO,
   StandardError,
 } from "../../../interfaces/interfaces";
 import { apiFetch } from "../../../tools/fetchHelper";
 import RecipeEditModal from "../../recipes_page/RecipeEditModal/RecipeEditModal";
 import RecipeDeleteModal from "../../recipes_page/RecipeDeleteModal/RecipeDeleteModal";
+import RecipeToSlAddModal from "../../recipes_page/RecipeToSlModal/RecipeToSlModal";
 
 function RecipeDetails() {
   const navigate = useNavigate();
 
   const userRole = useSelector((state: RootState) => state.auth.role);
-  const activeShoppingList = useSelector(
-    (state: RootState) => state.shoppingList,
-  );
+
   const { recipeId } = useParams<{ recipeId: string }>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -61,42 +60,6 @@ function RecipeDetails() {
     void fetchRecipe();
   }, [fetchRecipe]);
 
-  const handleAdd = async (quantity: number) => {
-    const shoppingListId = activeShoppingList.data?.shoppingListId;
-
-    if (!recipe || !shoppingListId) {
-      toast.error("Shopping list not found. Please try again.");
-      return;
-    }
-
-    setIsAdding(true);
-    const currentName = recipe.name;
-
-    try {
-      await apiFetch<ShoppingListItemCreatedDTO>(
-        "/shopping-lists/me/" + shoppingListId + "/items",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            recipeDefinitionId: recipe.recipeId,
-            suggestedQuantity: quantity,
-          }),
-        },
-      );
-
-      toast.success(`${currentName} added to your shopping list!`);
-    } catch (error: unknown) {
-      let message = "An error occurred while adding the recipe.";
-      if (typeof error === "object" && error !== null && "message" in error) {
-        message = (error as StandardError).message;
-      }
-      toast.error(message);
-    } finally {
-      setIsAdding(false);
-      setShowAddModal(false);
-    }
-  };
-
   const handleDelete = async () => {
     if (!recipe) return;
 
@@ -115,6 +78,35 @@ function RecipeDetails() {
       toast.error(message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleAddIngredients = async (
+    recipe: RecipePageContent,
+    numOfPeople: string,
+  ) => {
+    setIsAdding(true);
+
+    try {
+      const response = await apiFetch<RecipeIngredientsToSlDTO>(
+        `/recipes/${recipe.recipeId}/${numOfPeople}`,
+        {
+          method: "POST",
+        },
+      );
+
+      if (response.shoppingListItems.length > 0) {
+        toast.success("Recipe ingredients are now in your shopping list!");
+      }
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
+      setShowAddModal(false);
+      setIsAdding(false);
     }
   };
 
@@ -282,6 +274,13 @@ function RecipeDetails() {
       >
         Go back
       </Button>
+      <RecipeToSlAddModal
+        showAddModal={showAddModal}
+        setShowAddModal={setShowAddModal}
+        selectedItem={recipe}
+        isAdding={isAdding}
+        onConfirmAdd={handleAddIngredients}
+      />
       {showEditModal && recipe && (
         <RecipeEditModal
           key={recipe.recipeId}
