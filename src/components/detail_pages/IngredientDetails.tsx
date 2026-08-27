@@ -178,7 +178,7 @@ function IngredientDetails() {
                       {ingredient.shelfLifeDays}
                     </span>
                   </div>
-                  <Card.Footer className="d-flex flex-column flex-md-row gap-2 mt-3">
+                  <Card.Footer className="d-flex flex-column flex-md-row gap-2 mt-3 bg-transparent border-0">
                     <Button
                       variant="outline-light"
                       size="sm"
@@ -218,6 +218,13 @@ function IngredientDetails() {
           </Row>
         )
       )}
+      <Button
+        className="mt-4 fw-semibold"
+        variant="outline-secondary"
+        onClick={() => navigate(-1)}
+      >
+        Go back
+      </Button>
       <IngredientAddModal
         showAddModal={showAddModal}
         onHide={() => setShowAddModal(false)}
