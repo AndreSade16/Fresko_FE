@@ -22,6 +22,7 @@ import { apiFetch } from "../../../tools/fetchHelper";
 import RecipeEditModal from "../../recipes_page/RecipeEditModal/RecipeEditModal";
 import RecipeDeleteModal from "../../recipes_page/RecipeDeleteModal/RecipeDeleteModal";
 import RecipeToSlAddModal from "../../recipes_page/RecipeToSlModal/RecipeToSlModal";
+import RecipePrepareModal from "../../recipes_page/RecipePrepareModal/RecipePrepareModal";
 
 function RecipeDetails() {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ function RecipeDetails() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showPrepareModal, setShowPrepareModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [recipe, setRecipe] = useState<RecipePageContent | null>(null);
@@ -41,7 +43,9 @@ function RecipeDetails() {
     if (!recipeId) return;
     try {
       setIsLoading(true);
-      const data = await apiFetch<RecipePageContent>(`/recipes/${recipeId}`);
+      const data = await apiFetch<RecipePageContent>(
+        `/recipes/${recipeId}/visit`,
+      );
       setRecipe(data);
       setIsImageValid(true);
     } catch (error: unknown) {
@@ -106,6 +110,30 @@ function RecipeDetails() {
       toast.error(message);
     } finally {
       setShowAddModal(false);
+      setIsAdding(false);
+    }
+  };
+
+  const handlePrepare = async (
+    selectedRecipe: RecipePageContent | null,
+    peopleCount: number,
+  ) => {
+    if (!selectedRecipe || peopleCount <= 0) return;
+    setIsAdding(true);
+
+    try {
+      await apiFetch(`/recipes/${recipeId}?peopleCount=${peopleCount}`, {
+        method: "POST",
+      });
+      toast.success(`${recipe?.name} successfully prepared!`);
+      setShowPrepareModal(false);
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
       setIsAdding(false);
     }
   };
@@ -237,6 +265,15 @@ function RecipeDetails() {
                         "Buy Ingredients"
                       )}
                     </Button>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      className="w-100 fw-semibold"
+                      onClick={() => setShowPrepareModal(true)}
+                      disabled={isLoading || isAdding}
+                    >
+                      {isAdding ? <PulseLoader color="white" /> : "Prepare!"}
+                    </Button>
 
                     {userRole === "ADMIN" && (
                       <Button
@@ -280,6 +317,13 @@ function RecipeDetails() {
         selectedItem={recipe}
         isAdding={isAdding}
         onConfirmAdd={handleAddIngredients}
+      />
+      <RecipePrepareModal
+        show={showPrepareModal}
+        selectedRecipe={recipe}
+        onHide={() => setShowPrepareModal(false)}
+        onPrepare={handlePrepare}
+        isAdding={isAdding || isLoading}
       />
       {showEditModal && recipe && (
         <RecipeEditModal
