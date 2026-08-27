@@ -18,6 +18,7 @@ import { logout } from "./redux/reducers/AuthSlice";
 import UsersPage from "./components/admin/UsersPage/UsersPage";
 import IngredientDetails from "./components/detail_pages/IngredientDetails/IngredientDetails";
 import RecipeDetails from "./components/detail_pages/RecipeDetails/RecipeDetails";
+import UserDetails from "./components/detail_pages/UserDetails/UserDetails";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -56,6 +57,7 @@ function App() {
               <Route element={<ProtectedRouteAdmin />}>
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<UsersPage />} />
+                <Route path="/admin/users/:userId" element={<UserDetails />} />
               </Route>
             </Route>
 

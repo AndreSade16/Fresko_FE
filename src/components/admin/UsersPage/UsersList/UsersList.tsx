@@ -7,6 +7,7 @@ import type {
   User,
   UserPage,
 } from "../../../../interfaces/interfaces";
+import { useNavigate } from "react-router";
 
 interface UsersListProps {
   data: UserPage | null;
@@ -27,6 +28,7 @@ function UsersList({
   onDeleteUser,
   isFetching,
 }: UsersListProps) {
+  const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const users = data?.content || [];
@@ -77,7 +79,11 @@ function UsersList({
 
           return (
             <Col key={userId}>
-              <Card className="h-100 shadow-sm hover-card bg-primary text-white">
+              <Card
+                className="h-100 shadow-sm hover-card bg-primary text-white"
+                onClick={() => navigate(`/admin/users/${userId}`)}
+                style={{ cursor: "pointer" }}
+              >
                 {avatar && (
                   <Card.Img
                     variant="top"

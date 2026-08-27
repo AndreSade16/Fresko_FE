@@ -38,8 +38,8 @@ function SuggestedRecipesSection({
             {suggestedRecipes.map((recipe) => (
               <Col key={recipe.id} xs={12} md={6} lg={4}>
                 <Card
-                  className="bg-primary text-light border-0 rounded-3 shadow-sm overflow-hidden"
-                  style={{ height: "115px" }}
+                  className="bg-dark text-light border-0 rounded-3 shadow-sm overflow-hidden"
+                  style={{ height: "130px" }}
                 >
                   <div className="d-flex h-100">
                     <img
@@ -55,7 +55,7 @@ function SuggestedRecipesSection({
                       }}
                     />
 
-                    <Card.Body className="d-flex flex-column justify-content-center p-2 ps-3 overflow-hidden">
+                    <Card.Body className="d-flex flex-column justify-content-around p-2 ps-3 overflow-hidden">
                       <span
                         className="text-light opacity-75 small text-uppercase fw-bold d-none d-sm-block"
                         style={{ fontSize: "0.75rem", lineHeight: "1.2" }}
@@ -73,7 +73,7 @@ function SuggestedRecipesSection({
                       </h6>
                       <span
                         className="text-light opacity-75 small text-uppercase fw-bold d-none d-sm-block text-truncate"
-                        style={{ fontSize: "0.75rem", lineHeight: "1.2" }}
+                        style={{ fontSize: "0.75rem" }}
                       >
                         Time: {recipe.totalTime} min
                       </span>
