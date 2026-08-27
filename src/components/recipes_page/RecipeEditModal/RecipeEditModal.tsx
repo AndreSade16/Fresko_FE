@@ -29,7 +29,7 @@ interface RecipeEditModalProps {
   onHide: () => void;
   selectedItem: RecipePageContent | null;
   onSuccess?: (recipeId: string) => void;
-  onEdit: () => void;
+  onEdit?: () => void;
 }
 
 // interface RecipeCreatedDTO {
@@ -196,7 +196,7 @@ function RecipeEditModal({
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -279,7 +279,9 @@ function RecipeEditModal({
         closeVariant="white"
         className="bg-primary text-light border-bottom border-light border-opacity-25"
       >
-        <Modal.Title className="fs-5 fw-bold">Create New Recipe</Modal.Title>
+        <Modal.Title className="fs-5 fw-bold">
+          Edit '{selectedItem?.name}'
+        </Modal.Title>
       </Modal.Header>
 
       <Form onSubmit={handleSubmit} className="bg-primary text-light">

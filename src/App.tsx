@@ -16,7 +16,8 @@ import { useDispatch } from "react-redux";
 import { type AppDispatch } from "./redux/store";
 import { logout } from "./redux/reducers/AuthSlice";
 import UsersPage from "./components/admin/UsersPage/UsersPage";
-import IngredientDetails from "./components/detail_pages/IngredientDetails";
+import IngredientDetails from "./components/detail_pages/IngredientDetails/IngredientDetails";
+import RecipeDetails from "./components/detail_pages/RecipeDetails/RecipeDetails";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -50,6 +51,7 @@ function App() {
                 path="/ingredients/:ingredientId"
                 element={<IngredientDetails />}
               />
+              <Route path="/recipes/:recipeId" element={<RecipeDetails />} />
 
               <Route element={<ProtectedRouteAdmin />}>
                 <Route path="/admin" element={<AdminPage />} />

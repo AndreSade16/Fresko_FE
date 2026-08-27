@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { apiFetch } from "../../tools/fetchHelper";
+import { apiFetch } from "../../../tools/fetchHelper";
 import {
   type IngredientDefinitionPageContent,
   type ShoppingListItemCreatedDTO,
   type StandardError,
-} from "../../interfaces/interfaces";
+} from "../../../interfaces/interfaces";
 import { toast } from "react-toastify";
 import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import { GridLoader, PulseLoader } from "react-spinners";
 import { useSelector } from "react-redux";
-import type { RootState } from "../../redux/store";
-import IngredientAddModal from "../ingredients_page/IngredientAddModal/IngredientAddModal";
-import IngredientEditModal from "../ingredients_page/IngredientEditModal/IngredientEditModal";
-import IngredientDeleteModal from "../ingredients_page/IngredientDeleteModal/IngredientDeleteModal";
+import type { RootState } from "../../../redux/store";
+import IngredientAddModal from "../../ingredients_page/IngredientAddModal/IngredientAddModal";
+import IngredientEditModal from "../../ingredients_page/IngredientEditModal/IngredientEditModal";
+import IngredientDeleteModal from "../../ingredients_page/IngredientDeleteModal/IngredientDeleteModal";
 
 function IngredientDetails() {
   const navigate = useNavigate();

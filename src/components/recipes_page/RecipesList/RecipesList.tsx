@@ -12,6 +12,7 @@ import type {
   RecipePageContent,
   StandardError,
 } from "../../../interfaces/interfaces";
+import { useNavigate } from "react-router";
 
 interface RecipesListProps {
   data: RecipePage | null;
@@ -38,6 +39,7 @@ function RecipesList({
   onAddIngredients,
   userRole,
 }: RecipesListProps) {
+  const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const items = data?.content || [];
@@ -106,13 +108,17 @@ function RecipesList({
 
           return (
             <Col key={recipeId}>
-              <Card className="h-100 shadow-sm hover-card bg-primary">
+              <Card
+                className="h-100 shadow-sm hover-card bg-primary"
+                style={{ cursor: "pointer" }}
+              >
                 {imageUrl && (
                   <Card.Img
                     variant="top"
                     src={imageUrl}
                     alt={name}
                     style={{ height: "200px", objectFit: "cover" }}
+                    onClick={() => navigate(`/recipes/${recipeId}`)}
                   />
                 )}
                 <Card.Body className="d-flex flex-column">
@@ -158,7 +164,8 @@ function RecipesList({
                           wordBreak: "keep-all",
                         }}
                         disabled={isAdding}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setSelectedItem(recipe);
                           onAddIngredients(true);
                         }}
@@ -174,7 +181,8 @@ function RecipesList({
                           variant="outline-warning"
                           size="sm"
                           className="w-100 fw-semibold"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             onEditItem(recipe);
                             setSelectedItem(recipe);
                           }}
@@ -192,7 +200,8 @@ function RecipesList({
                           variant="outline-danger"
                           size="sm"
                           className="w-100 fw-semibold"
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             onDeleteItem(recipe);
                             setSelectedItem(recipe);
                           }}
