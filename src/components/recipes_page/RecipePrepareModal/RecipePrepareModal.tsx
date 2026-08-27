@@ -21,7 +21,7 @@ function RecipePrepareModal({
   onPrepare,
   isAdding,
 }: RecipePrepareModalProps) {
-  const [peopleCount, setPeopleCount] = useState<number | "">(0);
+  const [peopleCount, setPeopleCount] = useState<number | "">(1);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     if (peopleCount === "") return;
@@ -44,14 +44,14 @@ function RecipePrepareModal({
         <Modal.Body>
           Are you sure you want to prepare recipe <b>{selectedRecipe?.name}</b>?
           <br />
-          <p className="my-1">
+          <p className="my-2">
             <small>
               * If you have enough ingredients in your pantry, they'll be
-              consumed starting from the ones nearer to expiration (As you
-              should do as well ;) )
+              consumed starting from the ones nearer to expiration (as you
+              should do as well 😉 )
             </small>
           </p>
-          <Form.Group controlId="prepTime">
+          <Form.Group controlId="prepTime" className="my-3">
             <Form.Label className="fw-semibold">
               How many people are eating your {selectedRecipe?.name}?
             </Form.Label>

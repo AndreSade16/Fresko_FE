@@ -39,7 +39,8 @@ function SuggestedRecipesSection({
               <Col key={recipe.id} xs={12} md={6} lg={4}>
                 <Card
                   className="bg-dark text-light border-0 rounded-3 shadow-sm overflow-hidden"
-                  style={{ height: "130px" }}
+                  style={{ height: "130px", cursor: "pointer" }}
+                  onClick={() => navigate(`/recipes/${recipe.id}`)}
                 >
                   <div className="d-flex h-100">
                     <img
