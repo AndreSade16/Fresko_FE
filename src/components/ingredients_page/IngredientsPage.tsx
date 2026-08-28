@@ -14,7 +14,10 @@ import type {
   StandardError,
 } from "../../interfaces/interfaces";
 import { apiFetch } from "../../tools/fetchHelper";
-import { fetchActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
+import {
+  createActiveShoppingList,
+  fetchActiveShoppingList,
+} from "../../redux/reducers/ShoppingListSlice";
 import { toast } from "react-toastify";
 import IngredientDeleteModal from "./IngredientDeleteModal/IngredientDeleteModal";
 import IngredientEditModal from "./IngredientEditModal/IngredientEditModal";
@@ -70,11 +73,12 @@ function IngredientPage() {
   );
 
   const handleAdd = async (quantity: number) => {
-    const shoppingListId = activeShoppingList.data?.shoppingListId;
+    if (!selectedItem) return;
+    let shoppingListId = activeShoppingList.data?.shoppingListId;
 
-    if (!selectedItem || !shoppingListId) {
-      toast.error("Shopping list not found. Please try again.");
-      return;
+    if (!shoppingListId) {
+      shoppingListId = (await dispatch(createActiveShoppingList()).unwrap())
+        .shoppingListId;
     }
 
     setIsAdding(true);

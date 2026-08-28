@@ -5,7 +5,10 @@ import ShoppingList, {
 import { useDispatch, useSelector } from "react-redux";
 import { type AppDispatch, type RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
-import { fetchActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
+import {
+  createActiveShoppingList,
+  fetchActiveShoppingList,
+} from "../../redux/reducers/ShoppingListSlice";
 import SlCompletedModal from "./SlCompletedModal/SlCompletedModal";
 import {
   type ShoppingListCompletedDTO,
@@ -106,7 +109,8 @@ function ShoppingListPage() {
       if (response.shoppingListId) {
         toast.success("Your shopping list has been completed!");
       }
-      dispatch(fetchActiveShoppingList());
+      await dispatch(createActiveShoppingList());
+      await dispatch(fetchActiveShoppingList());
     } catch (error: unknown) {
       if (typeof error === "object" && error !== null && "message" in error) {
         toast.error((error as StandardError).message);

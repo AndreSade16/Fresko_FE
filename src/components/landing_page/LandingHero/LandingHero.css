@@ -1,8 +1,7 @@
 .landing-hero {
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url("https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1920&auto=format&fit=crop")
-      no-repeat center center;
+    url("/public/landingHero.avif") no-repeat center center;
   background-size: cover;
   min-height: 500px;
 }

@@ -160,7 +160,7 @@ function MainNavbar() {
                   onClick={() => handleNavigate("/me")}
                   role="button"
                   tabIndex={0}
-                  className="text-light mb-0 fw-semibold text-nowrap text-stroke"
+                  className="text-light mb-0 fw-semibold text-nowrap text-stroke text-capitalize"
                   style={{ cursor: "pointer" }}
                 >
                   {firstName || username || "Guest"}'s profile

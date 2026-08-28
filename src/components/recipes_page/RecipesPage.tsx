@@ -18,6 +18,7 @@ import RecipeToSlAddModal from "./RecipeToSlModal/RecipeToSlModal";
 import RecipeDeleteModal from "./RecipeDeleteModal/RecipeDeleteModal";
 import RecipeEditModal from "./RecipeEditModal/RecipeEditModal";
 import LemonImage from "../LemonImage/LemonImage";
+import { createActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -64,6 +65,8 @@ function RecipesPage() {
     numOfPeople: string,
   ) => {
     setIsAdding(true);
+
+    await dispatch(createActiveShoppingList());
 
     try {
       const response = await apiFetch<RecipeIngredientsToSlDTO>(

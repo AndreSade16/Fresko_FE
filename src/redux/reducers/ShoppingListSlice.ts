@@ -52,7 +52,7 @@ export const createActiveShoppingList = createAsyncThunk<
   ShoppingListCreatedDTO,
   void,
   { rejectValue: StandardError | string }
->("shoppinglists/fetchActiveShoppingList", async (_, { rejectWithValue }) => {
+>("shoppinglists/createActiveShoppingList", async (_, { rejectWithValue }) => {
   try {
     const data = await apiFetch<ShoppingListCreatedDTO>(`/shopping-lists`, {
       method: "POST",
