@@ -1,0 +1,17 @@
+.landing-hero {
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("/public/landingHero.avif") no-repeat center center;
+  background-size: cover;
+  min-height: 500px;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 10rem);
+}
+
+@media (min-width: 992px) {
+  .landing-hero {
+    height: 600px;
+  }
+}
