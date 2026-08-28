@@ -6,7 +6,7 @@ function LandingMission() {
       <Row className="d-flex flex-column-reverse flex-md-row justify-content-around px-2 px-md-3 g-3">
         <Col md={6}>
           <Image
-            src="/public/missionImg.jpg"
+            src="/missionImg.jpg"
             alt="Mission image"
             fluid
             className="rounded-4 w-100 object-fit-cover"

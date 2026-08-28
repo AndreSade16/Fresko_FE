@@ -6,7 +6,7 @@ function LandingVision() {
       <Row className="d-flex flex-column-reverse flex-md-row-reverse justify-content-around px-2 px-md-3 g-3">
         <Col md={6}>
           <Image
-            src="/public/visionImg.jpg"
+            src="/visionImg.jpg"
             alt="Vision image"
             fluid
             className="rounded-4 w-100 object-fit-cover"
