@@ -37,7 +37,7 @@ function LandingHero() {
             <Button
               variant="secondary"
               size="lg"
-              className="px-4 py-2 fw-semibold shadow-sm"
+              className="px-4 py-2 fw-semibold shadow-sm border-black"
               onClick={() => navigate("/login")}
             >
               Log in

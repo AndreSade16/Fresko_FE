@@ -1,47 +1,65 @@
 import { Badge, Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
+
 import type { ActiveShoppingList } from "../../../interfaces/interfaces";
+
 import { useState } from "react";
+
 import { useNavigate } from "react-router";
 
 interface ShoppingListProps {
   activeShoppingList: ActiveShoppingList | null;
+
   onCompleteShopping?: (selectedItems: SelectedItemsState) => void;
+
   onDeleteItem: (shoppingListItemId: string) => void;
 }
 
 export interface SelectedItemsState {
   [shoppingListItemId: string]: {
     checked: boolean;
+
     quantity: number;
-    expirationDate: string; // <-- Aggiunto campo data
+
+    expirationDate: string;
   };
 }
 
 const getDefaultExpirationDate = (shelfLifeDays: number = 0): string => {
   const date = new Date();
+
   date.setDate(date.getDate() + shelfLifeDays);
+
   return date.toISOString().split("T")[0];
 };
 
 function ShoppingList({
   activeShoppingList,
+
   onCompleteShopping,
+
   onDeleteItem,
 }: ShoppingListProps) {
   const navigate = useNavigate();
+
   const [selectedItems, setSelectedItems] = useState<SelectedItemsState>({});
 
   const handleCheckboxChange = (
     itemId: string,
+
     isChecked: boolean,
+
     defaultQuantity: number,
+
     shelfLifeDays: number,
   ) => {
     setSelectedItems((prev) => ({
       ...prev,
+
       [itemId]: {
         checked: isChecked,
+
         quantity: prev[itemId]?.quantity ?? defaultQuantity,
+
         expirationDate:
           prev[itemId]?.expirationDate ??
           getDefaultExpirationDate(shelfLifeDays),
@@ -52,10 +70,13 @@ function ShoppingList({
   const handleQuantityChange = (itemId: string, newQuantity: number) => {
     setSelectedItems((prev) => ({
       ...prev,
+
       [itemId]: {
         checked: prev[itemId]?.checked ?? false,
+
         expirationDate:
           prev[itemId]?.expirationDate ?? getDefaultExpirationDate(0),
+
         quantity: newQuantity,
       },
     }));
@@ -64,15 +85,65 @@ function ShoppingList({
   const handleDateChange = (itemId: string, newDate: string) => {
     setSelectedItems((prev) => ({
       ...prev,
+
       [itemId]: {
         checked: prev[itemId]?.checked ?? false,
+
         quantity: prev[itemId]?.quantity ?? 1,
+
         expirationDate: newDate,
       },
     }));
   };
 
+  const items = activeShoppingList?.items ?? [];
+
+  const handleCheckAll = () => {
+    setSelectedItems((prev) => {
+      const updated: SelectedItemsState = { ...prev };
+
+      items.forEach((item) => {
+        const { shoppingListItemId, suggestedQuantity, ingredientDefinition } =
+          item;
+
+        updated[shoppingListItemId] = {
+          checked: true,
+
+          quantity:
+            prev[shoppingListItemId]?.quantity ?? suggestedQuantity ?? 1,
+
+          expirationDate:
+            prev[shoppingListItemId]?.expirationDate ??
+            getDefaultExpirationDate(ingredientDefinition.shelfLifeDays ?? 0),
+        };
+      });
+
+      return updated;
+    });
+  };
+
+  const handleUncheckAll = () => {
+    setSelectedItems((prev) => {
+      const updated: SelectedItemsState = { ...prev };
+
+      items.forEach((item) => {
+        const { shoppingListItemId } = item;
+
+        if (updated[shoppingListItemId]) {
+          updated[shoppingListItemId] = {
+            ...updated[shoppingListItemId],
+
+            checked: false,
+          };
+        }
+      });
+
+      return updated;
+    });
+  };
+
   const totalItems = activeShoppingList?.items.length ?? 0;
+
   const completedCount = Object.values(selectedItems).filter(
     (item) => item.checked,
   ).length;
@@ -82,8 +153,6 @@ function ShoppingList({
       onCompleteShopping(selectedItems);
     }
   };
-
-  const items = activeShoppingList?.items ?? [];
 
   return (
     <div className="shopping-list-container overflow-hidden w-100 pb-5 mb-5">
@@ -103,6 +172,7 @@ function ShoppingList({
             <Alert className="text-center">
               This shopping list is empty, try adding some ingredients!
             </Alert>
+
             <div className="d-flex justify-content-around gap-3">
               <Button
                 variant="secondary"
@@ -111,6 +181,7 @@ function ShoppingList({
               >
                 Browse Recipes
               </Button>
+
               <Button
                 variant="warning"
                 className="fw-semibold z-1 border-black shadow-lg"
@@ -124,20 +195,25 @@ function ShoppingList({
           activeShoppingList?.items.map((item) => {
             const {
               ingredientDefinition,
+
               suggestedQuantity,
+
               shoppingListItemId,
             } = item;
+
             const { name, imageUrl, category, shelfLifeDays } =
               ingredientDefinition;
 
             const isChecked =
               selectedItems[shoppingListItemId]?.checked ?? false;
+
             const currentQuantity =
               selectedItems[shoppingListItemId]?.quantity ??
               suggestedQuantity ??
               1;
 
             const defaultDate = getDefaultExpirationDate(shelfLifeDays);
+
             const currentDate =
               selectedItems[shoppingListItemId]?.expirationDate ?? defaultDate;
 
@@ -149,18 +225,40 @@ function ShoppingList({
               >
                 <Card
                   className="h-100 w-100 shadow-sm hover-card bg-primary d-flex flex-row align-items-center justify-content-between position-relative overflow-hidden pe-2"
-                  style={{ minWidth: 0 }}
+                  style={{
+                    minWidth: 0,
+                    cursor: isChecked ? "pointer" : "default",
+                  }}
+                  onClick={() => {
+                    if (isChecked) {
+                      handleCheckboxChange(
+                        shoppingListItemId,
+
+                        false,
+
+                        suggestedQuantity ?? 1,
+
+                        shelfLifeDays ?? 0,
+                      );
+                    }
+                  }}
                 >
                   {isChecked && (
                     <div
                       className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center text-warning"
                       style={{
                         backgroundColor: "rgba(0, 0, 0, 0.45)",
+
                         fontSize: "3rem",
+
                         fontWeight: "bold",
+
                         zIndex: 10,
+
                         pointerEvents: "none",
+
                         lineHeight: 1,
+
                         userSelect: "none",
                       }}
                     >
@@ -173,7 +271,9 @@ function ShoppingList({
                       className="d-none d-sm-flex align-items-center justify-content-center p-1 flex-shrink-1"
                       style={{
                         width: "25%",
+
                         minWidth: "40px",
+
                         maxWidth: "120px",
                       }}
                     >
@@ -182,8 +282,11 @@ function ShoppingList({
                         alt={name}
                         style={{
                           width: "100%",
+
                           aspectRatio: "1",
+
                           objectFit: "cover",
+
                           borderRadius: "6px",
                         }}
                       />
@@ -204,6 +307,7 @@ function ShoppingList({
                       >
                         {name}
                       </Card.Title>
+
                       <Badge
                         bg="secondary"
                         className="text-dark flex-shrink-0 px-1"
@@ -224,12 +328,14 @@ function ShoppingList({
                       >
                         Quantity
                       </Form.Label>
+
                       <Form.Control
                         type="number"
                         value={currentQuantity}
                         onChange={(e) =>
                           handleQuantityChange(
                             shoppingListItemId,
+
                             Number(e.target.value),
                           )
                         }
@@ -238,8 +344,11 @@ function ShoppingList({
                         className="px-1 py-0"
                         style={{
                           fontSize: "0.8rem",
+
                           height: "auto",
+
                           minWidth: "0px",
+
                           width: "100%",
                         }}
                       />
@@ -255,6 +364,7 @@ function ShoppingList({
                       >
                         Expiration Date
                       </Form.Label>
+
                       <Form.Control
                         type="date"
                         value={currentDate}
@@ -266,12 +376,16 @@ function ShoppingList({
                         className="px-1 py-0"
                         style={{
                           fontSize: "0.75rem",
+
                           height: "auto",
+
                           minWidth: "0px",
+
                           width: "100%",
                         }}
                       />
                     </Form.Group>
+
                     <Form.Group
                       controlId={`bought-${shoppingListItemId}`}
                       style={{ minWidth: 0 }}
@@ -283,24 +397,34 @@ function ShoppingList({
                       >
                         In Cart:
                       </Form.Label>
+
                       <Form.Check
                         className="me-2 flex-shrink-0 align-self-end"
                         checked={isChecked}
+                        onClick={(e) => e.stopPropagation()}
                         onChange={(e) =>
                           handleCheckboxChange(
                             shoppingListItemId,
+
                             e.target.checked,
+
                             suggestedQuantity ?? 1,
+
                             shelfLifeDays ?? 0,
                           )
                         }
                       />
                     </Form.Group>
                   </Card.Body>
+
                   <Button
                     variant="secondary"
                     disabled={isChecked}
-                    onClick={() => onDeleteItem(shoppingListItemId)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      onDeleteItem(shoppingListItemId);
+                    }}
                   >
                     <i className="bi bi-trash3-fill"></i>
                   </Button>
@@ -317,21 +441,44 @@ function ShoppingList({
       >
         <div className="d-flex flex-column">
           <span className="fw-bold small">Progress:</span>
+
           <span className="text-warning small">
             {completedCount} of {totalItems} items checked
           </span>
         </div>
 
-        <Button
-          variant="warning"
-          size="sm"
-          className="fw-bold px-4"
-          disabled={completedCount === 0}
-          onClick={handleComplete}
-          style={{ cursor: completedCount > 0 ? "pointer" : "not-allowed" }}
-        >
-          {completedCount <= 0 ? "Buy anything first" : "Complete Shopping"}
-        </Button>
+        <div className="d-flex gap-2 flex-wrap align-items-center">
+          <Button
+            variant="outline-light"
+            size="sm"
+            className="fw-semibold"
+            disabled={items.length === 0 || completedCount === totalItems}
+            onClick={handleCheckAll}
+          >
+            Check All
+          </Button>
+
+          <Button
+            variant="outline-light"
+            size="sm"
+            className="fw-semibold"
+            disabled={completedCount === 0}
+            onClick={handleUncheckAll}
+          >
+            Uncheck All
+          </Button>
+
+          <Button
+            variant="warning"
+            size="sm"
+            className="fw-bold px-4"
+            disabled={completedCount === 0}
+            onClick={handleComplete}
+            style={{ cursor: completedCount > 0 ? "pointer" : "not-allowed" }}
+          >
+            {completedCount <= 0 ? "Buy anything first" : "Complete Shopping"}
+          </Button>
+        </div>
       </div>
     </div>
   );

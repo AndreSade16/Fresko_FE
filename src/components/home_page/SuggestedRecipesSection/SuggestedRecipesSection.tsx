@@ -23,10 +23,11 @@ function SuggestedRecipesSection({
         className="position-relative p-3 p-md-4 text-light"
         style={{ zIndex: 2 }}
       >
-        <div className="d-flex justify-content-between align-items-start mb-4">
+        <div className="d-flex flex-wrap align-items-center mb-4 gap-2">
           <h2 className="fw-bold m-0 fst-italic text-light">
             Suggested Recipes
           </h2>
+          <h5 className="fw-semibold fst-italic m-0">(based on your pantry)</h5>
         </div>
 
         {isLoading ? (
