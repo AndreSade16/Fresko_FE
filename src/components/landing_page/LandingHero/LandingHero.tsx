@@ -22,13 +22,15 @@ function LandingHero() {
               Save food,
               <br />
               keep it{" "}
-              <BlurText
-                text="Fresko"
-                delay={200}
-                animateBy="letters"
-                direction="top"
-                className="text-2xl mb-8 d-inline"
-              />
+              <span className="text-secondary text-nowrap">
+                <BlurText
+                  text="Fresko"
+                  delay={200}
+                  animateBy="letters"
+                  direction="top"
+                  className="text-2xl mb-8 d-inline"
+                />
+              </span>
             </h1>
             <p className="lead mb-4 text-light opacity-90">
               Fresko helps you keep track of the food you have at home, from
