@@ -1,15 +1,20 @@
 import { Image } from "react-bootstrap";
 
-function LemonImage() {
+interface LemonImageProps {
+  leftToRight?: boolean;
+}
+
+function LemonImage({ leftToRight }: LemonImageProps) {
   return (
     <Image
       src="favicon.png"
       className="position-fixed"
       style={{
         width: "450px",
-        transform: "scaleX(-1)",
+        transform: leftToRight ? "scaleX(1)" : "scaleX(-1)",
         top: "180px",
-        right: "0px",
+        left: leftToRight ? "-120px" : undefined,
+        right: !leftToRight ? "0px" : undefined,
       }}
     />
   );

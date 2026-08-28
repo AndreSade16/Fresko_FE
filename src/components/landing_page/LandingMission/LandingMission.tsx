@@ -18,11 +18,13 @@ function LandingMission() {
           className="d-flex flex-column text-light justify-content-center"
         >
           <h2 className="text-md-end fw-bold fst-italic">
-            Mission mission mission
+            Waste less, eat it fresher
           </h2>
           <p className="text-md-end ps-md-4">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet,
-            totam distinctio, quae illo deleniti quaerat delectus
+            Our mission is to make food waste easier to prevent in everyday
+            life. Fresko helps you keep track of expiration dates, discover
+            recipes based on what you already have, and make smarter choices
+            about the food you buy and use.
           </p>
         </Col>
       </Row>

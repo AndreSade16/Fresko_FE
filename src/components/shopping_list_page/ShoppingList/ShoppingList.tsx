@@ -284,7 +284,7 @@ function ShoppingList({
                         In Cart:
                       </Form.Label>
                       <Form.Check
-                        className="me-2 flex-shrink-0"
+                        className="me-2 flex-shrink-0 align-self-end"
                         checked={isChecked}
                         onChange={(e) =>
                           handleCheckboxChange(
@@ -312,7 +312,7 @@ function ShoppingList({
       </Row>
 
       <div
-        className="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-2 p-md-3 shadow-lg border-top d-flex justify-content-between align-items-center"
+        className="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-2 p-md-3 shadow-lg border-top d-flex gap-2 flex-wrap justify-content-between align-items-center"
         style={{ zIndex: 1000 }}
       >
         <div className="d-flex flex-column">

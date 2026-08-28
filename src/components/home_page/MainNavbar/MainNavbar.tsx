@@ -129,6 +129,13 @@ function MainNavbar() {
               >
                 Shopping List
               </Nav.Link>
+
+              <Nav.Link
+                className="text-light text-nowrap text-stroke"
+                onClick={() => handleNavigate("/info")}
+              >
+                On us
+              </Nav.Link>
               <Nav.Link
                 className="text-light text-nowrap fw-semibold text-stroke"
                 onClick={() => handleLogout()}

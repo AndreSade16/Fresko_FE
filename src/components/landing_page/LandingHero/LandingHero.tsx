@@ -1,6 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import "./LandingHero.css";
 import { useNavigate } from "react-router";
+import BlurText from "../../../tools/Blurtext";
 
 function LandingHero() {
   const navigate = useNavigate();
@@ -17,10 +18,21 @@ function LandingHero() {
             md={9}
             className="text-start text-white py-4 px-3 px-md-5"
           >
-            <h1 className="display-2 fw-bolder">Payoff payoff payoff</h1>
+            <h1 className="display-2 fw-bolder">
+              Save food,
+              <br />
+              keep it{" "}
+              <BlurText
+                text="Fresko"
+                delay={200}
+                animateBy="letters"
+                direction="top"
+                className="text-2xl mb-8 d-inline"
+              />
+            </h1>
             <p className="lead mb-4 text-light opacity-90">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
-              fugit voluptate tempora voluptatibus, rem.
+              Fresko helps you keep track of the food you have at home, from
+              your pantry to your fridge.
             </p>
             <Button
               variant="secondary"

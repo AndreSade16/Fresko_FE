@@ -17,10 +17,12 @@ function LandingVision() {
           md={6}
           className="d-flex flex-column text-light justify-content-center"
         >
-          <h2 className="fw-bold fst-italic">Vision Vision Vision</h2>
+          <h2 className="fw-bold fst-italic">Making every ingredient count</h2>
           <p className="pe-md-4">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eveniet,
-            totam distinctio, quae illo deleniti quaerat delectus
+            We envision a world where no good food is forgotten at the back of a
+            fridge or pantry. Every ingredient has value, and Fresko aims to
+            help people turn what they already have into fresh, useful and
+            enjoyable meals.
           </p>
         </Col>
       </Row>

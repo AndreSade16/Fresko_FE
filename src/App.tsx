@@ -19,6 +19,7 @@ import UsersPage from "./components/admin/UsersPage/UsersPage";
 import IngredientDetails from "./components/detail_pages/IngredientDetails/IngredientDetails";
 import RecipeDetails from "./components/detail_pages/RecipeDetails/RecipeDetails";
 import UserDetails from "./components/detail_pages/UserDetails/UserDetails";
+import InfoPage from "./components/InfoPage/InfoPage";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +49,7 @@ function App() {
               <Route path="/my-list" element={<ShoppingListPage />} />
               <Route path="/recipes" element={<RecipesPage />} />
               <Route path="/me" element={<ProfilePage />} />
+              <Route path="/info" element={<InfoPage />} />
               <Route
                 path="/ingredients/:ingredientId"
                 element={<IngredientDetails />}
