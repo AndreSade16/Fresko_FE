@@ -10,6 +10,7 @@ import BlurText from "../../tools/Blurtext";
 import LemonImage from "../LemonImage/LemonImage";
 
 function HomePage() {
+  const dispatch = useDispatch<AppDispatch>();
   const {
     expiringItems,
     activeShoppingList,
@@ -18,7 +19,6 @@ function HomePage() {
     error,
   } = useSelector((state: RootState) => state.dashboard);
   const { firstName } = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchDashboard());
