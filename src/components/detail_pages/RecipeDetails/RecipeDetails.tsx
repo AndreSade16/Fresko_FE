@@ -11,8 +11,8 @@ import {
   Row,
 } from "react-bootstrap";
 import { GridLoader, PulseLoader } from "react-spinners";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { type AppDispatch, type RootState } from "../../../redux/store";
 import type {
   RecipeIngredientsToSlDTO,
   RecipePageContent,
@@ -23,9 +23,11 @@ import RecipeEditModal from "../../recipes_page/RecipeEditModal/RecipeEditModal"
 import RecipeDeleteModal from "../../recipes_page/RecipeDeleteModal/RecipeDeleteModal";
 import RecipeToSlAddModal from "../../recipes_page/RecipeToSlModal/RecipeToSlModal";
 import RecipePrepareModal from "../../recipes_page/RecipePrepareModal/RecipePrepareModal";
+import { createActiveShoppingList } from "../../../redux/reducers/ShoppingListSlice";
 
 function RecipeDetails() {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const userRole = useSelector((state: RootState) => state.auth.role);
 
@@ -90,6 +92,7 @@ function RecipeDetails() {
     numOfPeople: string,
   ) => {
     setIsAdding(true);
+    await dispatch(createActiveShoppingList());
 
     try {
       const response = await apiFetch<RecipeIngredientsToSlDTO>(
