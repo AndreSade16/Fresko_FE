@@ -35,7 +35,7 @@ function HomePage() {
           {typeof error === "object" ? error.message : error}
         </Alert>
       )}
-      <div className="d-flex align-items-center gap-1">
+      <div className="d-flex align-items-center gap-1 z-1">
         <img src="/favicon.png" style={{ width: "100px" }} />
         <div className="d-flex flex-column z-1">
           <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}!</h3>
