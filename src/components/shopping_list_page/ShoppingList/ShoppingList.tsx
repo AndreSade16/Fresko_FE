@@ -67,17 +67,17 @@ function ShoppingList({
     }));
   };
 
-  const handleQuantityChange = (itemId: string, newQuantity: number) => {
+  const handleQuantityChange = (itemId: string, rawQuantity: string) => {
+    // Se il campo viene svuotato, salviamo la quantità come 0
+    const numQuantity = rawQuantity === "" ? 0 : Number(rawQuantity);
+
     setSelectedItems((prev) => ({
       ...prev,
-
       [itemId]: {
-        checked: prev[itemId]?.checked ?? false,
-
+        checked: false, // Deselezioniamo l'elemento se si modifica la quantità a 0
         expirationDate:
           prev[itemId]?.expirationDate ?? getDefaultExpirationDate(0),
-
-        quantity: newQuantity,
+        quantity: numQuantity < 0 ? 0 : numQuantity,
       },
     }));
   };
@@ -106,12 +106,12 @@ function ShoppingList({
         const { shoppingListItemId, suggestedQuantity, ingredientDefinition } =
           item;
 
+        const currentQty =
+          prev[shoppingListItemId]?.quantity ?? suggestedQuantity ?? 1;
+
         updated[shoppingListItemId] = {
-          checked: true,
-
-          quantity:
-            prev[shoppingListItemId]?.quantity ?? suggestedQuantity ?? 1,
-
+          checked: Number(currentQty) > 0,
+          quantity: currentQty,
           expirationDate:
             prev[shoppingListItemId]?.expirationDate ??
             getDefaultExpirationDate(ingredientDefinition.shelfLifeDays ?? 0),
@@ -210,7 +210,7 @@ function ShoppingList({
             const currentQuantity =
               selectedItems[shoppingListItemId]?.quantity ??
               suggestedQuantity ??
-              1;
+              "";
 
             const defaultDate = getDefaultExpirationDate(shelfLifeDays);
 
@@ -331,12 +331,12 @@ function ShoppingList({
 
                       <Form.Control
                         type="number"
-                        value={currentQuantity}
+                        min="0"
+                        value={currentQuantity === 0 ? "" : currentQuantity}
                         onChange={(e) =>
                           handleQuantityChange(
                             shoppingListItemId,
-
-                            Number(e.target.value),
+                            e.target.value,
                           )
                         }
                         disabled={isChecked}
@@ -344,11 +344,8 @@ function ShoppingList({
                         className="px-1 py-0"
                         style={{
                           fontSize: "0.8rem",
-
                           height: "auto",
-
                           minWidth: "0px",
-
                           width: "100%",
                         }}
                       />
@@ -400,6 +397,9 @@ function ShoppingList({
 
                       <Form.Check
                         className="me-2 flex-shrink-0 align-self-end"
+                        disabled={
+                          !currentQuantity || Number(currentQuantity) <= 0
+                        }
                         checked={isChecked}
                         onClick={(e) => e.stopPropagation()}
                         onChange={(e) =>
