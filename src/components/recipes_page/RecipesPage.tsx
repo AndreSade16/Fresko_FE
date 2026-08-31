@@ -126,7 +126,7 @@ function RecipesPage() {
       className="d-flex flex-column align-items-center position-relative"
     >
       <LemonImage />
-      <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder">
+      <h1 className="fst-italic my-5 text-left w-100 ps-2 fw-bolder z-1">
         Recipes
       </h1>
       <RecipeFilters />
