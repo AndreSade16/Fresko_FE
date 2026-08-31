@@ -164,7 +164,7 @@ function ShoppingList({
         className={
           items.length <= 0
             ? "g-2 g-sm-3 mx-0 d-flex justify-content-center"
-            : "g-2 g-sm-3 mx-0 d-flex"
+            : "g-2 g-sm-3 mx-0 d-flex mb-5 mb-md-0 pb-2 pb-md-0"
         }
       >
         {items.length <= 0 ? (
@@ -439,7 +439,7 @@ function ShoppingList({
         className="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-2 p-md-3 shadow-lg border-top d-flex gap-2 flex-wrap justify-content-between align-items-center"
         style={{ zIndex: 1000 }}
       >
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-row flex-wrap gap-1">
           <span className="fw-bold small">Progress:</span>
 
           <span className="text-warning small">
