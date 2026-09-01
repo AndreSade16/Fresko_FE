@@ -237,9 +237,9 @@ function ProfileInfoSection({
         </Card.Body>
       </Card>
 
-      <Card className="shadow-sm border-danger bg-secondary bg-opacity-10 text-light">
-        <Card.Header className="bg-transparent border-secondary border-opacity-25 py-3">
-          <h5 className="mb-0 fw-bold text-secondary">
+      <Card className="shadow-sm border-danger bg-primary text-light">
+        <Card.Header className="bg-transparent border-danger border-opacity-25 py-3">
+          <h5 className="mb-0 fw-bold text-danger">
             <i className="bi bi-exclamation-triangle me-2 text-danger"></i>
             Danger Zone
           </h5>
@@ -250,8 +250,8 @@ function ProfileInfoSection({
             certain.
           </p>
           <Button
-            variant="secondary"
-            className="fw-semibold align-self-start"
+            variant="danger"
+            className="fw-semibold align-self-start text-light"
             onClick={() => setShowDeleteModal(true)}
           >
             <i className="bi bi-trash me-1"></i> Delete Account
