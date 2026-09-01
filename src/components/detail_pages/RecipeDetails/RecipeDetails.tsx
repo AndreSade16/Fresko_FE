@@ -30,6 +30,7 @@ function RecipeDetails() {
   const dispatch = useDispatch<AppDispatch>();
 
   const userRole = useSelector((state: RootState) => state.auth.role);
+  const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const { recipeId } = useParams<{ recipeId: string }>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -65,6 +66,16 @@ function RecipeDetails() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void fetchRecipe();
   }, [fetchRecipe]);
+
+  const getPossessedIngredients = (recipe: RecipePageContent) => {
+    return recipe.ingredients.filter((ingredient) =>
+      pantryItems?.some(
+        (pantryItem) =>
+          pantryItem.ingredientDefinition.ingredientDefinitionId ===
+          ingredient.ingredientDefinition.ingredientDefinitionId,
+      ),
+    );
+  };
 
   const handleDelete = async () => {
     if (!recipe) return;
@@ -193,6 +204,18 @@ function RecipeDetails() {
                   <Card.Subtitle className="mt-2 mb-4 text-muted text-center">
                     {recipe.description}
                   </Card.Subtitle>
+                  <Card.Text
+                    className="text-secondary text-center fw-semibold mt-auto"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
+                    You already possess {getPossessedIngredients(recipe).length}{" "}
+                    of {recipe.ingredients.length} ingredients
+                  </Card.Text>
                   {recipe.ingredients.length > 0 && (
                     <div className="d-flex flex-column flex-md-row align-items-center align-items-md-start justify-content-md-between py-3 border-bottom border-1 border-opacity-25 border-light gap-md-4">
                       <Card.Text className="fw-semibold mb-1 d-flex align-items-center">
@@ -205,7 +228,13 @@ function RecipeDetails() {
                             className="d-flex justify-content-between bg-dark text-light"
                           >
                             <span
-                              className="fw-semibold"
+                              className={
+                                getPossessedIngredients(recipe).includes(
+                                  ingredient,
+                                )
+                                  ? "fw-semibold text-secondary"
+                                  : "fw-semibold"
+                              }
                               style={{ maxWidth: "50%" }}
                             >
                               {ingredient.ingredientDefinition.name}:
@@ -220,7 +249,7 @@ function RecipeDetails() {
                                 : ingredient.ingredientDefinition.unit ===
                                     "MILLILITERS"
                                   ? "ml"
-                                  : "uts"}
+                                  : "units"}
                             </span>
                           </ListGroup.Item>
                         ))}

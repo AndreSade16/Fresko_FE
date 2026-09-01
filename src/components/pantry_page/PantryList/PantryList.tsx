@@ -120,7 +120,15 @@ function PantryList({
                     </Badge>
                   </div>
 
-                  <Card.Text className="text-muted small flex-grow-1">
+                  <Card.Text
+                    className="text-muted small flex-grow-1"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
                     {ingredientDefinition.description}
                   </Card.Text>
 

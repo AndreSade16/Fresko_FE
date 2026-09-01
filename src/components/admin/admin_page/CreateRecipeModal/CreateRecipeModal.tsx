@@ -343,7 +343,7 @@ function CreateRecipeModal({
                 </Form.Label>
                 <Form.Control
                   type="number"
-                  min="1"
+                  min="0"
                   placeholder="e.g. 20"
                   value={cookingTime}
                   onChange={(e) =>
@@ -577,7 +577,7 @@ function CreateRecipeModal({
             onClick={handleClose}
             disabled={isLoading}
           >
-            Cancel
+            {isLoading ? <PulseLoader color="white" size={8} /> : "Cancel"}
           </Button>
           <Button
             variant="outline-warning"
@@ -586,7 +586,7 @@ function CreateRecipeModal({
             style={{ minWidth: "140px", height: "38px" }}
             disabled={isLoading}
           >
-            {isLoading ? <PulseLoader color="#000" size={8} /> : "Save Recipe"}
+            {isLoading ? <PulseLoader color="white" size={8} /> : "Save Recipe"}
           </Button>
         </Modal.Footer>
       </Form>

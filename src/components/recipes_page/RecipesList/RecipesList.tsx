@@ -13,6 +13,8 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 
 interface RecipesListProps {
   data: RecipePage | null;
@@ -22,6 +24,7 @@ interface RecipesListProps {
   onLoadMore: (nextPage: number) => void;
   onDeleteItem: (item: RecipePageContent) => void;
   onEditItem: (item: RecipePageContent) => void;
+  onPrepareItem: (item: RecipePageContent) => void;
   onAddItem?: (item: RecipePageContent) => void;
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
   setSelectedItem: (recipe: RecipePageContent) => void;
@@ -37,10 +40,12 @@ function RecipesList({
   isAdding,
   setSelectedItem,
   onAddIngredients,
+  onPrepareItem,
   userRole,
 }: RecipesListProps) {
   const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
@@ -79,6 +84,16 @@ function RecipesList({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const getPossessedIngredients = (recipe: RecipePageContent) => {
+    return recipe.ingredients.filter((ingredient) =>
+      pantryItems?.some(
+        (pantryItem) =>
+          pantryItem.ingredientDefinition.ingredientDefinitionId ===
+          ingredient.ingredientDefinition.ingredientDefinitionId,
+      ),
+    );
+  };
 
   if (!isLoading && data !== null && items.length === 0) {
     return (
@@ -123,12 +138,21 @@ function RecipesList({
                 )}
                 <Card.Body className="d-flex flex-column justify-content-between">
                   <div className="d-flex flex-column justify-content-between flex-grow-1 mb-2">
-                    <div className="d-flex flex-column justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                      <Card.Title className="mb-0 fs-6 fw-bold">
+                    <div className="d-flex flex-column justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                      <Card.Title
+                        className="mb-0 fs-6 fw-bold"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          minHeight: "2.5em",
+                        }}
+                      >
                         {name}
                       </Card.Title>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <div className="d-flex gap-2 mb-1">
                         <span className="fw-semibold fs-6">Difficulty:</span>
                         <Badge
@@ -138,7 +162,15 @@ function RecipesList({
                           {difficulty?.replace("_", " ")}
                         </Badge>
                       </div>
-                      <Card.Text className="text-muted small mt-auto">
+                      <Card.Text
+                        className="text-muted small mt-auto"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
                         {description}
                       </Card.Text>
                     </div>
@@ -163,7 +195,21 @@ function RecipesList({
                       </Badge>
                     </div>
 
-                    <div className="d-flex gap-2 justify-content-center">
+                    <Card.Text
+                      className="text-secondary mt-auto"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      You already possess{" "}
+                      {getPossessedIngredients(recipe).length} of{" "}
+                      {recipe.ingredients.length} ingredients
+                    </Card.Text>
+
+                    <div className="d-flex gap-2 justify-content-center flex-wrap">
                       <Button
                         variant="outline-light"
                         size="sm"
@@ -183,6 +229,27 @@ function RecipesList({
                           <PulseLoader color="#fff" size={6} />
                         ) : (
                           "Buy Ingredients"
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        style={{
+                          whiteSpace: "normal",
+                          wordBreak: "keep-all",
+                        }}
+                        disabled={isAdding}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(recipe);
+                          onPrepareItem(recipe);
+                        }}
+                      >
+                        {isAdding ? (
+                          <PulseLoader color="#fff" size={6} />
+                        ) : (
+                          "Prepare"
                         )}
                       </Button>
                       {userRole === "ADMIN" && (

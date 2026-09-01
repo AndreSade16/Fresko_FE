@@ -19,6 +19,7 @@ import RecipeDeleteModal from "./RecipeDeleteModal/RecipeDeleteModal";
 import RecipeEditModal from "./RecipeEditModal/RecipeEditModal";
 import LemonImage from "../LemonImage/LemonImage";
 import { createActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
+import RecipePrepareModal from "./RecipePrepareModal/RecipePrepareModal";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,6 +29,7 @@ function RecipesPage() {
   );
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [showPrepareModal, setShowPrepareModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const { data, isLoading, error } = useSelector(
@@ -95,6 +97,33 @@ function RecipesPage() {
 
   const handleEdit = () => {};
 
+  const handlePrepare = async (
+    selectedRecipe: RecipePageContent | null,
+    peopleCount: number,
+  ) => {
+    if (!selectedRecipe || peopleCount <= 0) return;
+    setIsAdding(true);
+
+    try {
+      await apiFetch(
+        `/recipes/${selectedRecipe.recipeId}?peopleCount=${peopleCount}`,
+        {
+          method: "POST",
+        },
+      );
+      toast.success(`${selectedRecipe.name} successfully prepared!`);
+      setShowPrepareModal(false);
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
   const handleDelete = async (recipe: RecipePageContent | null) => {
     if (!recipe) {
       toast.error("Recipe not found");
@@ -143,6 +172,7 @@ function RecipesPage() {
           isAdding={isAdding}
           setSelectedItem={setSelectedItem}
           userRole={userRole}
+          onPrepareItem={() => setShowPrepareModal(true)}
           onDeleteItem={() => setShowDeleteModal(true)}
           onEditItem={() => setShowEditModal(true)}
         />
@@ -167,6 +197,13 @@ function RecipesPage() {
           onEdit={handleEdit}
         />
       )}
+      <RecipePrepareModal
+        show={showPrepareModal}
+        selectedRecipe={selectedItem}
+        onHide={() => setShowPrepareModal(false)}
+        onPrepare={handlePrepare}
+        isAdding={isAdding || isLoading}
+      />
       <RecipeDeleteModal
         selectedItem={selectedItem}
         show={showDeleteModal}

@@ -67,17 +67,17 @@ function ShoppingList({
     }));
   };
 
-  const handleQuantityChange = (itemId: string, newQuantity: number) => {
+  const handleQuantityChange = (itemId: string, rawQuantity: string) => {
+    // Se il campo viene svuotato, salviamo la quantità come 0
+    const numQuantity = rawQuantity === "" ? 0 : Number(rawQuantity);
+
     setSelectedItems((prev) => ({
       ...prev,
-
       [itemId]: {
-        checked: prev[itemId]?.checked ?? false,
-
+        checked: false, // Deselezioniamo l'elemento se si modifica la quantità a 0
         expirationDate:
           prev[itemId]?.expirationDate ?? getDefaultExpirationDate(0),
-
-        quantity: newQuantity,
+        quantity: numQuantity < 0 ? 0 : numQuantity,
       },
     }));
   };
@@ -106,12 +106,12 @@ function ShoppingList({
         const { shoppingListItemId, suggestedQuantity, ingredientDefinition } =
           item;
 
+        const currentQty =
+          prev[shoppingListItemId]?.quantity ?? suggestedQuantity ?? 1;
+
         updated[shoppingListItemId] = {
-          checked: true,
-
-          quantity:
-            prev[shoppingListItemId]?.quantity ?? suggestedQuantity ?? 1,
-
+          checked: Number(currentQty) > 0,
+          quantity: currentQty,
           expirationDate:
             prev[shoppingListItemId]?.expirationDate ??
             getDefaultExpirationDate(ingredientDefinition.shelfLifeDays ?? 0),
@@ -164,7 +164,7 @@ function ShoppingList({
         className={
           items.length <= 0
             ? "g-2 g-sm-3 mx-0 d-flex justify-content-center"
-            : "g-2 g-sm-3 mx-0 d-flex"
+            : "g-2 g-sm-3 mx-0 d-flex mb-5 mb-md-0 pb-2 pb-md-0"
         }
       >
         {items.length <= 0 ? (
@@ -210,7 +210,7 @@ function ShoppingList({
             const currentQuantity =
               selectedItems[shoppingListItemId]?.quantity ??
               suggestedQuantity ??
-              1;
+              "";
 
             const defaultDate = getDefaultExpirationDate(shelfLifeDays);
 
@@ -331,12 +331,12 @@ function ShoppingList({
 
                       <Form.Control
                         type="number"
-                        value={currentQuantity}
+                        min="0"
+                        value={currentQuantity === 0 ? "" : currentQuantity}
                         onChange={(e) =>
                           handleQuantityChange(
                             shoppingListItemId,
-
-                            Number(e.target.value),
+                            e.target.value,
                           )
                         }
                         disabled={isChecked}
@@ -344,11 +344,8 @@ function ShoppingList({
                         className="px-1 py-0"
                         style={{
                           fontSize: "0.8rem",
-
                           height: "auto",
-
                           minWidth: "0px",
-
                           width: "100%",
                         }}
                       />
@@ -400,6 +397,9 @@ function ShoppingList({
 
                       <Form.Check
                         className="me-2 flex-shrink-0 align-self-end"
+                        disabled={
+                          !currentQuantity || Number(currentQuantity) <= 0
+                        }
                         checked={isChecked}
                         onClick={(e) => e.stopPropagation()}
                         onChange={(e) =>
@@ -439,7 +439,7 @@ function ShoppingList({
         className="position-fixed bottom-0 start-0 w-100 bg-dark text-white p-2 p-md-3 shadow-lg border-top d-flex gap-2 flex-wrap justify-content-between align-items-center"
         style={{ zIndex: 1000 }}
       >
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-row flex-wrap gap-1">
           <span className="fw-bold small">Progress:</span>
 
           <span className="text-warning small">

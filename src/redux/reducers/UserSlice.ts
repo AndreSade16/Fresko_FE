@@ -3,7 +3,11 @@ import {
   createAsyncThunk,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { Authority, StandardError } from "../../interfaces/interfaces";
+import type {
+  Authority,
+  PantryPageContent,
+  StandardError,
+} from "../../interfaces/interfaces";
 import { logout } from "./AuthSlice";
 import { apiFetch } from "../../tools/fetchHelper";
 import type { UserEditPayload } from "../../components/profile_page/EditProfileModal/EditProfileModal";
@@ -15,7 +19,7 @@ export interface UserState {
   lastName: string | null;
   avatar: string | null;
   authorities: Authority[] | null;
-  pantryItems: unknown[] | null;
+  pantryItems: PantryPageContent[] | null;
   role: string | null;
   userId: string | null;
   isLoading: boolean;

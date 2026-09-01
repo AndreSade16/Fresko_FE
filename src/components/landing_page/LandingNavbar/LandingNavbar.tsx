@@ -24,9 +24,12 @@ function LandingNavbar() {
       <Container fluid className="px-4">
         <div className="d-flex align-items-center flex-nowrap w-100 w-lg-auto">
           <Navbar.Brand
-            href="#home"
             className="d-flex align-items-center flex-shrink-1 overflow-hidden me-auto me-lg-0"
-            onClick={() => setExpanded(false)}
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setExpanded(false);
+              navigate("/");
+            }}
           >
             <img
               src="/Fresko-Title.png"
