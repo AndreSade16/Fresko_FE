@@ -59,11 +59,14 @@ function LandingNavbar() {
               Home
             </Nav.Link>
             <Nav.Link
-              href="#landing-mission"
+              style={{ cursor: "pointer" }}
               className="text-light text-nowrap"
-              onClick={() => setExpanded(false)}
+              onClick={() => {
+                setExpanded(false);
+                navigate("/#landing-mission");
+              }}
             >
-              How does it work
+              Our Values
             </Nav.Link>
             <Button
               className="rounded-pill bg-secondary text-black fw-semibold text-nowrap px-4 border-0"
