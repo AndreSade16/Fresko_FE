@@ -13,6 +13,8 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store";
 
 interface RecipesListProps {
   data: RecipePage | null;
@@ -43,6 +45,7 @@ function RecipesList({
 }: RecipesListProps) {
   const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
@@ -81,6 +84,16 @@ function RecipesList({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const getPossessedIngredients = (recipe: RecipePageContent) => {
+    return recipe.ingredients.filter((ingredient) =>
+      pantryItems?.some(
+        (pantryItem) =>
+          pantryItem.ingredientDefinition.ingredientDefinitionId ===
+          ingredient.ingredientDefinition.ingredientDefinitionId,
+      ),
+    );
+  };
 
   if (!isLoading && data !== null && items.length === 0) {
     return (
@@ -181,6 +194,20 @@ function RecipesList({
                         {cost}
                       </Badge>
                     </div>
+
+                    <Card.Text
+                      className="text-secondary mt-auto"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      You already possess{" "}
+                      {getPossessedIngredients(recipe).length} of{" "}
+                      {recipe.ingredients.length} ingredients
+                    </Card.Text>
 
                     <div className="d-flex gap-2 justify-content-center flex-wrap">
                       <Button
