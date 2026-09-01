@@ -22,6 +22,7 @@ interface RecipesListProps {
   onLoadMore: (nextPage: number) => void;
   onDeleteItem: (item: RecipePageContent) => void;
   onEditItem: (item: RecipePageContent) => void;
+  onPrepareItem: (item: RecipePageContent) => void;
   onAddItem?: (item: RecipePageContent) => void;
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
   setSelectedItem: (recipe: RecipePageContent) => void;
@@ -37,6 +38,7 @@ function RecipesList({
   isAdding,
   setSelectedItem,
   onAddIngredients,
+  onPrepareItem,
   userRole,
 }: RecipesListProps) {
   const navigate = useNavigate();
@@ -163,7 +165,7 @@ function RecipesList({
                       </Badge>
                     </div>
 
-                    <div className="d-flex gap-2 justify-content-center">
+                    <div className="d-flex gap-2 justify-content-center flex-wrap">
                       <Button
                         variant="outline-light"
                         size="sm"
@@ -183,6 +185,27 @@ function RecipesList({
                           <PulseLoader color="#fff" size={6} />
                         ) : (
                           "Buy Ingredients"
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        style={{
+                          whiteSpace: "normal",
+                          wordBreak: "keep-all",
+                        }}
+                        disabled={isAdding}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(recipe);
+                          onPrepareItem(recipe);
+                        }}
+                      >
+                        {isAdding ? (
+                          <PulseLoader color="#fff" size={6} />
+                        ) : (
+                          "Prepare"
                         )}
                       </Button>
                       {userRole === "ADMIN" && (
