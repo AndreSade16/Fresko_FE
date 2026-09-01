@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router";
 import { BeatLoader } from "react-spinners";
 import { setAccessToken } from "../../../redux/reducers/AuthSlice";
 import { useDispatch } from "react-redux";
+import PasswordField from "../PasswordField/PasswordField";
 
 function LoginCard() {
   const [email, setEmail] = useState("");
@@ -74,13 +75,13 @@ function LoginCard() {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
+            <PasswordField
+              id="loginPassword"
               value={password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPassword(e.target.value)
               }
+              required
             />
           </Form.Group>
           <Button
