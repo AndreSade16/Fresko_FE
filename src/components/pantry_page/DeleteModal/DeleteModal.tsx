@@ -37,7 +37,11 @@ function DeleteModal({
         >
           Cancel
         </Button>
-        <Button variant="warning" onClick={onConfirmDelete}>
+        <Button
+          variant="warning"
+          onClick={onConfirmDelete}
+          className="fw-semibold"
+        >
           Delete
         </Button>
       </Modal.Footer>

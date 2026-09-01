@@ -154,11 +154,11 @@ function IngredientDetails() {
                   <Card.Subtitle className="mt-2 mb-4 text-muted">
                     {ingredient.seasonality.join(", ")}
                   </Card.Subtitle>
-                  <div className="d-flex flex-column flex-md-row justify-content-md-between my-2 my-md-1 py-1 border-bottom border-1 border-opacity-25 border-light">
-                    <Card.Text className="fw-semibold mb-1 d-flex align-items-center">
+                  <div className="d-flex flex-column flex-md-row justify-content-md-between my-2 my-md-1 py-1 border-bottom border-1 border-opacity-25 border-light gap-md-4">
+                    <Card.Text className="fw-semibold mb-1 d-flex align-items-center align-items-md-start">
                       Description:
                     </Card.Text>
-                    <Card.Text className="text-end">
+                    <Card.Text className="text-md-end text-break">
                       {ingredient.description}
                     </Card.Text>
                   </div>
@@ -166,7 +166,7 @@ function IngredientDetails() {
                     <Card.Text className="fw-semibold mb-1 d-flex align-items-center">
                       Alternative usages:
                     </Card.Text>
-                    <Card.Text className="text-end">
+                    <Card.Text className="text-md-end">
                       {ingredient.alternativeUsages}
                     </Card.Text>
                   </div>
@@ -174,7 +174,7 @@ function IngredientDetails() {
                     <Card.Text className="fw-semibold mb-1 d-flex align-items-center">
                       Shelf life days:
                     </Card.Text>
-                    <span className="fw-normal fs-6 text-end">
+                    <span className="fw-normal fs-6 text-md-end">
                       {ingredient.shelfLifeDays}
                     </span>
                   </div>

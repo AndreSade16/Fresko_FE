@@ -21,6 +21,7 @@ import EditModal from "./EditModal/EditModal";
 import { apiFetch } from "../../tools/fetchHelper";
 import { useNavigate } from "react-router";
 import LemonImage from "../LemonImage/LemonImage";
+import { toast } from "react-toastify";
 
 function PantryPage() {
   const navigate = useNavigate();
@@ -43,10 +44,13 @@ function PantryPage() {
     dispatch(fetchPantry({ ...currentParams, page: nextPage.toString() }));
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (selectedItem?.pantryItemId) {
-      dispatch(deletePantryItem(selectedItem?.pantryItemId));
+      await dispatch(deletePantryItem(selectedItem?.pantryItemId));
     }
+    toast.success(
+      `${selectedItem?.ingredientDefinition.name} successfully removed from pantry`,
+    );
     setShowDeleteModal(false);
     setSelectedItem(null);
   };
