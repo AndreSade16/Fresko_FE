@@ -2,7 +2,7 @@ import { Badge, Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
 
 import type { ActiveShoppingList } from "../../../interfaces/interfaces";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router";
 
@@ -42,6 +42,11 @@ function ShoppingList({
   const navigate = useNavigate();
 
   const [selectedItems, setSelectedItems] = useState<SelectedItemsState>({});
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSelectedItems({});
+  }, [activeShoppingList?.shoppingListId]);
 
   const handleCheckboxChange = (
     itemId: string,
@@ -476,7 +481,7 @@ function ShoppingList({
             onClick={handleComplete}
             style={{ cursor: completedCount > 0 ? "pointer" : "not-allowed" }}
           >
-            {completedCount <= 0 ? "Buy anything first" : "Complete Shopping"}
+            {completedCount <= 0 ? "Buy anything first" : "Complete"}
           </Button>
         </div>
       </div>

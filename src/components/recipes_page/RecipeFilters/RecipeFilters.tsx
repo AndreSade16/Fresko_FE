@@ -82,59 +82,61 @@ function RecipeFilters({ applyFilters }: RecipeFiltersProps) {
           <Form onSubmit={handleSubmit}>
             <Row className="g-3">
               {/* Name */}
-              <Col xs={12} md={4}>
-                <Form.Group controlId="filterRecipeName">
-                  <Form.Label className="small text-muted mb-1">
-                    Recipe Name
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    placeholder="Search recipe..."
-                    value={filters.name}
-                    onChange={handleFilterChange}
-                    size="sm"
-                  />
-                </Form.Group>
-              </Col>
+              <div className="d-flex flex-column flex-md-row gap-2 gap-md-5 justify-content-md-start">
+                <Col xs={12} md={4}>
+                  <Form.Group controlId="filterRecipeName">
+                    <Form.Label className="small text-muted mb-1">
+                      Recipe Name
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      placeholder="Search recipe..."
+                      value={filters.name}
+                      onChange={handleFilterChange}
+                      size="sm"
+                    />
+                  </Form.Group>
+                </Col>
 
-              {/* Min Time */}
-              <Col xs={6} md={2}>
-                <Form.Group controlId="filterMinTime">
-                  <Form.Label className="small text-muted mb-1">
-                    Min Time (min)
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    min="0"
-                    step="any"
-                    name="minTime"
-                    placeholder="0"
-                    value={filters.minTime}
-                    onChange={handleFilterChange}
-                    size="sm"
-                  />
-                </Form.Group>
-              </Col>
+                {/* Min Time */}
+                <Col xs={6} md={2}>
+                  <Form.Group controlId="filterMinTime">
+                    <Form.Label className="small text-muted mb-1 text-nowrap">
+                      Min Time (min)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      step="any"
+                      name="minTime"
+                      placeholder="0"
+                      value={filters.minTime}
+                      onChange={handleFilterChange}
+                      size="sm"
+                    />
+                  </Form.Group>
+                </Col>
 
-              {/* Max Time */}
-              <Col xs={6} md={2}>
-                <Form.Group controlId="filterMaxTime">
-                  <Form.Label className="small text-muted mb-1">
-                    Max Time (min)
-                  </Form.Label>
-                  <Form.Control
-                    type="number"
-                    min="0"
-                    step="any"
-                    name="maxTime"
-                    placeholder="120"
-                    value={filters.maxTime}
-                    onChange={handleFilterChange}
-                    size="sm"
-                  />
-                </Form.Group>
-              </Col>
+                {/* Max Time */}
+                <Col xs={6} md={2}>
+                  <Form.Group controlId="filterMaxTime">
+                    <Form.Label className="small text-muted mb-1 text-nowrap">
+                      Max Time (min)
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      step="any"
+                      name="maxTime"
+                      placeholder="120"
+                      value={filters.maxTime}
+                      onChange={handleFilterChange}
+                      size="sm"
+                    />
+                  </Form.Group>
+                </Col>
+              </div>
 
               {/* Difficulty */}
               <Col xs={12} md={2}>
