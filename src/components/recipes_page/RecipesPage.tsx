@@ -20,9 +20,12 @@ import RecipeEditModal from "./RecipeEditModal/RecipeEditModal";
 import LemonImage from "../LemonImage/LemonImage";
 import { createActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
 import RecipePrepareModal from "./RecipePrepareModal/RecipePrepareModal";
+import { fetchUserProfile } from "../../redux/reducers/UserSlice";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
+
   const [searchParams] = useSearchParams();
   const [selectedItem, setSelectedItem] = useState<RecipePageContent | null>(
     null,
@@ -49,6 +52,10 @@ function RecipesPage() {
   const hasInitialData = Boolean(
     data && data.content && data.content.length > 0,
   );
+
+  useEffect(() => {
+    dispatch(fetchUserProfile());
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchRecipesList = (params: URLSearchParams) => {
@@ -80,6 +87,7 @@ function RecipesPage() {
 
       if (response.shoppingListItems.length > 0) {
         toast.success("Recipe ingredients are now in your shopping list!");
+        dispatch(fetchUserProfile());
       }
     } catch (error: unknown) {
       let message = "An error occurred while adding the ingredient.";
@@ -113,6 +121,7 @@ function RecipesPage() {
       );
       toast.success(`${selectedRecipe.name} successfully prepared!`);
       setShowPrepareModal(false);
+      dispatch(fetchUserProfile());
     } catch (error: unknown) {
       let message = "An error occurred while adding the ingredient.";
       if (typeof error === "object" && error !== null && "message" in error) {
@@ -165,6 +174,7 @@ function RecipesPage() {
       ) : (
         <RecipesList
           data={data}
+          pantryItems={pantryItems}
           isLoading={isLoading}
           error={error || errorMessage}
           onLoadMore={handleLoadMore}

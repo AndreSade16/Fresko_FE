@@ -8,13 +8,12 @@ import {
 import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
 import { PulseLoader } from "react-spinners";
 import type {
+  PantryPageContent,
   RecipePage,
   RecipePageContent,
   StandardError,
 } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../redux/store";
 
 interface RecipesListProps {
   data: RecipePage | null;
@@ -29,6 +28,7 @@ interface RecipesListProps {
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
   setSelectedItem: (recipe: RecipePageContent) => void;
   userRole: string | null;
+  pantryItems: PantryPageContent[] | null;
 }
 
 function RecipesList({
@@ -42,10 +42,10 @@ function RecipesList({
   onAddIngredients,
   onPrepareItem,
   userRole,
+  pantryItems,
 }: RecipesListProps) {
   const navigate = useNavigate();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
@@ -195,19 +195,21 @@ function RecipesList({
                       </Badge>
                     </div>
 
-                    <Card.Text
-                      className="text-secondary mt-auto"
-                      style={{
-                        display: "-webkit-box",
-                        WebkitLineClamp: 3,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                      }}
-                    >
-                      You already possess{" "}
-                      {getPossessedIngredients(recipe).length} of{" "}
-                      {recipe.ingredients.length} ingredients
-                    </Card.Text>
+                    {pantryItems && (
+                      <Card.Text
+                        className="text-secondary mt-auto"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
+                        You already possess{" "}
+                        {getPossessedIngredients(recipe).length} of{" "}
+                        {recipe.ingredients.length} ingredients
+                      </Card.Text>
+                    )}
 
                     <div className="d-flex gap-2 justify-content-center flex-wrap">
                       <Button
