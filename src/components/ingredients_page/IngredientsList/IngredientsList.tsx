@@ -112,7 +112,15 @@ function IngredientsList({
                     </Badge>
                   </div>
 
-                  <Card.Text className="text-light small flex-grow-1">
+                  <Card.Text
+                    className="text-light small flex-grow-1"
+                    style={{
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
+                  >
                     {description}
                   </Card.Text>
 

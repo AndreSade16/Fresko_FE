@@ -125,12 +125,21 @@ function RecipesList({
                 )}
                 <Card.Body className="d-flex flex-column justify-content-between">
                   <div className="d-flex flex-column justify-content-between flex-grow-1 mb-2">
-                    <div className="d-flex flex-column justify-content-between align-items-start mb-3 flex-wrap gap-2">
-                      <Card.Title className="mb-0 fs-6 fw-bold">
+                    <div className="d-flex flex-column justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                      <Card.Title
+                        className="mb-0 fs-6 fw-bold"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          minHeight: "2.5em",
+                        }}
+                      >
                         {name}
                       </Card.Title>
                     </div>
-                    <div>
+                    <div className="flex-grow-1">
                       <div className="d-flex gap-2 mb-1">
                         <span className="fw-semibold fs-6">Difficulty:</span>
                         <Badge
@@ -140,7 +149,15 @@ function RecipesList({
                           {difficulty?.replace("_", " ")}
                         </Badge>
                       </div>
-                      <Card.Text className="text-muted small mt-auto">
+                      <Card.Text
+                        className="text-muted small mt-auto"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}
+                      >
                         {description}
                       </Card.Text>
                     </div>
