@@ -24,6 +24,7 @@ import RecipeDeleteModal from "../../recipes_page/RecipeDeleteModal/RecipeDelete
 import RecipeToSlAddModal from "../../recipes_page/RecipeToSlModal/RecipeToSlModal";
 import RecipePrepareModal from "../../recipes_page/RecipePrepareModal/RecipePrepareModal";
 import { createActiveShoppingList } from "../../../redux/reducers/ShoppingListSlice";
+import { fetchUserProfile } from "../../../redux/reducers/UserSlice";
 
 function RecipeDetails() {
   const navigate = useNavigate();
@@ -141,6 +142,7 @@ function RecipeDetails() {
       });
       toast.success(`${recipe?.name} successfully prepared!`);
       setShowPrepareModal(false);
+      dispatch(fetchUserProfile());
     } catch (error: unknown) {
       let message = "An error occurred while adding the ingredient.";
       if (typeof error === "object" && error !== null && "message" in error) {
