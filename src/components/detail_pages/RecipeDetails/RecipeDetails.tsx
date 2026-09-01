@@ -217,7 +217,7 @@ function RecipeDetails() {
                                 : ingredient.ingredientDefinition.unit ===
                                     "MILLILITERS"
                                   ? "ml"
-                                  : "uts"}
+                                  : "units"}
                             </span>
                           </ListGroup.Item>
                         ))}
