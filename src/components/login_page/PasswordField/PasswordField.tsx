@@ -22,6 +22,7 @@ function PasswordField({
         type={visible ? "text" : "password"}
         className="form-control shadow-none border-0"
         id={id}
+        placeholder="Enter password"
         value={value}
         onChange={onChange}
         required={required}
