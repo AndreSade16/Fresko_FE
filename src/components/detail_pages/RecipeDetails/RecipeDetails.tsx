@@ -25,6 +25,7 @@ import RecipeToSlAddModal from "../../recipes_page/RecipeToSlModal/RecipeToSlMod
 import RecipePrepareModal from "../../recipes_page/RecipePrepareModal/RecipePrepareModal";
 import { createActiveShoppingList } from "../../../redux/reducers/ShoppingListSlice";
 import { fetchUserProfile } from "../../../redux/reducers/UserSlice";
+import AddMissingIngredientsModal from "../../recipes_page/AddMissingIngredientsModal/AddMissingIngredientsModal";
 
 function RecipeDetails() {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ function RecipeDetails() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showAddMissingModal, setShowAddMissingModal] =
+    useState<boolean>(false);
   const [showPrepareModal, setShowPrepareModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -116,6 +119,38 @@ function RecipeDetails() {
 
       if (response.shoppingListItems.length > 0) {
         toast.success("Recipe ingredients are now in your shopping list!");
+      }
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
+      setShowAddModal(false);
+      setIsAdding(false);
+    }
+  };
+
+  const handleAddMissingIngredients = async (
+    recipe: RecipePageContent,
+    numOfPeople: string,
+  ) => {
+    setIsAdding(true);
+    await dispatch(createActiveShoppingList());
+
+    try {
+      const response = await apiFetch<RecipeIngredientsToSlDTO>(
+        `/recipes/${recipe.recipeId}/remaining/${numOfPeople}`,
+        {
+          method: "POST",
+        },
+      );
+
+      if (response.shoppingListItems.length > 0) {
+        toast.success(
+          "Missing recipe ingredients are now in your shopping list!",
+        );
       }
     } catch (error: unknown) {
       let message = "An error occurred while adding the ingredient.";
@@ -296,7 +331,20 @@ function RecipeDetails() {
                       {isAdding ? (
                         <PulseLoader color="white" />
                       ) : (
-                        "Buy Ingredients"
+                        "Buy All Ingredients"
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline-light"
+                      size="sm"
+                      className="w-100 fw-semibold"
+                      onClick={() => setShowAddMissingModal(true)}
+                      disabled={isLoading || isAdding}
+                    >
+                      {isAdding ? (
+                        <PulseLoader color="white" />
+                      ) : (
+                        "Buy Missing Ingredients"
                       )}
                     </Button>
                     <Button
@@ -351,6 +399,13 @@ function RecipeDetails() {
         selectedItem={recipe}
         isAdding={isAdding}
         onConfirmAdd={handleAddIngredients}
+      />
+      <AddMissingIngredientsModal
+        showAddMissingModal={showAddMissingModal}
+        setShowAddMissingModal={setShowAddMissingModal}
+        selectedItem={recipe}
+        isAdding={isAdding}
+        onConfirmAdd={handleAddMissingIngredients}
       />
       <RecipePrepareModal
         show={showPrepareModal}

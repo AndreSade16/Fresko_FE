@@ -26,6 +26,7 @@ interface RecipesListProps {
   onPrepareItem: (item: RecipePageContent) => void;
   onAddItem?: (item: RecipePageContent) => void;
   onAddIngredients: Dispatch<SetStateAction<boolean>>;
+  onAddMissing: () => void;
   setSelectedItem: (recipe: RecipePageContent) => void;
   userRole: string | null;
   pantryItems: PantryPageContent[] | null;
@@ -41,6 +42,7 @@ function RecipesList({
   setSelectedItem,
   onAddIngredients,
   onPrepareItem,
+  onAddMissing,
   userRole,
   pantryItems,
 }: RecipesListProps) {
@@ -230,7 +232,32 @@ function RecipesList({
                         {isAdding ? (
                           <PulseLoader color="#fff" size={6} />
                         ) : (
-                          "Buy Ingredients"
+                          "Buy All Ingredients"
+                        )}
+                      </Button>
+                      <Button
+                        variant="outline-light"
+                        size="sm"
+                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        style={{
+                          whiteSpace: "normal",
+                          wordBreak: "keep-all",
+                        }}
+                        disabled={
+                          isAdding ||
+                          pantryItems?.length === 0 ||
+                          getPossessedIngredients(recipe).length === 0
+                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(recipe);
+                          onAddMissing();
+                        }}
+                      >
+                        {isAdding ? (
+                          <PulseLoader color="#fff" size={6} />
+                        ) : (
+                          "Buy Missing Ingredients"
                         )}
                       </Button>
                       <Button
