@@ -128,6 +128,7 @@ function RecipesList({
               <Card
                 className="h-100 shadow-sm hover-card bg-primary"
                 style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/recipes/${recipeId}`)}
               >
                 {imageUrl && (
                   <Card.Img
@@ -135,7 +136,6 @@ function RecipesList({
                     src={imageUrl}
                     alt={name}
                     style={{ height: "200px", objectFit: "cover" }}
-                    onClick={() => navigate(`/recipes/${recipeId}`)}
                   />
                 )}
                 <Card.Body className="d-flex flex-column justify-content-between">
