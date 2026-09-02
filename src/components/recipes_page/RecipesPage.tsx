@@ -21,6 +21,7 @@ import LemonImage from "../LemonImage/LemonImage";
 import { createActiveShoppingList } from "../../redux/reducers/ShoppingListSlice";
 import RecipePrepareModal from "./RecipePrepareModal/RecipePrepareModal";
 import { fetchUserProfile } from "../../redux/reducers/UserSlice";
+import AddMissingIngredientsModal from "./AddMissingIngredientsModal/AddMissingIngredientsModal";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -31,6 +32,8 @@ function RecipesPage() {
     null,
   );
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [showAddMissingModal, setShowAddMissingModal] =
+    useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showPrepareModal, setShowPrepareModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -86,7 +89,9 @@ function RecipesPage() {
       );
 
       if (response.shoppingListItems.length > 0) {
-        toast.success("Recipe ingredients are now in your shopping list!");
+        toast.success(
+          "Recipe ingredients added to your shopping list! (complete it to insert them in your pantry)",
+        );
         dispatch(fetchUserProfile());
       }
     } catch (error: unknown) {
@@ -98,6 +103,38 @@ function RecipesPage() {
       setErrorMessage(message);
     } finally {
       setSelectedItem(null);
+      setShowAddModal(false);
+      setIsAdding(false);
+    }
+  };
+
+  const handleAddMissingIngredients = async (
+    recipe: RecipePageContent,
+    numOfPeople: string,
+  ) => {
+    setIsAdding(true);
+    await dispatch(createActiveShoppingList());
+
+    try {
+      const response = await apiFetch<RecipeIngredientsToSlDTO>(
+        `/recipes/${recipe.recipeId}/remaining/${numOfPeople}`,
+        {
+          method: "POST",
+        },
+      );
+
+      if (response.shoppingListItems.length > 0) {
+        toast.success(
+          "Missing recipe ingredients are now in your shopping list! (complete it to insert them in your pantry)",
+        );
+      }
+    } catch (error: unknown) {
+      let message = "An error occurred while adding the ingredient.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    } finally {
       setShowAddModal(false);
       setIsAdding(false);
     }
@@ -182,6 +219,7 @@ function RecipesPage() {
           isAdding={isAdding}
           setSelectedItem={setSelectedItem}
           userRole={userRole}
+          onAddMissing={() => setShowAddMissingModal(true)}
           onPrepareItem={() => setShowPrepareModal(true)}
           onDeleteItem={() => setShowDeleteModal(true)}
           onEditItem={() => setShowEditModal(true)}
@@ -194,6 +232,14 @@ function RecipesPage() {
         setShowAddModal={setShowAddModal}
         onConfirmAdd={handleAddIngredients}
         isAdding={isAdding}
+      />
+
+      <AddMissingIngredientsModal
+        showAddMissingModal={showAddMissingModal}
+        setShowAddMissingModal={setShowAddMissingModal}
+        selectedItem={selectedItem}
+        isAdding={isAdding}
+        onConfirmAdd={handleAddMissingIngredients}
       />
 
       {selectedItem && (
