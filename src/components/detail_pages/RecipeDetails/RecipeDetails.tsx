@@ -339,7 +339,12 @@ function RecipeDetails() {
                       size="sm"
                       className="w-100 fw-semibold"
                       onClick={() => setShowAddMissingModal(true)}
-                      disabled={isLoading || isAdding}
+                      disabled={
+                        isLoading ||
+                        isAdding ||
+                        pantryItems?.length === 0 ||
+                        getPossessedIngredients(recipe).length === 0
+                      }
                     >
                       {isAdding ? (
                         <PulseLoader color="white" />
