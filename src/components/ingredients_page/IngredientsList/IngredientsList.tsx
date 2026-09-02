@@ -90,7 +90,6 @@ function IngredientsList({
                 className="h-100 shadow-sm hover-card bg-primary text-white"
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                  console.log("CIAS");
                   navigate(`/ingredients/${ingredientDefinitionId}`);
                 }}
               >
