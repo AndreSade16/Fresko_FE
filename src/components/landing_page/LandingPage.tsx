@@ -10,6 +10,8 @@ import RegisterPage from "../register_page/RegisterPage";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 import { useEffect } from "react";
+import ForgotPasswordPage from "../password_reset_pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "../password_reset_pages/ResetPasswordPage/ResetPasswordPage";
 
 function LandingPage() {
   const isAuthenticated = useSelector(
@@ -45,6 +47,8 @@ function LandingPage() {
         ></Route>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </Container>
   );

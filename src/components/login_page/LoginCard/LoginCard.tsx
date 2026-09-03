@@ -104,6 +104,11 @@ function LoginCard() {
             register here
           </Link>
         </Card.Text>
+        <Card.Text className="mt-3 text-center">
+          <Link to={"/forgot-password"} className="text-secondary fw-semibold">
+            Forgot password?
+          </Link>
+        </Card.Text>
       </Card.Body>
     </Card>
   );
