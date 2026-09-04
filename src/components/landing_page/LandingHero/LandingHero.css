@@ -1,7 +1,7 @@
 .landing-hero {
   background:
     linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-    url("/public/landingHero.avif") no-repeat center center;
+    url("/landingHero.avif") no-repeat center center;
   background-size: cover;
   min-height: 500px;
 }
