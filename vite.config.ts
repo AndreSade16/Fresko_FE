@@ -10,7 +10,11 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     VitePWA({
       registerType: "autoUpdate",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg,jpeg,avif,webp}"],
+      },
       manifest: {
+        id: "/",
         name: "Fresko",
         short_name: "Fresko",
         description: "Pantry and food waste management app",
@@ -19,6 +23,18 @@ export default defineConfig({
         display: "standalone",
         start_url: "/",
         icons: [
+          {
+            src: "/manifest-icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "/manifest-icon-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any",
+          },
           {
             src: "/manifest-icon-192.maskable.png",
             sizes: "192x192",
