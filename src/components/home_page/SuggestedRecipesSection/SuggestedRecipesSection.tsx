@@ -97,7 +97,7 @@ function SuggestedRecipesSection({
         <div className="mt-4 text-center">
           <Button
             variant="secondary"
-            className="w-100 py-2 text-dark fw-bold border-1 border-dark shadow-sm rounded-3"
+            className="w-100 py-2 text-dark fw-bold border-1 border-dark rounded-3"
             style={{ maxWidth: "280px" }}
             onClick={() => navigate("/recipes")}
           >
