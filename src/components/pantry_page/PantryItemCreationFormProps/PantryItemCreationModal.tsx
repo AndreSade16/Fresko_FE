@@ -188,7 +188,7 @@ function PantryItemCreationModal({
         <Card className="shadow-sm bg-primary text-light border-0">
           <Card.Body>
             <Card.Title className="mb-4 fs-5 fw-bold text-light">
-              ➕ Add new Ingredient in your Pantry
+              Add new Ingredient in your Pantry
             </Card.Title>
 
             {errorMessage && (

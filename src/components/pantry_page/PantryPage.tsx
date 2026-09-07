@@ -104,14 +104,14 @@ function PantryPage() {
       <div className="d-flex justify-content-center gap-2 mb-4">
         <Button
           variant="secondary"
-          className="fw-semibold z-1 border-black shadow-lg"
+          className="fw-semibold z-1 border-black"
           onClick={() => setShowCreateModal(true)}
         >
           Create Pantry Item
         </Button>
         <Button
           variant="warning"
-          className="fw-semibold z-1 border-black shadow-lg"
+          className="fw-semibold z-1 border-black"
           onClick={() => navigate("/my-list")}
         >
           Go shopping!

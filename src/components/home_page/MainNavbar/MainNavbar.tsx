@@ -80,10 +80,11 @@ function MainNavbar() {
               aria-controls="basic-navbar-nav"
               className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm flex-shrink-0"
               style={{ width: "42px", height: "42px" }}
+              aria-label="Toggle navbar menu"
             >
               <img
                 src={avatarSrc}
-                alt="User Avatar Menu"
+                alt="User avatar and menu toggle button"
                 className="w-100 h-100 object-fit-cover"
               />
             </Navbar.Toggle>

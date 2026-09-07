@@ -16,6 +16,7 @@ import type { StandardError, UserDTO } from "../../interfaces/interfaces";
 import UpdateAvatarModal from "./UpdateAvatarModal/UpdateAvatarModal";
 import { apiFetch } from "../../tools/fetchHelper";
 import LemonImage from "../LemonImage/LemonImage";
+import "./ProfilePage.css";
 
 function ProfilePage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -86,8 +87,8 @@ function ProfilePage() {
           </Col>
         ) : (
           <Col md={3} className="d-flex flex-column align-items-center">
-            <div
-              className="rounded-3 border border-2 border-light overflow-hidden position-relative shadow-sm w-100"
+            <button
+              className="avatar-button rounded-3 border border-2 border-light overflow-hidden position-relative shadow-sm w-100 p-0"
               role="button"
               style={{ maxWidth: "300px" }}
               onClick={() => setShowAvatarModal(true)}
@@ -95,6 +96,7 @@ function ProfilePage() {
               <Image
                 src={avatar ?? "https://placehold.co/600x400/png"}
                 className="object-fit-cover w-100 h-100"
+                alt="Current avatar"
                 style={{
                   maxWidth: "300px",
                   maxHeight: "300px",
@@ -105,7 +107,7 @@ function ProfilePage() {
               <i className="bi bi-pencil-square position-absolute bottom-0 end-0 z-3 me-3 mb-2 fs-2 text-white">
                 <small>Edit</small>
               </i>
-            </div>
+            </button>
           </Col>
         )}
 

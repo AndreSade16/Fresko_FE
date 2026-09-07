@@ -1,4 +1,13 @@
-import { Badge, Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
+import {
+  Badge,
+  Card,
+  Col,
+  Form,
+  Row,
+  Button,
+  Alert,
+  Image,
+} from "react-bootstrap";
 
 import type { ActiveShoppingList } from "../../../interfaces/interfaces";
 
@@ -73,13 +82,12 @@ function ShoppingList({
   };
 
   const handleQuantityChange = (itemId: string, rawQuantity: string) => {
-    // Se il campo viene svuotato, salviamo la quantità come 0
     const numQuantity = rawQuantity === "" ? 0 : Number(rawQuantity);
 
     setSelectedItems((prev) => ({
       ...prev,
       [itemId]: {
-        checked: false, // Deselezioniamo l'elemento se si modifica la quantità a 0
+        checked: false,
         expirationDate:
           prev[itemId]?.expirationDate ?? getDefaultExpirationDate(0),
         quantity: numQuantity < 0 ? 0 : numQuantity,
@@ -174,14 +182,28 @@ function ShoppingList({
       >
         {items.length <= 0 ? (
           <div className="d-flex flex-column align-items-center mt-4">
-            <Alert className="text-center">
-              This shopping list is empty, try adding some ingredients!
+            <Alert
+              variant="warning"
+              className="text-center d-flex flex-column flex-sm-row align-items-sm-center gap-2"
+            >
+              <Image
+                src="/ni-open-box.svg"
+                className="h-100"
+                style={{
+                  minHeight: "100px",
+                  maxHeight: "20px",
+                }}
+                alt=""
+              />
+              <span className="text-black">
+                This shopping list is empty, try adding some ingredients!
+              </span>
             </Alert>
 
             <div className="d-flex justify-content-around gap-3">
               <Button
                 variant="secondary"
-                className="fw-semibold z-1 border-black shadow-lg"
+                className="fw-semibold z-1 border-black"
                 onClick={() => navigate("/recipes")}
               >
                 Browse Recipes
@@ -189,7 +211,7 @@ function ShoppingList({
 
               <Button
                 variant="warning"
-                className="fw-semibold z-1 border-black shadow-lg"
+                className="fw-semibold z-1 border-black"
                 onClick={() => navigate("/ingredients")}
               >
                 Browse Ingredients
@@ -430,6 +452,7 @@ function ShoppingList({
 
                       onDeleteItem(shoppingListItemId);
                     }}
+                    aria-label={`Delete ${ingredientDefinition.name}`}
                   >
                     <i className="bi bi-trash3-fill"></i>
                   </Button>

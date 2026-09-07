@@ -45,6 +45,7 @@ function LandingNavbar() {
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             className="border-0 flex-shrink-0"
+            aria-label="Toggle navbar menu"
           />
         </div>
         <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
