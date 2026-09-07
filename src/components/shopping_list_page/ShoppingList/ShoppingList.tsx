@@ -1,4 +1,13 @@
-import { Badge, Card, Col, Form, Row, Button, Alert } from "react-bootstrap";
+import {
+  Badge,
+  Card,
+  Col,
+  Form,
+  Row,
+  Button,
+  Alert,
+  Image,
+} from "react-bootstrap";
 
 import type { ActiveShoppingList } from "../../../interfaces/interfaces";
 
@@ -173,8 +182,22 @@ function ShoppingList({
       >
         {items.length <= 0 ? (
           <div className="d-flex flex-column align-items-center mt-4">
-            <Alert className="text-center">
-              This shopping list is empty, try adding some ingredients!
+            <Alert
+              variant="warning"
+              className="text-center d-flex flex-column flex-sm-row align-items-sm-center gap-2"
+            >
+              <Image
+                src="/ni-open-box.svg"
+                className="h-100"
+                style={{
+                  minHeight: "100px",
+                  maxHeight: "20px",
+                }}
+                alt=""
+              />
+              <span className="text-black">
+                This shopping list is empty, try adding some ingredients!
+              </span>
             </Alert>
 
             <div className="d-flex justify-content-around gap-3">

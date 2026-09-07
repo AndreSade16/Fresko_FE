@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Row, Col, Card, Badge, Alert, Button } from "react-bootstrap";
+import { Row, Col, Card, Badge, Alert, Button, Image } from "react-bootstrap";
 import type {
   PantryPage,
   PantryPageContent,
@@ -64,10 +64,19 @@ function PantryList({
     return (
       <div className="d-flex flex-column align-items-center">
         <Alert
-          variant="secondary"
-          className="my-3 text-center border-black shadow"
+          variant="warning"
+          className="my-3 text-center border-black shadow d-flex flex-column flex-sm-row align-items-sm-center gap-2"
         >
-          No item found in the pantry.
+          <Image
+            src="/ni-open-box.svg"
+            className="h-100"
+            style={{
+              minHeight: "100px",
+              maxHeight: "20px",
+            }}
+            alt=""
+          />
+          <span className="text-black">No item found in the pantry.</span>
         </Alert>
       </div>
     );
