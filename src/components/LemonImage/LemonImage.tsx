@@ -9,6 +9,7 @@ function LemonImage({ leftToRight }: LemonImageProps) {
     <Image
       src="favicon.png"
       className="position-fixed"
+      alt="Fresko Lemon logo"
       style={{
         width: "450px",
         transform: leftToRight ? "scaleX(1)" : "scaleX(-1)",

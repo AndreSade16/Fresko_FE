@@ -1,0 +1,4 @@
+.avatar-button:focus-visible {
+  outline: 4px solid white;
+  outline-offset: 5px;
+}

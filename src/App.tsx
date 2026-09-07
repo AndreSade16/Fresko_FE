@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router";
+import { BrowserRouter, Route, Routes } from "react-router";
 import "./App.css";
 import LandingPage from "./components/landing_page/LandingPage";
 
@@ -20,6 +20,7 @@ import IngredientDetails from "./components/detail_pages/IngredientDetails/Ingre
 import RecipeDetails from "./components/detail_pages/RecipeDetails/RecipeDetails";
 import UserDetails from "./components/detail_pages/UserDetails/UserDetails";
 import InfoPage from "./components/InfoPage/InfoPage";
+import NotFoundPage from "./components/not_found_page/NotFoundPage";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +41,7 @@ function App() {
       <div className="flex-grow-1 bg-dark">
         <BrowserRouter>
           <Routes>
-            <Route path="/*" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage />} />
 
             <Route element={<ProtectedRouteLogged />}>
               <Route path="/home" element={<HomePage />} />
@@ -63,7 +64,7 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </BrowserRouter>
       </div>
