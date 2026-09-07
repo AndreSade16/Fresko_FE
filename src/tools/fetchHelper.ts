@@ -30,22 +30,19 @@ export async function apiFetch<T>(
   });
 
   if (!response.ok) {
+    if (response.status === 401) {
+      localStorage.removeItem("accessToken");
+      window.dispatchEvent(new Event("unauthorized_logout"));
+      toast.error("Expired token. Log in again");
+      throw new Error("Unauthorized");
+    }
+
     let errorMessage: string;
     try {
       const errorData = await response.json();
       errorMessage = errorData.message || JSON.stringify(errorData);
     } catch {
       errorMessage = await response.text();
-    }
-
-    if (
-      response.status === 500 &&
-      (errorMessage.includes("Error with token") ||
-        errorMessage.includes("try a new login"))
-    ) {
-      localStorage.removeItem("accessToken");
-      window.dispatchEvent(new Event("unauthorized_logout"));
-      toast.error("Error with credentials. Log in again");
     }
 
     throw new Error(errorMessage || `HTTP Error: ${response.status}`);
