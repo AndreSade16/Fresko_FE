@@ -1,17 +1,29 @@
-.blur-navbar-dark {
+.blur-main-navbar-dark .navbar-main-toggler-icon {
+  display: none !important;
+}
+
+.text-stroke {
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.blur-main-navbar-dark {
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
 @media (max-width: 991.98px) {
-  .blur-navbar-dark {
+  .blur-main-navbar-dark {
     position: sticky;
     top: 0;
     z-index: 1030;
   }
 
-  .navbar-collapse-overlay {
+  .navbar-main-collapse-overlay {
     position: absolute;
     top: 100%;
     left: 0;
