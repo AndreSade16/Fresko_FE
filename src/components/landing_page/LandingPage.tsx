@@ -1,5 +1,4 @@
 import { Container } from "react-bootstrap";
-import LandingNavbar from "./LandingNavbar/LandingNavbar";
 import LandingHero from "./LandingHero/LandingHero";
 import LandingMission from "./LandingMission/LandingMission";
 import LandingVision from "./LandingVision/LandingVision";
