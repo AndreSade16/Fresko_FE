@@ -21,6 +21,11 @@ import RecipeDetails from "./components/detail_pages/RecipeDetails/RecipeDetails
 import UserDetails from "./components/detail_pages/UserDetails/UserDetails";
 import InfoPage from "./components/InfoPage/InfoPage";
 import NotFoundPage from "./components/not_found_page/NotFoundPage";
+import RedirectIfAuthenticated from "./components/protected_routes/RedirectIfAuthenticated";
+import LoginPage from "./components/login_page/LoginPage";
+import RegisterPage from "./components/register_page/RegisterPage";
+import ForgotPasswordPage from "./components/password_reset_pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "./components/password_reset_pages/ResetPasswordPage/ResetPasswordPage";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +46,13 @@ function App() {
       <div className="flex-grow-1 bg-dark">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
+            <Route element={<RedirectIfAuthenticated />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+            </Route>
 
             <Route element={<ProtectedRouteLogged />}>
               <Route path="/home" element={<HomePage />} />
