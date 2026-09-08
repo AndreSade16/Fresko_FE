@@ -2,6 +2,7 @@ import { Card, Row, Col, Badge, Button } from "react-bootstrap";
 import type { PantryItem } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
 import { SyncLoader } from "react-spinners";
+import { optimizeCloudinaryUrl } from "../../../tools/cloudinaryUrlOptimizer";
 
 interface PantrySectionProps {
   expiringItems: PantryItem[] | null;
@@ -39,8 +40,10 @@ function PantrySection({ expiringItems, isLoading }: PantrySectionProps) {
                       <div className="d-flex align-items-center gap-3">
                         <img
                           src={
-                            item.imageUrl ||
-                            "https://via.placeholder.com/50?text=Food"
+                            optimizeCloudinaryUrl(item.imageUrl, {
+                              width: 96,
+                              height: 96,
+                            }) || "https://via.placeholder.com/50?text=Food"
                           }
                           alt={item.ingredientName}
                           className="rounded-3 object-fit-cover flex-shrink-0"
