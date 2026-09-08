@@ -36,7 +36,7 @@ function HomePage() {
         </Alert>
       )}
       <div className="d-flex align-items-center gap-1 z-1">
-        <img src="/favicon.png" style={{ width: "100px" }} />
+        <img src="/favicon.png" style={{ width: "100px" }} alt="" />
         <div className="d-flex flex-column z-1">
           <h3 className="fw-semibold ps-3 mt-3">Hi {firstName}!</h3>
           <h3 className="fw-semibold ps-3">

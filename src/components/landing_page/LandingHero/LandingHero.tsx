@@ -22,7 +22,7 @@ function LandingHero() {
               Save food,
               <br />
               keep it{" "}
-              <span className="text-secondary text-nowrap">
+              <span className="text-secondary text-nowrap z-0">
                 <BlurText
                   text="Fresko"
                   delay={200}

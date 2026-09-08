@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/UserSlice";
 import { logout } from "../../../redux/reducers/AuthSlice";
+import "./MainNavbar.css";
 
 function MainNavbar() {
   const navigate = useNavigate();
+  const navbarRef = useRef<HTMLDivElement | null>(null);
   const [expanded, setExpanded] = useState(false);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
   const dispatch = useDispatch<AppDispatch>();
@@ -15,6 +17,23 @@ function MainNavbar() {
   const { username, firstName, avatar, role } = useSelector(
     (state: RootState) => state.user,
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        navbarRef.current &&
+        !navbarRef.current.contains(event.target as Node)
+      ) {
+        setExpanded(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleNavigate = (path: string) => {
     setExpanded(false);
@@ -42,8 +61,8 @@ function MainNavbar() {
 
   return (
     <>
-      <style>{`
-        .blur-navbar-dark .navbar-toggler-icon {
+      {/* <style>{`
+        .blur-main-navbar-dark .navbar-main-toggler-icon {
           display: none !important;
         }
         .text-stroke {
@@ -53,131 +72,144 @@ function MainNavbar() {
             -1px  1px 0 #000,
              1px  1px 0 #000;
         }
-      `}</style>
-      <Navbar
-        variant="dark"
-        expand="lg"
-        className="blur-navbar-dark"
-        sticky="top"
-        expanded={expanded}
-        onToggle={(isExpanded) => setExpanded(isExpanded)}
+      `}</style> */}
+      <div
+        ref={navbarRef}
+        style={{ position: "sticky", top: "0" }}
+        className="z-3"
       >
-        <Container fluid className="px-4">
-          <div className="d-flex align-items-center justify-content-between flex-nowrap w-100 w-lg-auto">
-            <Navbar.Brand
-              onClick={() => handleNavigate("/")}
-              style={{ cursor: "pointer" }}
-              className="d-flex align-items-center"
-            >
-              <img
-                src="/Fresko-Title.png"
-                alt="Fresko Logo"
-                style={{ height: "40px", width: "auto", objectFit: "contain" }}
-              />
-            </Navbar.Brand>
-
-            <Navbar.Toggle
-              aria-controls="basic-navbar-nav"
-              className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm flex-shrink-0"
-              style={{ width: "42px", height: "42px" }}
-              aria-label="Toggle navbar menu"
-            >
-              <img
-                src={avatarSrc}
-                alt="User avatar and menu toggle button"
-                className="w-100 h-100 object-fit-cover"
-              />
-            </Navbar.Toggle>
-          </div>
-
-          <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
-            <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
-              {role === "ADMIN" && (
-                <Nav.Link
-                  className="text-warning text-nowrap fw-bold text-stroke"
-                  onClick={() => handleNavigate("/admin")}
-                >
-                  Admin
-                </Nav.Link>
-              )}
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/home")}
+        <Navbar
+          variant="dark"
+          expand="lg"
+          className="blur-main-navbar-dark position-relative"
+          sticky="top"
+          expanded={expanded}
+          onToggle={(isExpanded) => setExpanded(isExpanded)}
+        >
+          <Container fluid className="px-4">
+            <div className="d-flex align-items-center justify-content-between flex-nowrap w-100 w-lg-auto">
+              <Navbar.Brand
+                onClick={() => handleNavigate("/")}
+                style={{ cursor: "pointer" }}
+                className="d-flex align-items-center"
               >
-                Home
-              </Nav.Link>
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/ingredients")}
-              >
-                Ingredients
-              </Nav.Link>
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/recipes")}
-              >
-                Recipes
-              </Nav.Link>
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/pantry")}
-              >
-                Pantry
-              </Nav.Link>
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/my-list")}
-              >
-                Shopping List
-              </Nav.Link>
-
-              <Nav.Link
-                className="text-light text-nowrap text-stroke"
-                onClick={() => handleNavigate("/info")}
-              >
-                On us
-              </Nav.Link>
-              <Nav.Link
-                className="text-light text-nowrap fw-semibold text-stroke"
-                onClick={() => handleLogout()}
-              >
-                Logout
-              </Nav.Link>
-
-              {isDesktop ? (
-                <div
-                  onClick={() => handleNavigate("/me")}
-                  role="button"
-                  tabIndex={0}
-                  className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center border border-2 border-light shadow-sm"
+                <img
+                  src="/Fresko-Title.png"
+                  alt="Fresko Logo"
                   style={{
-                    width: "42px",
-                    height: "42px",
-                    cursor: "pointer",
-                    flexShrink: 0,
+                    height: "40px",
+                    width: "auto",
+                    objectFit: "contain",
                   }}
+                />
+              </Navbar.Brand>
+
+              <Navbar.Toggle
+                aria-controls="basic-navbar-nav"
+                className="border border-2 border-light p-0 rounded-circle overflow-hidden shadow-sm flex-shrink-0"
+                style={{ width: "42px", height: "42px" }}
+                aria-label="Toggle navbar menu"
+              >
+                <img
+                  src={avatarSrc}
+                  alt="User avatar and menu toggle button"
+                  className="w-100 h-100 object-fit-cover"
+                />
+              </Navbar.Toggle>
+            </div>
+
+            <Navbar.Collapse
+              id="basic-navbar-nav"
+              className="navbar-main-collapse-overlay pb-3 pb-lg-0"
+            >
+              <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+                {role === "ADMIN" && (
+                  <Nav.Link
+                    className="text-warning text-nowrap fw-bold text-stroke"
+                    onClick={() => handleNavigate("/admin")}
+                  >
+                    Admin
+                  </Nav.Link>
+                )}
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/home")}
                 >
-                  <img
-                    src={avatarSrc}
-                    alt="User Avatar"
-                    className="w-100 h-100 object-fit-cover"
-                  />
-                </div>
-              ) : (
-                <p
-                  onClick={() => handleNavigate("/me")}
-                  role="button"
-                  tabIndex={0}
-                  className="text-light mb-0 fw-semibold text-nowrap text-stroke text-capitalize"
-                  style={{ cursor: "pointer" }}
+                  Home
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/ingredients")}
                 >
-                  {firstName || username || "Guest"}'s profile
-                </p>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+                  Ingredients
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/recipes")}
+                >
+                  Recipes
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/pantry")}
+                >
+                  Pantry
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/my-list")}
+                >
+                  Shopping List
+                </Nav.Link>
+
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/info")}
+                >
+                  On us
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap fw-semibold text-stroke"
+                  onClick={() => handleLogout()}
+                >
+                  Logout
+                </Nav.Link>
+
+                {isDesktop ? (
+                  <div
+                    onClick={() => handleNavigate("/me")}
+                    role="button"
+                    tabIndex={0}
+                    className="rounded-circle overflow-hidden d-flex align-items-center justify-content-center border border-2 border-light shadow-sm"
+                    style={{
+                      width: "42px",
+                      height: "42px",
+                      cursor: "pointer",
+                      flexShrink: 0,
+                    }}
+                  >
+                    <img
+                      src={avatarSrc}
+                      alt="User Avatar"
+                      className="w-100 h-100 object-fit-cover"
+                    />
+                  </div>
+                ) : (
+                  <p
+                    onClick={() => handleNavigate("/me")}
+                    role="button"
+                    tabIndex={0}
+                    className="text-light mb-0 fw-semibold text-nowrap text-stroke text-capitalize"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {firstName || username || "Guest"}'s profile
+                  </p>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      </div>
     </>
   );
 }

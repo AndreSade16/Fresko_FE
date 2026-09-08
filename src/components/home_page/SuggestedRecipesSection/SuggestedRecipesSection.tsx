@@ -2,6 +2,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import type { SuggestedRecipe } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
 import { SyncLoader } from "react-spinners";
+import { optimizeCloudinaryUrl } from "../../../tools/cloudinaryUrlOptimizer";
 
 interface SuggestedRecipesSectionProps {
   suggestedRecipes: SuggestedRecipe[] | null;
@@ -46,8 +47,10 @@ function SuggestedRecipesSection({
                   <div className="d-flex h-100">
                     <img
                       src={
-                        recipe.imageUrl ||
-                        "https://via.placeholder.com/150?text=Food"
+                        optimizeCloudinaryUrl(recipe.imageUrl, {
+                          width: 230,
+                          height: 260,
+                        }) || "https://via.placeholder.com/150?text=Food"
                       }
                       alt={recipe.name}
                       className="object-fit-cover flex-shrink-0"

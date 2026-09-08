@@ -2,6 +2,7 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import type { ActiveShoppingList } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
 import { SyncLoader } from "react-spinners";
+import { optimizeCloudinaryUrl } from "../../../tools/cloudinaryUrlOptimizer";
 
 interface ListSectionProps {
   activeShoppingList: ActiveShoppingList | null;
@@ -66,8 +67,13 @@ function ListSection({ activeShoppingList, isLoading }: ListSectionProps) {
                       <div className="d-flex align-items-center gap-3">
                         <img
                           src={
-                            item.ingredientDefinition.imageUrl ||
-                            "https://via.placeholder.com/50?text=Food"
+                            optimizeCloudinaryUrl(
+                              item.ingredientDefinition.imageUrl,
+                              {
+                                width: 96,
+                                height: 96,
+                              },
+                            ) || "https://via.placeholder.com/50?text=Food"
                           }
                           alt={item.ingredientDefinition.name}
                           className="rounded-3 object-fit-cover flex-shrink-0"
