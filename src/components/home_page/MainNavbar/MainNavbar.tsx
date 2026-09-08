@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import type { AppDispatch, RootState } from "../../../redux/store";
 import { fetchUserProfile } from "../../../redux/reducers/UserSlice";
 import { logout } from "../../../redux/reducers/AuthSlice";
+import "./MainNavbar.css";
 
 function MainNavbar() {
   const navigate = useNavigate();
@@ -60,8 +61,8 @@ function MainNavbar() {
 
   return (
     <>
-      <style>{`
-        .blur-navbar-dark .navbar-toggler-icon {
+      {/* <style>{`
+        .blur-main-navbar-dark .navbar-main-toggler-icon {
           display: none !important;
         }
         .text-stroke {
@@ -71,12 +72,16 @@ function MainNavbar() {
             -1px  1px 0 #000,
              1px  1px 0 #000;
         }
-      `}</style>
-      <div ref={navbarRef}>
+      `}</style> */}
+      <div
+        ref={navbarRef}
+        style={{ position: "sticky", top: "0" }}
+        className="z-3"
+      >
         <Navbar
           variant="dark"
           expand="lg"
-          className="blur-navbar-dark"
+          className="blur-main-navbar-dark position-relative"
           sticky="top"
           expanded={expanded}
           onToggle={(isExpanded) => setExpanded(isExpanded)}
@@ -113,7 +118,10 @@ function MainNavbar() {
               </Navbar.Toggle>
             </div>
 
-            <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
+            <Navbar.Collapse
+              id="basic-navbar-nav"
+              className="navbar-main-collapse-overlay pb-3 pb-lg-0"
+            >
               <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
                 {role === "ADMIN" && (
                   <Nav.Link

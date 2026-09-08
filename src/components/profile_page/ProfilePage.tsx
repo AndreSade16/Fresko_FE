@@ -88,7 +88,7 @@ function ProfilePage() {
         ) : (
           <Col md={3} className="d-flex flex-column align-items-center">
             <button
-              className="avatar-button rounded-3 border border-2 border-light overflow-hidden position-relative shadow-sm w-100 p-0"
+              className="avatar-button rounded-3 border border-2 border-light overflow-hidden position-relative shadow-sm w-100 p-0 z-2"
               role="button"
               style={{ maxWidth: "300px" }}
               onClick={() => setShowAvatarModal(true)}

@@ -32,11 +32,15 @@ function LandingNavbar() {
   }, []);
 
   return (
-    <div ref={navbarRef}>
+    <div
+      ref={navbarRef}
+      style={{ position: "sticky", top: "0" }}
+      className="z-3"
+    >
       <Navbar
         variant="dark"
         expand="lg"
-        className="blur-navbar-dark"
+        className="blur-navbar-dark position-relative"
         sticky="top"
         expanded={expanded}
         onToggle={(isExpanded) => setExpanded(isExpanded)}
@@ -68,7 +72,10 @@ function LandingNavbar() {
               aria-label="Toggle navbar menu"
             />
           </div>
-          <Navbar.Collapse id="basic-navbar-nav" className="pb-3 pb-lg-0">
+          <Navbar.Collapse
+            id="basic-navbar-nav"
+            className="navbar-collapse-overlay pb-3 pb-lg-0"
+          >
             <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
               <Nav.Link
                 className="text-light text-nowrap"
