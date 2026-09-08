@@ -81,7 +81,7 @@ function DeleteModal({
 
           {isDeleting && (
             <div className="position-absolute start-50 top-50 translate-middle d-flex align-items-center">
-              <PulseLoader color="#000000" size={8} />
+              <PulseLoader color="white" size={8} />
             </div>
           )}
         </Button>
