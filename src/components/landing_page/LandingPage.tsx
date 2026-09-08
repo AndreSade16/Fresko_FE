@@ -4,14 +4,10 @@ import LandingHero from "./LandingHero/LandingHero";
 import LandingMission from "./LandingMission/LandingMission";
 import LandingVision from "./LandingVision/LandingVision";
 import LandingFooter from "./LandingFooter/LandingFooter";
-import { Navigate, Route, Routes, useLocation } from "react-router";
-import LoginPage from "../login_page/LoginPage";
-import RegisterPage from "../register_page/RegisterPage";
+import { Navigate, useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
 import { useEffect } from "react";
-import ForgotPasswordPage from "../password_reset_pages/ForgotPasswordPage/ForgotPasswordPage";
-import ResetPasswordPage from "../password_reset_pages/ResetPasswordPage/ResetPasswordPage";
 
 function LandingPage() {
   const isAuthenticated = useSelector(
@@ -32,24 +28,10 @@ function LandingPage() {
 
   return (
     <Container fluid={true} className="p-0">
-      <LandingNavbar />
-      <Routes>
-        <Route
-          index
-          element={
-            <>
-              <LandingHero />
-              <LandingMission />
-              <LandingVision />
-              <LandingFooter />
-            </>
-          }
-        ></Route>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="reset-password" element={<ResetPasswordPage />} />
-      </Routes>
+      <LandingHero />
+      <LandingMission />
+      <LandingVision />
+      <LandingFooter />
     </Container>
   );
 }
