@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import IngredientFilters from "./IngredientFilters/IngredientFilters";
 import type { AppDispatch, RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { fetchIngredients } from "../../redux/reducers/IngredientDefinitionSlice";
 import IngredientsList from "./IngredientsList/IngredientsList";
-import { GridLoader } from "react-spinners";
+// import { GridLoader } from "react-spinners";
 import IngredientAddModal from "./IngredientAddModal/IngredientAddModal";
 import type {
   IngredientDefinitionPageContent,
@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import IngredientDeleteModal from "./IngredientDeleteModal/IngredientDeleteModal";
 import IngredientEditModal from "./IngredientEditModal/IngredientEditModal";
 import LemonImage from "../LemonImage/LemonImage";
+import SkeletonCard from "../skeleton_card/SkeletonCard";
 
 function IngredientPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -153,7 +154,14 @@ function IngredientPage() {
       <IngredientFilters />
 
       {isLoading && !hasInitialData ? (
-        <GridLoader color="white" className="mt-5 pt-2" />
+        <div className="mt-3 w-100">
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </Row>
+        </div>
       ) : (
         <IngredientsList
           data={data}

@@ -1,6 +1,5 @@
-import { Container } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { GridLoader } from "react-spinners";
 import type { AppDispatch, RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -22,6 +21,7 @@ import { createActiveShoppingList } from "../../redux/reducers/ShoppingListSlice
 import RecipePrepareModal from "./RecipePrepareModal/RecipePrepareModal";
 import { fetchUserProfile } from "../../redux/reducers/UserSlice";
 import AddMissingIngredientsModal from "./AddMissingIngredientsModal/AddMissingIngredientsModal";
+import SkeletonCard from "../skeleton_card/SkeletonCard";
 
 function RecipesPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -207,7 +207,17 @@ function RecipesPage() {
       <RecipeFilters />
 
       {isLoading && !hasInitialData ? (
-        <GridLoader color="white" className="mt-5 pt-2" />
+        <div
+          className="ingredient-list-container mt-3 w-100 d-flex justify-content-center"
+          style={{ minWidth: "200px" }}
+        >
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4 w-100">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </Row>
+        </div>
       ) : (
         <RecipesList
           data={data}
