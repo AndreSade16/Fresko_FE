@@ -6,7 +6,7 @@ import type {
 } from "../../interfaces/interfaces";
 import DeleteModal from "./DeleteModal/DeleteModal";
 import PantryFilters from "./PantryFilters/PantryFilters";
-import { Button, Container } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 import { useSearchParams } from "react-router";
 import { type AppDispatch, type RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,12 +16,12 @@ import {
 } from "../../redux/reducers/PantrySlice";
 import PantryList from "./PantryList/PantryList";
 import PantryItemCreationForm from "./PantryItemCreationFormProps/PantryItemCreationModal";
-import { GridLoader } from "react-spinners";
 import EditModal from "./EditModal/EditModal";
 import { apiFetch } from "../../tools/fetchHelper";
 import { useNavigate } from "react-router";
 import LemonImage from "../LemonImage/LemonImage";
 import { toast } from "react-toastify";
+import SkeletonCard from "../skeleton_card/SkeletonCard";
 
 function PantryPage() {
   const navigate = useNavigate();
@@ -119,7 +119,14 @@ function PantryPage() {
       </div>
 
       {isLoading && !hasInitialData ? (
-        <GridLoader color="white" className="mt-5 pt-2" />
+        <div className="d-flex flex-column align-items-center w-100">
+          <Row xs={1} sm={2} md={3} lg={4} className="g-4 w-100">
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </Row>
+        </div>
       ) : (
         <PantryList
           data={data}
