@@ -53,6 +53,7 @@ function RecipeDetails() {
       const data = await apiFetch<RecipePageContent>(
         `/recipes/${recipeId}/visit`,
       );
+      await dispatch(fetchUserProfile());
       setRecipe(data);
       setIsImageValid(true);
     } catch (error: unknown) {
@@ -64,7 +65,7 @@ function RecipeDetails() {
     } finally {
       setIsLoading(false);
     }
-  }, [recipeId]);
+  }, [dispatch, recipeId]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
