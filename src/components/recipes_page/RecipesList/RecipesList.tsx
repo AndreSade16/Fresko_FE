@@ -14,6 +14,10 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "../../../redux/store";
+import { savePersonalRecipe } from "../../../redux/reducers/PersonalRecipesSlice";
+import { toast } from "react-toastify";
 
 interface RecipesListProps {
   data: RecipePage | null;
@@ -47,12 +51,30 @@ function RecipesList({
   pantryItems,
 }: RecipesListProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
   const currentPage = data?.number ?? 0;
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
+
+  const handleSave = async (
+    e: React.MouseEvent<HTMLElement, MouseEvent>,
+    recipeId: string,
+  ) => {
+    e.stopPropagation();
+    try {
+      await dispatch(savePersonalRecipe(recipeId)).unwrap();
+      toast.success("Recipe saved!");
+    } catch (error: unknown) {
+      let message = "An error occurred while saving the recipe.";
+      if (typeof error === "object" && error !== null && "message" in error) {
+        message = (error as StandardError).message;
+      }
+      toast.error(message);
+    }
+  };
 
   useEffect(() => {
     if (isLoading || isLastPage) return;
@@ -126,10 +148,21 @@ function RecipesList({
           return (
             <Col key={recipeId}>
               <Card
-                className="h-100 shadow-sm hover-card bg-primary"
+                className="h-100 shadow-sm hover-card bg-primary position-relative"
                 style={{ cursor: "pointer" }}
                 onClick={() => navigate(`/recipes/${recipeId}`)}
               >
+                <Badge
+                  className="position-absolute  p-2 bg-secondary text-black d-flex align-items-center justify-content-center border border-black"
+                  aria-label={"Save " + name}
+                  onClick={(e) => handleSave(e, recipeId)}
+                  style={{
+                    top: "-10px",
+                    right: "-10px",
+                  }}
+                >
+                  <i className="bi bi-bookmark-heart fs-2 fw-bold"></i>
+                </Badge>
                 {imageUrl && (
                   <Card.Img
                     variant="top"

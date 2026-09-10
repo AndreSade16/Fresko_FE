@@ -6,6 +6,7 @@ import pantryReducer from "../reducers/PantrySlice";
 import shoppingListReducer from "../reducers/ShoppingListSlice";
 import ingredientdefinitionsReducer from "../reducers/IngredientDefinitionSlice";
 import recipesReducer from "../reducers/RecipesSlice";
+import personalRecipesReducer from "../reducers/PersonalRecipesSlice";
 import adminusersReducer from "../reducers/AdminUsersSlice";
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     ingredientDefinitions: ingredientdefinitionsReducer,
     shoppingList: shoppingListReducer,
     recipes: recipesReducer,
+    personalRecipes: personalRecipesReducer,
     adminUsers: adminusersReducer,
   },
 });
