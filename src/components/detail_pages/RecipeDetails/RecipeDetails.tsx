@@ -65,7 +65,7 @@ function RecipeDetails() {
       toast.error(message);
       setTimeout(() => {
         navigate(-1);
-      }, 1500);
+      }, 2000);
     } finally {
       setIsLoading(false);
     }
