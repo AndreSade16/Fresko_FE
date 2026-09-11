@@ -62,10 +62,14 @@ function RecipeDetails() {
         message = (error as StandardError).message;
       }
       toast.error(message);
+      setTimeout(() => {
+        navigate(-1);
+      }, 1500);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, recipeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect

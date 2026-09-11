@@ -1,4 +1,4 @@
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { Badge, Button, Card, Col, Row } from "react-bootstrap";
 import type { SuggestedRecipe } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
 import { SyncLoader } from "react-spinners";
@@ -40,10 +40,22 @@ function SuggestedRecipesSection({
             {suggestedRecipes.map((recipe) => (
               <Col key={recipe.id} xs={12} md={6} lg={4}>
                 <Card
-                  className="bg-dark text-light border-0 rounded-3 shadow-sm overflow-hidden"
+                  className="bg-dark text-light border-0 rounded-3 shadow-sm overflow-hidden position-relative"
                   style={{ height: "130px", cursor: "pointer" }}
                   onClick={() => navigate(`/recipes/${recipe.id}`)}
                 >
+                  {recipe.isPersonal && (
+                    <Badge
+                      className="position-absolute  p-2 bg-secondary text-black d-flex align-items-center justify-content-center border border-black top-0 end-0"
+                      aria-label={"Saved " + recipe.name}
+                      style={{ cursor: "default" }}
+                    >
+                      <i
+                        className="bi bi-bookmark-heart fs-2 fw-bold"
+                        style={{ cursor: "default" }}
+                      ></i>
+                    </Badge>
+                  )}
                   <div className="d-flex h-100">
                     <img
                       src={

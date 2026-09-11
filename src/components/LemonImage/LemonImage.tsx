@@ -7,7 +7,7 @@ interface LemonImageProps {
 function LemonImage({ leftToRight }: LemonImageProps) {
   return (
     <Image
-      src="favicon.png"
+      src="/favicon.png"
       className="position-fixed"
       alt="Fresko Lemon logo"
       style={{

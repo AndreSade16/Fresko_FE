@@ -23,26 +23,35 @@ export const fetchPersonalRecipes = createAsyncThunk<
   RecipePage,
   Record<string, string> | URLSearchParams | void,
   { rejectValue: StandardError | string }
->("personalRecipes/fetchPersonalRecipes", async (_, { rejectWithValue }) => {
-  try {
-    const data = await apiFetch<RecipePage>(`/recipes/saved`, {
-      method: "GET",
-    });
+>(
+  "personalRecipes/fetchPersonalRecipes",
+  async (filters, { rejectWithValue }) => {
+    try {
+      const queryString =
+        filters instanceof URLSearchParams
+          ? filters.toString()
+          : new URLSearchParams(filters ?? {}).toString();
 
-    return data;
-  } catch (error: unknown) {
-    if (typeof error === "object" && error !== null && "message" in error) {
-      return rejectWithValue(error as StandardError);
+      const data = await apiFetch<RecipePage>(`/recipes/saved?${queryString}`, {
+        method: "GET",
+      });
+
+      return data;
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "message" in error) {
+        return rejectWithValue(error as StandardError);
+      }
+
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+
+      // Fallback to always have a return value
+      return rejectWithValue("An unexpected error occurred.");
     }
+  },
+);
 
-    if (error instanceof Error) {
-      return rejectWithValue(error.message);
-    }
-
-    // Fallback to always have a return value
-    return rejectWithValue("An unexpected error occurred.");
-  }
-});
 export const savePersonalRecipe = createAsyncThunk<
   string,
   string,

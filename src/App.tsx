@@ -26,6 +26,7 @@ import LoginPage from "./components/login_page/LoginPage";
 import RegisterPage from "./components/register_page/RegisterPage";
 import ForgotPasswordPage from "./components/password_reset_pages/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/password_reset_pages/ResetPasswordPage/ResetPasswordPage";
+import PersonalRecipesPage from "./components/personal_recipes_page/PersonalRecipesPage";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -60,6 +61,10 @@ function App() {
               <Route path="/ingredients" element={<IngredientPage />} />
               <Route path="/my-list" element={<ShoppingListPage />} />
               <Route path="/recipes" element={<RecipesPage />} />
+              <Route
+                path="/recipes/my-recipes"
+                element={<PersonalRecipesPage />}
+              />
               <Route path="/me" element={<ProfilePage />} />
               <Route path="/info" element={<InfoPage />} />
               <Route
