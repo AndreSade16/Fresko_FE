@@ -46,14 +46,10 @@ function SuggestedRecipesSection({
                 >
                   {recipe.isPersonal && (
                     <Badge
-                      className="position-absolute  p-2 bg-secondary text-black d-flex align-items-center justify-content-center border border-black top-0 end-0"
+                      className="position-absolute  p-2 bg-secondary text-black d-flex align-items-center justify-content-center border border-black bottom-0 start-0 z-1"
                       aria-label={"Saved " + recipe.name}
-                      style={{ cursor: "default" }}
                     >
-                      <i
-                        className="bi bi-bookmark-heart fs-2 fw-bold"
-                        style={{ cursor: "default" }}
-                      ></i>
+                      <i className="bi bi-bookmark-heart fs-2 fw-bold"></i>
                     </Badge>
                   )}
                   <div className="d-flex h-100">

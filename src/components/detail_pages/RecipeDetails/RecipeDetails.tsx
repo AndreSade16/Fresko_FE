@@ -32,6 +32,7 @@ function RecipeDetails() {
   const dispatch = useDispatch<AppDispatch>();
 
   const userRole = useSelector((state: RootState) => state.auth.role);
+  const userId = useSelector((state: RootState) => state.user.userId);
   const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const { recipeId } = useParams<{ recipeId: string }>();
@@ -266,6 +267,7 @@ function RecipeDetails() {
                       <ListGroup className="w-75">
                         {recipe.ingredients.map((ingredient) => (
                           <ListGroup.Item
+                            key={ingredient.recipeIngredientId}
                             variant="light"
                             className="d-flex justify-content-between bg-dark text-light"
                           >
@@ -367,7 +369,8 @@ function RecipeDetails() {
                       {isAdding ? <PulseLoader color="white" /> : "Prepare!"}
                     </Button>
 
-                    {userRole === "ADMIN" && (
+                    {(userRole === "ADMIN" ||
+                      recipe.user?.userId == userId) && (
                       <Button
                         variant="outline-warning"
                         size="sm"
@@ -378,7 +381,8 @@ function RecipeDetails() {
                         {isAdding ? <PulseLoader color="white" /> : "Edit"}
                       </Button>
                     )}
-                    {userRole === "ADMIN" && (
+                    {(userRole === "ADMIN" ||
+                      recipe.user?.userId == userId) && (
                       <Button
                         variant="outline-danger"
                         size="sm"

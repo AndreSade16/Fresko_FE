@@ -212,6 +212,7 @@ export interface RecipePageContent {
   recipeId: string;
   visitsCount: number;
   isPersonal: boolean;
+  user: User;
 }
 
 export interface RecipeIngredient {
