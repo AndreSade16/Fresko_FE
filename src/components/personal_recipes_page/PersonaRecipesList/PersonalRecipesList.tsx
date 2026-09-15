@@ -1,11 +1,5 @@
-import {
-  useRef,
-  useEffect,
-  type Dispatch,
-  type SetStateAction,
-  useState,
-} from "react";
-import { Alert, Badge, Button, Card, Col, Row } from "react-bootstrap";
+import { useRef, useEffect, type Dispatch, type SetStateAction } from "react";
+import { Alert, Badge, Button, Card, Col, Image, Row } from "react-bootstrap";
 import { PulseLoader } from "react-spinners";
 import type {
   PantryPageContent,
@@ -14,12 +8,8 @@ import type {
   StandardError,
 } from "../../../interfaces/interfaces";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { type AppDispatch } from "../../../redux/store";
-import { savePersonalRecipe } from "../../../redux/reducers/PersonalRecipesSlice";
-import { toast } from "react-toastify";
 
-interface RecipesListProps {
+interface PersonalRecipesListProps {
   data: RecipePage | null;
   isLoading: boolean;
   error: StandardError | string | null;
@@ -36,7 +26,7 @@ interface RecipesListProps {
   pantryItems: PantryPageContent[] | null;
 }
 
-function RecipesList({
+function PersonalRecipesList({
   data,
   isLoading,
   onLoadMore,
@@ -47,41 +37,26 @@ function RecipesList({
   onAddIngredients,
   onPrepareItem,
   onAddMissing,
-  userRole,
   pantryItems,
-}: RecipesListProps) {
+}: PersonalRecipesListProps) {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const items = data?.content || [];
   const isLastPage = data?.last ?? true;
   const currentPage = data?.number ?? 0;
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 400);
 
-  const handleSave = async (
-    e: React.MouseEvent<HTMLElement, MouseEvent>,
-    recipeId: string,
-  ) => {
-    e.stopPropagation();
-    try {
-      await dispatch(savePersonalRecipe(recipeId)).unwrap();
-      toast.success("Recipe saved!");
-    } catch (error: unknown) {
-      let message = "An error occurred while saving the recipe.";
-      if (typeof error === "object" && error !== null && "message" in error) {
-        message = (error as StandardError).message;
-      }
-      toast.error(message);
-    }
-  };
+  const stateRef = useRef({ isLoading, isLastPage, currentPage, onLoadMore });
+  useEffect(() => {
+    stateRef.current = { isLoading, isLastPage, currentPage, onLoadMore };
+  });
 
   useEffect(() => {
-    if (isLoading || isLastPage) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        const { isLoading, isLastPage, currentPage, onLoadMore } =
+          stateRef.current;
+        if (entries[0].isIntersecting && !isLoading && !isLastPage) {
           onLoadMore(currentPage + 1);
         }
       },
@@ -98,15 +73,6 @@ function RecipesList({
         observer.unobserve(currentSentinel);
       }
     };
-  }, [isLoading, isLastPage, currentPage, onLoadMore]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 400);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const getPossessedIngredients = (recipe: RecipePageContent) => {
@@ -121,9 +87,30 @@ function RecipesList({
 
   if (!isLoading && data !== null && items.length === 0) {
     return (
-      <Alert variant="secondary" className="my-3 text-center">
-        No recipes found.
-      </Alert>
+      <div className="d-flex flex-column align-items-center">
+        <Alert
+          variant="warning"
+          className="my-3 text-center border-black shadow d-flex flex-column flex-sm-row align-items-sm-center gap-2"
+        >
+          <Image
+            src="/ni-open-box.svg"
+            className="h-100"
+            style={{
+              minHeight: "100px",
+              maxHeight: "20px",
+            }}
+            alt=""
+          />
+          <span className="text-black">No recipe saved yet.</span>
+        </Alert>
+        <Button
+          variant="secondary"
+          className="border-black fw-semibold z-1"
+          onClick={() => navigate("/recipes")}
+        >
+          Explore the Recipes
+        </Button>
+      </div>
     );
   }
 
@@ -153,15 +140,19 @@ function RecipesList({
                 onClick={() => navigate(`/recipes/${recipeId}`)}
               >
                 <Badge
-                  className="position-absolute  p-2 bg-secondary text-black d-flex align-items-center justify-content-center border border-black"
-                  aria-label={"Save " + name}
-                  onClick={(e) => handleSave(e, recipeId)}
+                  className="position-absolute  p-2 bg-warning text-black d-flex align-items-center justify-content-center border border-black"
+                  aria-label={"Remove " + name}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteItem(recipe);
+                    setSelectedItem(recipe);
+                  }}
                   style={{
                     top: "-10px",
                     right: "-10px",
                   }}
                 >
-                  <i className="bi bi-bookmark-heart fs-2 fw-bold"></i>
+                  <i className="bi bi-bookmark-x fs-2 fw-bold"></i>
                 </Badge>
                 {imageUrl && (
                   <Card.Img
@@ -250,7 +241,7 @@ function RecipesList({
                       <Button
                         variant="outline-light"
                         size="sm"
-                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        className="w-100 fw-semibold"
                         style={{
                           whiteSpace: "normal",
                           wordBreak: "keep-all",
@@ -271,7 +262,7 @@ function RecipesList({
                       <Button
                         variant="outline-light"
                         size="sm"
-                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        className="w-100 fw-semibold"
                         style={{
                           whiteSpace: "normal",
                           wordBreak: "keep-all",
@@ -296,7 +287,7 @@ function RecipesList({
                       <Button
                         variant="outline-secondary"
                         size="sm"
-                        className={`${userRole === "ADMIN" ? "w-100 fw-semibold" : isSmallScreen ? "w-100" : "w-50"} fw-semibold`}
+                        className="w-100 fw-semibold"
                         style={{
                           whiteSpace: "normal",
                           wordBreak: "keep-all",
@@ -314,44 +305,23 @@ function RecipesList({
                           "Prepare"
                         )}
                       </Button>
-                      {userRole === "ADMIN" && (
-                        <Button
-                          variant="outline-warning"
-                          size="sm"
-                          className="w-100 fw-semibold"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onEditItem(recipe);
-                            setSelectedItem(recipe);
-                          }}
-                          disabled={isAdding}
-                        >
-                          {isAdding ? (
-                            <PulseLoader color="#fff" size={6} />
-                          ) : (
-                            "Edit"
-                          )}
-                        </Button>
-                      )}
-                      {userRole === "ADMIN" && (
-                        <Button
-                          variant="outline-danger"
-                          size="sm"
-                          className="w-100 fw-semibold"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onDeleteItem(recipe);
-                            setSelectedItem(recipe);
-                          }}
-                          disabled={isAdding}
-                        >
-                          {isAdding ? (
-                            <PulseLoader color="#fff" size={6} />
-                          ) : (
-                            "Delete"
-                          )}
-                        </Button>
-                      )}
+                      <Button
+                        variant="outline-warning"
+                        size="sm"
+                        className="w-100 fw-semibold"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEditItem(recipe);
+                          setSelectedItem(recipe);
+                        }}
+                        disabled={isAdding}
+                      >
+                        {isAdding ? (
+                          <PulseLoader color="#fff" size={6} />
+                        ) : (
+                          "Edit"
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </Card.Body>
@@ -372,4 +342,4 @@ function RecipesList({
   );
 }
 
-export default RecipesList;
+export default PersonalRecipesList;

@@ -32,6 +32,7 @@ function RecipeDetails() {
   const dispatch = useDispatch<AppDispatch>();
 
   const userRole = useSelector((state: RootState) => state.auth.role);
+  const userId = useSelector((state: RootState) => state.user.userId);
   const pantryItems = useSelector((state: RootState) => state.user.pantryItems);
 
   const { recipeId } = useParams<{ recipeId: string }>();
@@ -62,10 +63,14 @@ function RecipeDetails() {
         message = (error as StandardError).message;
       }
       toast.error(message);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2000);
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch, recipeId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -262,6 +267,7 @@ function RecipeDetails() {
                       <ListGroup className="w-75">
                         {recipe.ingredients.map((ingredient) => (
                           <ListGroup.Item
+                            key={ingredient.recipeIngredientId}
                             variant="light"
                             className="d-flex justify-content-between bg-dark text-light"
                           >
@@ -363,7 +369,8 @@ function RecipeDetails() {
                       {isAdding ? <PulseLoader color="white" /> : "Prepare!"}
                     </Button>
 
-                    {userRole === "ADMIN" && (
+                    {(userRole === "ADMIN" ||
+                      recipe.user?.userId == userId) && (
                       <Button
                         variant="outline-warning"
                         size="sm"
@@ -374,7 +381,8 @@ function RecipeDetails() {
                         {isAdding ? <PulseLoader color="white" /> : "Edit"}
                       </Button>
                     )}
-                    {userRole === "ADMIN" && (
+                    {(userRole === "ADMIN" ||
+                      recipe.user?.userId == userId) && (
                       <Button
                         variant="outline-danger"
                         size="sm"
