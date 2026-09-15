@@ -110,6 +110,7 @@ export interface SuggestedRecipe {
   totalTime: number;
   difficulty: string;
   cost: string;
+  isPersonal: boolean;
 }
 
 export interface PantryItemUpdateDTO {
@@ -210,6 +211,8 @@ export interface RecipePageContent {
   ingredients: RecipeIngredient[];
   recipeId: string;
   visitsCount: number;
+  isPersonal: boolean;
+  user: User;
 }
 
 export interface RecipeIngredient {

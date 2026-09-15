@@ -122,7 +122,7 @@ function MainNavbar() {
               id="basic-navbar-nav"
               className="navbar-main-collapse-overlay pb-3 pb-lg-0"
             >
-              <Nav className="ms-auto align-items-center gap-3 mt-3 mt-lg-0">
+              <Nav className="ms-auto align-items-center gap-2 gap-lg-1 gap-xl-2 mt-lg-0">
                 {role === "ADMIN" && (
                   <Nav.Link
                     className="text-warning text-nowrap fw-bold text-stroke"
@@ -148,6 +148,12 @@ function MainNavbar() {
                   onClick={() => handleNavigate("/recipes")}
                 >
                   Recipes
+                </Nav.Link>
+                <Nav.Link
+                  className="text-light text-nowrap text-stroke"
+                  onClick={() => handleNavigate("/recipes/my-recipes")}
+                >
+                  Saved Recipes
                 </Nav.Link>
                 <Nav.Link
                   className="text-light text-nowrap text-stroke"

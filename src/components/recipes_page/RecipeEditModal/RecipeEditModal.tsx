@@ -21,8 +21,8 @@ import type {
 } from "../../../interfaces/interfaces";
 import { searchIngredientDefinitions } from "../../../redux/reducers/IngredientDefinitionSlice";
 import { apiFetch } from "../../../tools/fetchHelper";
-import { fetchRecipes } from "../../../redux/reducers/RecipesSlice";
 import { useSearchParams } from "react-router";
+import { fetchPersonalRecipes } from "../../../redux/reducers/PersonalRecipesSlice";
 
 interface RecipeEditModalProps {
   show: boolean;
@@ -251,7 +251,7 @@ function RecipeEditModal({
         toast.error(message);
       }
       toast.success("Recipe correctly edited!");
-      dispatch(fetchRecipes(searchParams));
+      dispatch(fetchPersonalRecipes(searchParams));
       resetForm();
       if (onSuccess) onSuccess(newRecipeId);
       onHide();
